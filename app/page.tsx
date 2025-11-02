@@ -107,9 +107,9 @@ export default async function Home({
                     key={book.id}
                     className="
                     group/card relative transition-all duration-300
-                    hover:scale-[1.05] hover:z-10
-                    group-hover/card-grid:blur-[2px] group-hover/card-grid:opacity-70
-                    hover:!opacity-100 hover:!blur-none
+                    md:hover:scale-[1.05] md:hover:z-10
+                    md:group-hover/card-grid:blur-[2px] md:group-hover/card-grid:opacity-70
+                    md:hover:!opacity-100 md:hover:!blur-none
                   "
                   >
                     <Link
@@ -125,7 +125,8 @@ export default async function Home({
                             alt={book.title}
                             fill
                             sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-600 ease-out group-hover/card:scale-[1.02]"
+                            className="object-cover transition-transform duration-200 ease-out
+                            group-hover/card:scale-[1.01]  md:group-hover/card:scale-[1.02]"
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
