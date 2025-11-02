@@ -45,7 +45,7 @@ export function UserMenu() {
                   },
                 },
               });
-            }, 2000);
+            }, 4000);
           }
         }
       }

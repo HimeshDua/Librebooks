@@ -22,22 +22,23 @@ export default function FavoritesPage() {
     async function fetchFavorites() {
       const supabase = createClient();
       const {userId} = await getUserById(supabase);
+      if (userId) {
+        const {data, error} = await supabase
+          .from('favorites')
+          .select('book_id, books(id, title, author, cover_url)')
+          .eq('user_id', userId)
+          .order('id', {ascending: false})
+          .returns<FavoriteResponse[]>();
 
-      const {data, error} = await supabase
-        .from('favorites')
-        .select('book_id, books(id, title, author, cover_url)')
-        .eq('user_id', userId)
-        .order('id', {ascending: false})
-        .returns<FavoriteResponse[]>();
+        if (error) {
+          console.error(error);
+          setLoading(false);
+          return;
+        }
 
-      if (error) {
-        console.error(error);
-        setLoading(false);
-        return;
+        const mapped = data.flatMap(fav => fav.books || []).filter(Boolean);
+        setBooks(mapped);
       }
-
-      const mapped = data.flatMap(fav => fav.books || []).filter(Boolean);
-      setBooks(mapped);
       setLoading(false);
     }
     fetchFavorites();
