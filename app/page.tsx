@@ -7,6 +7,7 @@ import type {Book} from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, {Suspense} from 'react';
+import {toast} from 'sonner';
 
 const PAGE_SIZE = 12;
 function PaginationControls({page, totalPages}: {page: number; totalPages: number}) {
@@ -44,6 +45,15 @@ export default async function Home({
   const query = ((await searchParams).q || '').trim();
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
+
+  const {data: getUserData} = await supabase.auth.getUser();
+
+  const toat = toast;
+  if (getUserData === null) {
+    toat.info('Log In for better Experence', {
+      description: 'Juice',
+    });
+  }
 
   const selectColumns = 'id,title,author,cover_url,download_count';
   const builder = supabase
@@ -98,8 +108,8 @@ export default async function Home({
               <ul
                 className="
     group/card-grid
-    grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6
-    gap-4 transition-all duration-300
+    grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6
+    gap-2 sm:gap-4 transition-all duration-300
   "
               >
                 {books.map((book: Book) => (

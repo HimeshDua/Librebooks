@@ -9,11 +9,11 @@ import {Separator} from '@/components/ui/separator';
 import {SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart} from 'lucide-react';
 import {createClient} from '@/lib/supabase/client';
 import {LogoutButton} from './logout-button';
-import {getUserById} from '@/lib/getUserId';
 import Link from 'next/link';
 import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import type {User} from '@supabase/supabase-js';
+import {toast} from 'sonner';
 
 export function UserMenu() {
   const [user, setUser] = useState<User | null>();
@@ -21,25 +21,43 @@ export function UserMenu() {
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
+  const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
 
   useEffect(() => {
     const supabase = createClient();
 
     async function getUserClaims() {
-      const {data, error} = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
-        return;
+      const {data} = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser(data.user);
+      } else {
+        if (!data?.user) {
+          if (pathName === '/') {
+            setTimeout(() => {
+              toast.info('Log in for a better experience', {
+                action: {
+                  label: 'Log in',
+                  actionButtonStyle: {
+                    padding: '0.25rem 0.75rem',
+                  },
+                  onClick: () => {
+                    window.location.href = '/auth/login';
+                  },
+                },
+              });
+            }, 2000);
+          }
+        }
       }
-      if (data?.user) setUser(data.user);
     }
 
     async function fetchFavorites() {
-      const {userId} = await getUserById(supabase);
-      const {data, error} = await supabase.from('favorites').select('id').eq('user_id', userId);
-      if (error) throw new Error(error.message);
-      const dataLength = data.length;
-      setCount(dataLength || 0);
+      if (user?.id) {
+        const {data, error} = await supabase.from('favorites').select('id').eq('user_id', user.id);
+        if (error) throw new Error(error.message);
+        const dataLength = data.length;
+        setCount(dataLength || 0);
+      }
     }
 
     if (isMob === null) {

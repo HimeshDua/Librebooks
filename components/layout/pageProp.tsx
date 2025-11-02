@@ -21,7 +21,7 @@ function PageProp({children}: {children: React.ReactNode}) {
     >
       <Header />
       {children}
-      <Toaster theme={toasterTheme} />
+      <Toaster richColors theme={toasterTheme} />
       <Footer />
     </motion.main>
   );
