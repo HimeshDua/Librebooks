@@ -69,7 +69,12 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
         }
 
         setIsExists(false);
-        toast.success(`Removed "${bookTitle}" from favorites`);
+        toast.success(`Removed "${bookTitle}" from favorites`, {
+          duration: 3,
+          description: "View Book"
+          ,
+          action: "View",
+    });
       } else {
         const { error: insertError } = await supabase
           .from('favorites')

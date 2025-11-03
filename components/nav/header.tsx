@@ -51,23 +51,23 @@ export default function Header() {
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium hover:text-primary"
                   >
-                    Home / Browser Books
+                    Browser Books
                   </Link>
+                  <Link
+                      href="/about"
+                      onClick={() => setOpen(false)}
+                      className="text-sm font-medium hover:text-primary w-full"
+                    >
+                      About
+                    </Link>
                   {isUser ? (
                     <>
                       <Link
-                        href="book/favorites"
+                        href="/book/favorites"
                         onClick={() => setOpen(false)}
                         className="text-sm font-medium hover:text-primary"
                       >
                         Favorites
-                      </Link>
-                      <Link
-                        href="/about"
-                        onClick={() => setOpen(false)}
-                        className="text-sm font-medium hover:text-primary"
-                      >
-                        About
                       </Link>
                     </>
                   ) : (

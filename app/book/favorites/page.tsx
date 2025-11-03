@@ -98,7 +98,7 @@ export default function FavoritesPage() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
-              <Link href={`book/${book.id}`}>
+              <Link href={`/book/${book.id}`}>
                 <div className="relative aspect-[3/4] w-full overflow-hidden">
                   {book.cover_url ? (
                     <Image
