@@ -98,30 +98,33 @@ export default function FavoritesPage() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
-              <div className="relative aspect-[3/4] w-full overflow-hidden">
-                {book.cover_url ? (
-                  <Image
-                    src={book.cover_url}
-                    alt={book.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
-                    No Cover
+              <Link href={`book/${book.id}`}>
+                <div className="relative aspect-[3/4] w-full overflow-hidden">
+                  {book.cover_url ? (
+                    <Image
+                      src={book.cover_url}
+                      alt={book.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
+                      No Cover
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2 bg-background/60 rounded-full p-1.5 backdrop-blur-sm">
+                    <Heart className="w-4 h-4 text-red-500" fill="red" />
                   </div>
-                )}
-                <div className="absolute top-2 right-2 bg-background/60 rounded-full p-1.5 backdrop-blur-sm">
-                  <Heart className="w-4 h-4 text-red-500" fill="red" />
                 </div>
-              </div>
 
-              <div className="p-3 space-y-1">
-                <h3 className="font-semibold truncate">{book.title}</h3>
-                {book.author && (
-                  <p className="text-xs text-muted-foreground truncate">{book.author}</p>
-                )}
-              </div>
+
+                <div className="p-3 space-y-1">
+                  <h3 className="font-semibold truncate">{book.title}</h3>
+                  {book.author && (
+                    <p className="text-xs text-muted-foreground truncate">{book.author}</p>
+                  )}
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -1,4 +1,3 @@
-// app/about/page.tsx
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -9,7 +8,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-3xl w-full text-center space-y-8">
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
-          About <span className="text-primary">BookVerse</span>
+          About <span className="text-primary">Libre Books</span>
         </h1>
 
         <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
