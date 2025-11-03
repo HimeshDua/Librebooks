@@ -7,7 +7,6 @@ import type { Book } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
-import { toast } from 'sonner';
 
 const PAGE_SIZE = 12;
 function PaginationControls({ page, totalPages }: { page: number; totalPages: number }) {

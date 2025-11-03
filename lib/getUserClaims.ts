@@ -5,7 +5,6 @@ import { toast } from "sonner";
 
 export async function getUserClaims(supabase: SupabaseClient):
     Promise<{ user: User | null }> {
-    const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
     const { data, error } = await supabase.auth.getUser();
     const user = data.user;
     if (error) {
