@@ -1,6 +1,7 @@
 import SelectBookCategory from '@/components/book/bookCategory';
 import BookFallback from '@/components/book/bookFallback';
 import { Button } from '@/components/ui/button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/supabase/server';
 import type { Book } from '@/types';
@@ -103,58 +104,80 @@ export default async function Home({
   "
               >
                 {books.map((book: Book) => (
-                  <li
-                    key={book.id}
-                    className="
-                    group/card relative transition-all duration-500
-                    md:hover:scale-[1.03] md:hover:z-10
-                    md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80
-                    md:hover:!opacity-100 md:hover:!blur-none
-                  "
-                  >
-                    <Link
-                      target="_blank"
-                      href={`/book/${book.id}`}
-                      aria-label={`Open ${book.title}`}
-                      className="block"
-                    >
-                      <div className="relative w-full aspect-[3/4] bg-muted rounded-md overflow-hidden shadow-sm">
-                        {book.cover_url ? (
-                          <Image
-                            src={book.cover_url}
-                            alt={book.title}
-                            fill
-                            sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-200 ease-out
-                            group-hover/card:scale-[1.01]  md:group-hover/card:scale-[1.02]"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
-                            No cover
+                  <HoverCard key={book.id} openDelay={150} closeDelay={100}>
+                    <HoverCardTrigger asChild>
+                      <li
+                        className="
+            group/card relative transition-all duration-500
+            md:hover:scale-[1.03] md:hover:z-10
+            md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80
+            md:hover:!opacity-100 md:hover:!blur-none
+          "
+                      >
+                        <Link
+                          target="_blank"
+                          href={`/book/${book.id}`}
+                          aria-label={`Open ${book.title}`}
+                          className="block"
+                        >
+                          <div className="relative w-full aspect-[3/4] bg-muted rounded-md overflow-hidden shadow-sm">
+                            {book.cover_url ? (
+                              <Image
+                                src={book.cover_url}
+                                alt={book.title}
+                                fill
+                                sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-200 ease-out
+                  group-hover/card:scale-[1.01]  md:group-hover/card:scale-[1.02]"
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                                No cover
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
 
-                      <div className="p-3 transition-all duration-300">
-                        <h3 className="text-sm font-semibold leading-snug line-clamp-2">
-                          {book.title}
-                        </h3>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {book.author || 'Unknown'}
-                        </p>
-                        <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                          <span>
+                          <div className="p-3 transition-all duration-300">
+                            <h3 className="text-sm font-semibold leading-snug line-clamp-2">
+                              {book.title}
+                            </h3>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {book.author || "Unknown"}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    </HoverCardTrigger>
+
+                    {/* Desktop-only popover content */}
+                    <HoverCardContent
+                      className="hidden md:block w-72 p-4 bg-background/90 backdrop-blur-xl rounded-xl shadow-lg border border-border/50"
+                      align="center"
+                      side="top"
+                      sideOffset={16}
+                    >
+                      <div className="flex gap-3">
+                        <div className="relative w-16 h-24 rounded-md overflow-hidden">
+                          {book.cover_url ? (
+                            <Image src={book.cover_url} alt={book.title} fill className="object-cover" />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                              No cover
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-col justify-between">
+                          <h4 className="text-sm font-semibold leading-tight">{book.title}</h4>
+                          <p className="text-xs text-muted-foreground">{book.author || "Unknown"}</p>
+                          <p className="text-xs mt-2 text-muted-foreground">
                             {book.download_count
                               ? `${book.download_count.toLocaleString()} downloads`
-                              : ''}
-                          </span>
-                          <span className="rounded-full px-2 py-1 bg-muted text-[11px]">
-                            {book.id}
-                          </span>
+                              : ""}
+                          </p>
                         </div>
                       </div>
-                    </Link>
-                  </li>
+                    </HoverCardContent>
+                  </HoverCard>
                 ))}
               </ul>
             ) : (
