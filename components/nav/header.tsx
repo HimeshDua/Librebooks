@@ -94,7 +94,6 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Right: Search + User menu */}
         <div className="flex items-center gap-2">
           <UserMenu />
           <form className="flex items-center gap-2">

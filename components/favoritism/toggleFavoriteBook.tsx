@@ -1,12 +1,13 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import {Button} from '../ui/button';
-import {HeartIcon, HeartOffIcon} from 'lucide-react';
-import {createClient} from '@/lib/supabase/client';
-import {toast} from 'sonner';
-import {ConfettiButton} from '../ui/confetti';
+import React, { useEffect, useState } from 'react';
+import { Button } from '../ui/button';
+import { HeartIcon, HeartOffIcon } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { toast } from 'sonner';
+import { ConfettiButton } from '../ui/confetti';
 import AuthDialog from '../auth-dialog';
+import { cn } from '@/lib/utils';
 
 type Props = {
   id: string | null;
@@ -14,14 +15,14 @@ type Props = {
   bookTitle: string;
 };
 
-function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
+function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
   const [loading, setLoading] = useState(false);
   const [isExists, setIsExists] = useState(false);
 
   useEffect(() => {
     const fetchFavorite = async () => {
       const supabase = createClient();
-      const {data, error: selectError} = await supabase
+      const { data, error: selectError } = await supabase
         .from('favorites')
         .select('user_id')
         .eq('user_id', id)
@@ -56,10 +57,10 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
       const supabase = createClient();
 
       if (isExists) {
-        const {error: deleteError} = await supabase
+        const { error: deleteError } = await supabase
           .from('favorites')
           .delete()
-          .match({user_id: id, book_id: bookId});
+          .match({ user_id: id, book_id: bookId });
 
         if (deleteError) {
           console.error('Delete error:', deleteError);
@@ -70,9 +71,9 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
         setIsExists(false);
         toast.success(`Removed "${bookTitle}" from favorites`);
       } else {
-        const {error: insertError} = await supabase
+        const { error: insertError } = await supabase
           .from('favorites')
-          .insert({book_id: bookId, user_id: id});
+          .insert({ book_id: bookId, user_id: id });
 
         if (insertError) {
           console.error('Insert error:', insertError);
@@ -95,16 +96,16 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
     <>
       {id ? (
         !loading ? (
-          <ConfettiButton turnConfettiOn={!isExists}>
+          <ConfettiButton className='w-full md:w-auto' turnConfettiOn={!isExists}>
             <Button
               variant="destructive"
-              className={`${
+              className={`${cn(
+                'w-full py-4 md:w-auto ',
                 isExists ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
-              }`}
+              )}`}
               onClick={handleToggleFavorite}
             >
               {isExists ? 'Remove from favorites' : 'Add to favorites'}
-
               {isExists ? <HeartOffIcon /> : <HeartIcon />}
             </Button>
           </ConfettiButton>
