@@ -1,16 +1,18 @@
-import type {SupabaseClient} from '@supabase/supabase-js';
-import {toast} from 'sonner';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { toast } from 'sonner';
 
 export async function getUserById(
   supabase: SupabaseClient
-): Promise<{userId: string | null; error: Error | null}> {
-  const {data, error} = await supabase.auth.getClaims();
+): Promise<{ userId: string | null }> {
+  const { data, error } = await supabase.auth.getClaims();
   const user = data?.claims;
   const userId = user?.sub ?? null;
+  const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
+
 
   if (error) {
     setTimeout(() => {
-      toast.error('Failed to fetch user information.', {
+      toast.error(`Failed to fetch user information.`, {
         description: error.message,
         action: {
           label: 'Log in',
@@ -22,10 +24,10 @@ export async function getUserById(
           },
         },
       });
-    }, 1000);
-  } else if (!userId) {
+    }, 300);
+  } else if (!userId && pathName !== "/") {
     setTimeout(() => {
-      toast.error('Failed to fetch user information.', {
+      toast.info('Log in for a better experience', {
         description: 'Please try again later.',
         action: {
           label: 'Log in',
@@ -40,5 +42,5 @@ export async function getUserById(
     }, 1000);
   }
 
-  return {userId, error};
+  return { userId };
 }

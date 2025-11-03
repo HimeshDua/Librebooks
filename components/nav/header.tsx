@@ -1,11 +1,11 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {Library, X} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Library, X } from 'lucide-react';
 import Link from 'next/link';
-import {Button} from '../ui/button';
-import {Input} from '../ui/input';
-import {UserMenu} from '../user-menu';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { UserMenu } from '../user-menu';
 import {
   Drawer,
   DrawerContent,
@@ -14,23 +14,36 @@ import {
   DrawerTrigger,
   DrawerClose,
 } from '@/components/ui/drawer';
-import {createClient} from '@/lib/supabase/client';
-import {getUserById} from '@/lib/getUserId';
+import { createClient } from '@/lib/supabase/client';
+import { getUserById } from '@/lib/getUserId';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [isUser, setIsUser] = useState<boolean>(false);
-  const supabase = createClient();
+
   useEffect(() => {
-    (async function () {
-      const {userId} = await getUserById(supabase);
-      if (userId) {
+    const supabase = createClient();
+
+    async function checkUser() {
+      const { userId } = await getUserById(supabase);
+      setIsUser(!!userId);
+    }
+
+    checkUser();
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {  
+      if (event === 'SIGNED_IN') {
         setIsUser(true);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
         setIsUser(false);
       }
-    })();
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
+
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50 supports-[backdrop-filter]:bg-background/50">

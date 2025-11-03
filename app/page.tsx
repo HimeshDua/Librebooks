@@ -1,16 +1,16 @@
 import SelectBookCategory from '@/components/book/bookCategory';
 import BookFallback from '@/components/book/bookFallback';
-import {Button} from '@/components/ui/button';
-import {Separator} from '@/components/ui/separator';
-import {createClient} from '@/lib/supabase/server';
-import type {Book} from '@/types';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { createClient } from '@/lib/supabase/server';
+import type { Book } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, {Suspense} from 'react';
-import {toast} from 'sonner';
+import React, { Suspense } from 'react';
+import { toast } from 'sonner';
 
 const PAGE_SIZE = 12;
-function PaginationControls({page, totalPages}: {page: number; totalPages: number}) {
+function PaginationControls({ page, totalPages }: { page: number; totalPages: number }) {
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
 
@@ -38,7 +38,7 @@ function PaginationControls({page, totalPages}: {page: number; totalPages: numbe
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{page?: string; q?: string; category?: string}>;
+  searchParams: Promise<{ page?: string; q?: string; category?: string }>;
 }) {
   const supabase = await createClient();
   const page = Math.max(1, Number((await searchParams).page) || 1);
@@ -46,20 +46,11 @@ export default async function Home({
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
-  const {data: getUserData} = await supabase.auth.getUser();
-
-  const toat = toast;
-  if (getUserData === null) {
-    toat.info('Log In for better Experence', {
-      description: 'Juice',
-    });
-  }
-
   const selectColumns = 'id,title,author,cover_url,download_count';
   const builder = supabase
     .from('books')
-    .select(selectColumns, {count: 'exact'})
-    .order('download_count', {ascending: false})
+    .select(selectColumns, { count: 'exact' })
+    .order('download_count', { ascending: false })
     .range(from, to);
 
   const category = (await searchParams).category || 'All';
@@ -70,7 +61,7 @@ export default async function Home({
     builder.or(`title.ilike.%${trimmedQuery}%,author.ilike.%${trimmedQuery}%`);
   }
 
-  const {data: dataBooks, error, count} = await builder;
+  const { data: dataBooks, error, count } = await builder;
   const books: Book[] = (dataBooks ?? []) as Book[];
 
   if (error) {
@@ -116,9 +107,9 @@ export default async function Home({
                   <li
                     key={book.id}
                     className="
-                    group/card relative transition-all duration-300
-                    md:hover:scale-[1.05] md:hover:z-10
-                    md:group-hover/card-grid:blur-[2px] md:group-hover/card-grid:opacity-70
+                    group/card relative transition-all duration-500
+                    md:hover:scale-[1.03] md:hover:z-10
+                    md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80
                     md:hover:!opacity-100 md:hover:!blur-none
                   "
                   >

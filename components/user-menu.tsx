@@ -1,23 +1,24 @@
 'use client';
 
-import {useState, useEffect} from 'react';
-import {useTheme} from 'next-themes';
-import {Popover, PopoverTrigger, PopoverContent} from '@/components/ui/popover';
-import {Button} from '@/components/ui/button';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {Separator} from '@/components/ui/separator';
-import {SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart} from 'lucide-react';
-import {createClient} from '@/lib/supabase/client';
-import {LogoutButton} from './logout-button';
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { LogoutButton } from './logout-button';
 import Link from 'next/link';
-import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
-import {useIsMobile} from '@/hooks/useIsMobile';
-import type {User} from '@supabase/supabase-js';
-import {toast} from 'sonner';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import type { User } from '@supabase/supabase-js';
+import { toast } from 'sonner';
+import { getUserClaims } from '@/lib/getUserClaims';
 
 export function UserMenu() {
   const [user, setUser] = useState<User | null>();
-  const {setTheme, theme} = useTheme();
+  const { setTheme, theme } = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
@@ -26,34 +27,32 @@ export function UserMenu() {
   useEffect(() => {
     const supabase = createClient();
 
-    async function getUserClaims() {
-      const {data} = await supabase.auth.getUser();
-      if (data?.user) {
-        setUser(data.user);
+    async function getUser() {
+      const { user } = await getUserClaims(supabase)
+      if (user) {
+        setUser(user);
       } else {
-        if (!data?.user) {
-          if (pathName === '/') {
-            setTimeout(() => {
-              toast.info('Log in for a better experience', {
-                action: {
-                  label: 'Log in',
-                  actionButtonStyle: {
-                    padding: '0.25rem 0.75rem',
-                  },
-                  onClick: () => {
-                    window.location.href = '/auth/login';
-                  },
+        if (pathName === '/') {
+          setTimeout(() => {
+            toast.info('Log in for a better experience', {
+              action: {
+                label: 'Log in',
+                actionButtonStyle: {
+                  padding: '0.25rem 0.75rem',
                 },
-              });
-            }, 4000);
-          }
+                onClick: () => {
+                  window.location.href = '/auth/login';
+                },
+              },
+            });
+          }, 4000);
         }
       }
     }
 
     async function fetchFavorites() {
       if (user?.id) {
-        const {data, error} = await supabase.from('favorites').select('id').eq('user_id', user.id);
+        const { data, error } = await supabase.from('favorites').select('id').eq('user_id', user.id);
         if (error) throw new Error(error.message);
         const dataLength = data.length;
         setCount(dataLength || 0);
@@ -66,7 +65,8 @@ export function UserMenu() {
       setIsMobile(isMob);
     }
     fetchFavorites();
-    getUserClaims();
+    getUser();
+
   }, [isMob]);
 
   if (!user) return null;

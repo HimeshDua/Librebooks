@@ -1,14 +1,14 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {createClient} from '@/lib/supabase/client';
-import {getUserById} from '@/lib/getUserId';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { getUserById } from '@/lib/getUserId';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Heart, LibraryBig, Loader2} from 'lucide-react';
-import {Button} from '@/components/ui/button';
-import {motion} from 'framer-motion';
-import type {Book} from '@/types';
+import { Heart, LibraryBig, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
+import type { Book } from '@/types';
 
 type FavoriteResponse = {
   books: Book[];
@@ -21,13 +21,13 @@ export default function FavoritesPage() {
   useEffect(() => {
     async function fetchFavorites() {
       const supabase = createClient();
-      const {userId} = await getUserById(supabase);
+      const { userId } = await getUserById(supabase);
       if (userId) {
-        const {data, error} = await supabase
+        const { data, error } = await supabase
           .from('favorites')
           .select('book_id, books(id, title, author, cover_url)')
           .eq('user_id', userId)
-          .order('id', {ascending: false})
+          .order('id', { ascending: false })
           .returns<FavoriteResponse[]>();
 
         if (error) {
@@ -94,8 +94,8 @@ export default function FavoritesPage() {
           {books.map(book => (
             <motion.div
               key={book.id}
-              whileHover={{scale: 1.03, y: -4}}
-              transition={{type: 'spring', stiffness: 300, damping: 20}}
+              whileHover={{ scale: 1.03, y: -4 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden">

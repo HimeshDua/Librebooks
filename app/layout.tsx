@@ -3,7 +3,7 @@ import {Geist} from 'next/font/google';
 import {ThemeProvider} from 'next-themes';
 import './globals.css';
 import './tiptap.scss';
-import PageProp from '@/components/layout/pageProp';
+import PageShell from '@/components/layout/pageShell';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -35,7 +35,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PageProp>{children}</PageProp>
+          <PageShell>{children}</PageShell>
         </ThemeProvider>
       </body>
     </html>
