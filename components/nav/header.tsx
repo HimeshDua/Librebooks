@@ -90,7 +90,7 @@ export default function Header() {
           {/* Brand name for larger screens */}
           <Link href="/" className="hidden md:flex items-center gap-2">
             <Library className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-lg tracking-tight">Public Library</span>
+            <span className="font-semibold text-lg tracking-tight">Libre Books</span>
           </Link>
         </div>
 

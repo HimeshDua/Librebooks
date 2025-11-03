@@ -82,7 +82,7 @@ export default async function Home({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <header className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-6 p-2 sm:p-0">
           <div className="flex-1 text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Public Library</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Libre Books</h1>
             <p className="text-sm sm:text-base text-muted-foreground mt-1 text-balance">
               Free public-domain books — curated, searchable, and mobile-first.
             </p>
