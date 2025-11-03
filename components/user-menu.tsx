@@ -61,7 +61,7 @@ export function UserMenu() {
       setIsMobile(isMob);
     }
     fetchFavorites();
-  }, []);
+  });
 
 
 
