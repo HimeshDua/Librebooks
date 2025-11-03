@@ -12,42 +12,38 @@ import { LogoutButton } from './logout-button';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import type { User } from '@supabase/supabase-js';
 import { toast } from 'sonner';
-import { getUserClaims } from '@/lib/getUserClaims';
+import { useUser } from './nav/context/UserContext';
 
 export function UserMenu() {
-  const [user, setUser] = useState<User | null>();
   const { setTheme, theme } = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
-  const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
+
+  const { user } = useUser()
+
 
   useEffect(() => {
     const supabase = createClient();
+    const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
+    const isLogWarnGiven = localStorage.getItem("LogWarnGiven") !== '1' || false
 
-    async function getUser() {
-      const { user } = await getUserClaims(supabase)
-      if (user) {
-        setUser(user);
-      } else {
-        if (pathName === '/') {
-          setTimeout(() => {
-            toast.info('Log in for a better experience', {
-              action: {
-                label: 'Log in',
-                actionButtonStyle: {
-                  padding: '0.25rem 0.75rem',
-                },
-                onClick: () => {
-                  window.location.href = '/auth/login';
-                },
-              },
-            });
-          }, 4000);
-        }
-      }
+    if (pathName === '/' && isLogWarnGiven) {
+      setTimeout(() => {
+        toast.info('Log in for a better experience', {
+          action: {
+            label: 'Log in',
+            actionButtonStyle: {
+              padding: '0.25rem 0.75rem',
+            },
+            onClick: () => {
+              window.location.href = '/auth/login';
+            },
+          },
+        });
+      }, 4000);
+      localStorage.setItem("LogWarnGiven", '1')
     }
 
     async function fetchFavorites() {
@@ -65,9 +61,9 @@ export function UserMenu() {
       setIsMobile(isMob);
     }
     fetchFavorites();
-    getUser();
+  }, []);
 
-  }, [isMob]);
+
 
   if (!user) return null;
 
@@ -95,7 +91,7 @@ export function UserMenu() {
         className="w-screen md:w-64 mt-2 rounded-xl border-border/60 shadow-lg backdrop-blur-sm bg-background/90"
       >
         <div className="flex flex-col gap-3">
-          {/* User email + verification */}
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-muted-foreground" />
