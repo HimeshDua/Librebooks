@@ -65,7 +65,7 @@ function SelectBookCategory({ className }: { className?: string }) {
           />
         </SelectTrigger>
 
-        <SelectContent className="scroll-smooth max-h-[46vh] backdrop-blur-xl bg-background/60 rounded-xl shadow-lg">
+        <SelectContent className="scroll-smooth max-h-[36vh] sm:max-h-[46vh] backdrop-blur-xl bg-background/60 rounded-xl shadow-lg">
           <SelectGroup>
             <SelectLabel className="mb-2 text-xs uppercase text-muted-foreground">
               Select a category
