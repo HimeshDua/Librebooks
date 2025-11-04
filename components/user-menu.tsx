@@ -42,7 +42,7 @@ export function UserMenu() {
             },
           },
         });
-      }, 4000);
+      }, 300);
       localStorage.setItem("LogWarnGiven", '1')
     }
 

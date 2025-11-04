@@ -102,6 +102,7 @@ export default function FavoritesPage() {
                 <div className="relative aspect-[3/4] w-full overflow-hidden">
                   {book.cover_url ? (
                     <Image
+                      loading='lazy'
                       src={book.cover_url}
                       alt={book.title}
                       fill

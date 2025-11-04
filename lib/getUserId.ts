@@ -29,6 +29,7 @@ export async function getUserById(
     setTimeout(() => {
       toast.info('Log in for a better experience', {
         description: 'Please try again later.',
+        duration: 5,
         action: {
           label: 'Log in',
           actionButtonStyle: {

@@ -11,9 +11,6 @@ import type { Book } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const PAGE_SIZE = 12;
-
-// Search Form Component
 function SearchForm({ initialQuery = '' }: { initialQuery?: string }) {
   return (
     <form className="flex items-center gap-2 w-full max-w-2xl mx-auto">
@@ -34,14 +31,21 @@ function SearchForm({ initialQuery = '' }: { initialQuery?: string }) {
   );
 }
 
-function PaginationControls({ page, totalPages }: { page: number; totalPages: number }) {
+function PaginationControls({ query, page, totalPages }: { query: string; page: number; totalPages: number }) {
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
+
+  const makeUrl = (newPage: number) => {
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    params.set("page", newPage.toString());
+    return `/?${params.toString()}`;
+  };
 
   return (
     <nav className="flex items-center justify-center gap-3 mt-10 w-full" aria-label="Pagination">
       <Button className="rounded-2xl" variant="outline" size="sm" disabled={prevDisabled}>
-        <Link href={`/?page=${Math.max(1, page - 1)}`} aria-disabled={prevDisabled}>
+        <Link href={makeUrl(Math.max(1, page - 1))} aria-disabled={prevDisabled}>
           ← Prev
         </Link>
       </Button>
@@ -51,7 +55,7 @@ function PaginationControls({ page, totalPages }: { page: number; totalPages: nu
       </div>
 
       <Button className="rounded-2xl" variant="outline" size="sm" disabled={nextDisabled}>
-        <Link href={`/?page=${Math.min(totalPages || 1, page + 1)}`} aria-disabled={nextDisabled}>
+        <Link href={makeUrl(Math.min(totalPages || 1, page + 1))} aria-disabled={nextDisabled}>
           Next →
         </Link>
       </Button>
@@ -65,6 +69,7 @@ export default async function Library({
   searchParams: Promise<{ page?: string; q?: string; category?: string }>;
 }) {
   const supabase = await createClient();
+  const PAGE_SIZE = 12;
   const page = Math.max(1, Number((await searchParams).page) || 1);
   const query = ((await searchParams).q || '').trim();
   const from = (page - 1) * PAGE_SIZE;
@@ -131,7 +136,7 @@ export default async function Library({
               </span>
             )}
           </div>
-          
+
           <div className="flex items-center gap-3">
             <SelectBookCategory className="min-w-[160px]" />
           </div>
@@ -157,7 +162,7 @@ export default async function Library({
                           <div className="relative w-full aspect-[3/4] bg-muted rounded-lg overflow-hidden shadow-sm border border-border/50">
                             {book.cover_url ? (
                               <Image
-                                loading="lazy"
+                                loading="eager"
                                 src={book.cover_url}
                                 alt={book.title}
                                 fill
@@ -190,9 +195,9 @@ export default async function Library({
                       sideOffset={16}
                     >
                       <div className="flex gap-3">
-                        <div className="relative w-16 h-24 rounded-md overflow-hidden">
+                        <div className="relative w-full max-w-20 h-24 rounded-md overflow-hidden">
                           {book.cover_url ? (
-                            <Image src={book.cover_url} alt={book.title} fill className="object-cover" />
+                            <Image src={book.cover_url} alt={book.title} fill className="object-cover w-full" />
                           ) : (
                             <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
                               No cover
@@ -219,7 +224,7 @@ export default async function Library({
                   <Search className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No books found</h3>
                   <p className="text-sm text-muted-foreground">
-                    {query 
+                    {query
                       ? `No results for "${query}". Try different keywords or browse all books.`
                       : 'No books available at the moment. Please check back later.'
                     }
@@ -237,7 +242,7 @@ export default async function Library({
 
         {books && books.length > 0 && (
           <div className="mt-8">
-            <PaginationControls page={page} totalPages={totalPages} />
+            <PaginationControls query={query} page={page} totalPages={totalPages} />
           </div>
         )}
       </div>

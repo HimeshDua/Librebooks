@@ -24,10 +24,9 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
       const supabase = createClient();
       const { data, error: selectError } = await supabase
         .from('favorites')
-        .select('user_id')
+        .select('user_id,book_id')
         .eq('user_id', id)
-        .eq('book_id', bookId)
-        .maybeSingle();
+        .eq('book_id', bookId);
 
       if (selectError) {
         console.error('Select error:', selectError);
@@ -44,7 +43,7 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
   }, [id, bookId]);
 
   const handleToggleFavorite = async () => {
-    if (!id || !bookId) return;
+    if (!id && !bookId) return;
     if (!bookTitle) {
       console.error('Book Title not found!');
       toast.error('Book title is missing');
@@ -69,12 +68,27 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
         }
 
         setIsExists(false);
-        toast.success(`Removed "${bookTitle}" from favorites`, {
-          duration: 3,
-          description: "View Book"
-          ,
-          action: "View",
-    });
+        // toast.success(`Removed "${bookTitle}" from favorites`, {
+        //   duration: 3,
+        //   description: "View Book",
+        // });
+        setTimeout(() => {
+
+          toast.success(`Removed "${bookTitle}" from favorites`, {
+            duration: 3,
+            cancel: 'Juice',
+            action: {
+              label: 'View Book',
+              actionButtonStyle: {
+                padding: '0.25rem 0.75rem',
+              },
+              onClick: () => {
+                window.location.href = `/book/${bookId}`;
+              },
+            },
+          });
+        }, 30);
+
       } else {
         const { error: insertError } = await supabase
           .from('favorites')
@@ -87,7 +101,23 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
         }
 
         setIsExists(true);
-        toast.success(`Added "${bookTitle}" to favorites`);
+        setTimeout(() => {
+
+          toast.success(`Marked "${bookTitle}" to favorites`), {
+            duration: 3,
+            cancel: 'Juice',
+            action: {
+              label: 'View Book',
+              actionButtonStyle: {
+                padding: '0.25rem 0.75rem',
+              },
+              onClick: () => {
+                window.location.href = `/book/${bookId}`;
+              },
+            },
+          };
+        }, 30);
+
       }
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -103,8 +133,10 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
         !loading ? (
           <ConfettiButton className='w-full md:w-auto' turnConfettiOn={!isExists}>
             <Button
+              disabled={loading}
               variant="destructive"
               className={`${cn(
+                loading ? "cursor-move" : 'cursor-pointer',
                 'w-full py-4 md:w-auto ',
                 isExists ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
               )}`}
@@ -135,8 +167,8 @@ export default ToggleFavoriteBook;
 
 export const ToggleFavoriteBookSkeleton = () => {
   return (
-    <Button className="bg-red-700 hover:bg-red-700/90" variant="destructive">
-      <div className="w-20 h-4 animate-pulse duration-1000  bg-destructive-foreground/30 rounded"></div>
+    <Button className="w-full md:w-auto bg-red-700 hover:bg-red-700/90" variant="destructive">
+      <div className="w-3/4 md:w-20 h-4 animate-pulse duration-1000  bg-destructive-foreground/30 rounded"></div>
     </Button>
   );
 };

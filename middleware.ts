@@ -5,13 +5,16 @@ import { createClient } from './lib/supabase/server';
 export async function middleware(request: NextRequest) {
 
   const supabase = createClient();
+
   const path = request.nextUrl.pathname;
-  const url = request.nextUrl.clone();
-  url.pathname = '/library';
+  const redirectUrl = request.nextUrl.clone();
+  redirectUrl.pathname = '/library';
 
   const { data: { user } } = await (await supabase).auth.getUser();
-  if (user && path === '/') return NextResponse.redirect(url);
 
+  if (user && path === '/') {
+    return NextResponse.redirect(redirectUrl);
+  }
   return await updateSession(request);
 }
 
