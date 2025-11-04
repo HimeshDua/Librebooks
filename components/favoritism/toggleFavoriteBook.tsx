@@ -68,12 +68,7 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
         }
 
         setIsExists(false);
-        // toast.success(`Removed "${bookTitle}" from favorites`, {
-        //   duration: 3,
-        //   description: "View Book",
-        // });
         setTimeout(() => {
-
           toast.success(`Removed "${bookTitle}" from favorites`, {
             duration: 3,
             cancel: 'Juice',
@@ -102,8 +97,7 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
 
         setIsExists(true);
         setTimeout(() => {
-
-          toast.success(`Marked "${bookTitle}" to favorites`), {
+          toast.success(`Marked "${bookTitle}" to favorites`, {
             duration: 3,
             cancel: 'Juice',
             action: {
@@ -115,7 +109,7 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
                 window.location.href = `/book/${bookId}`;
               },
             },
-          };
+          });
         }, 30);
 
       }
