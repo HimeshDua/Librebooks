@@ -1,6 +1,6 @@
 'use client';
 
-import {createClient} from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import {
   Select,
   SelectContent,
@@ -10,11 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import {Filter} from 'lucide-react';
-import {useRouter} from 'next/navigation';
-import {useEffect, useState} from 'react';
+import { Filter } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-function SelectBookCategory({className}: {className?: string}) {
+function SelectBookCategory({ className }: { className?: string }) {
   const router = useRouter();
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -26,7 +26,7 @@ function SelectBookCategory({className}: {className?: string}) {
     } else {
       (async () => {
         const supabase = createClient();
-        const {data, error} = await supabase.from('category').select('categories');
+        const { data, error } = await supabase.from('category').select('categories');
 
         if (error) {
           console.error('Error fetching categories:', error);
@@ -65,7 +65,7 @@ function SelectBookCategory({className}: {className?: string}) {
           />
         </SelectTrigger>
 
-        <SelectContent className="scroll-smooth max-h-[55vh] backdrop-blur-xl bg-background/60 rounded-xl shadow-lg">
+        <SelectContent className="scroll-smooth max-h-[46vh] backdrop-blur-xl bg-background/60 rounded-xl shadow-lg">
           <SelectGroup>
             <SelectLabel className="mb-2 text-xs uppercase text-muted-foreground">
               Select a category

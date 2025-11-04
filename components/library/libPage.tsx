@@ -26,7 +26,7 @@ function LibPage({ heading, description, button, reviews }: HeroProps) {
     return <section className="py-32 mx-auto">
         <div className="container mx-auto text-center">
             <div className="mx-auto flex max-w-5xl flex-col gap-6">
-                <h1 className="text-3xl font-semibold lg:text-6xl">
+                <h1 className="text-3xl text-balance font-semibold lg:text-6xl">
                     {heading}
                 </h1>
                 <p className="text-muted-foreground text-balance lg:text-lg">

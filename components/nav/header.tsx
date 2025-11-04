@@ -26,12 +26,12 @@ export default function Header() {
         {/* ========== LEFT SIDE: Logo + Navigation ========== */}
         <div className="flex items-center gap-6">
           {/* Brand Logo */}
-          <Link href="/" className="hidden md:flex items-center gap-2 group">
+          <Link href="/" className="hidden sm:flex items-center gap-2 group">
             <Library className="w-5 h-5" />
             <span className="font-bold text-lg tracking-tight hidden sm:block">LibreBooks</span>
           </Link>
 
-          <div className="md:hidden">
+          <div className="sm:hidden">
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -50,28 +50,20 @@ export default function Header() {
                 </DrawerHeader>
 
                 <div className="flex flex-col gap-4 mt-4">
-                  {/* <Link
+                  {!isUser && <Link
                     href="/"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   >
                     Go Home
-                  </Link> */}
-                  <Link
+                  </Link>
+                  } <Link
                     href="/library"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   >
                     Browse Books
                   </Link>
-                  <Link
-                    href="/about"
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  >
-                    Know About Us
-                  </Link>
-
                   {isUser && (
                     <Link
                       href="/book/favorites"
@@ -81,13 +73,20 @@ export default function Header() {
                       Your Favorites
                     </Link>
                   )}
+                  <Link
+                    href="/about"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  >
+                    Know About Us
+                  </Link>
                 </div>
               </DrawerContent>
             </Drawer>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden sm:flex items-center gap-6">
             {!user && <Link
               href="/"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -123,7 +122,7 @@ export default function Header() {
             asChild
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="sm:hidden"
             aria-label="Search books"
           >
             <Link href="/library">
