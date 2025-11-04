@@ -14,6 +14,8 @@ import {
   DrawerClose,
 } from '@/components/ui/drawer';
 import { useUser } from './context/UserContext';
+import { hasEnvVars } from '@/lib/utils';
+import { EnvVarWarning } from '../env-var-warning';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -133,14 +135,16 @@ export default function Header() {
           {isUser ? (
             <UserMenu />
           ) : (
-            <div className="flex items-center gap-2">
-              <Button asChild variant="ghost" className="hidden sm:flex">
-                <Link href="/auth/login">Log In</Link>
-              </Button>
-              <Button asChild className="rounded-full font-semibold">
-                <Link href="/auth/sign-up">Sign Up</Link>
-              </Button>
-            </div>
+            !hasEnvVars ?
+              <EnvVarWarning /> :
+              (<div className="flex items-center gap-2">
+                <Button asChild variant="ghost" className="hidden sm:flex">
+                  <Link href="/auth/login">Log In</Link>
+                </Button>
+                <Button asChild className="rounded-full font-semibold">
+                  <Link href="/auth/sign-up">Sign Up</Link>
+                </Button>
+              </div>)
           )}
 
 
