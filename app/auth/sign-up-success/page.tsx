@@ -1,4 +1,4 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Page() {
   return (
@@ -8,7 +8,7 @@ export default function Page() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Thank you for signing up!</CardTitle>
-              <CardDescription>Check your email to confirm</CardDescription>
+              <CardDescription>Check your <a target='_blank' className='hover:text-blue-500 underline underline-offset-2' href="https://mail.google.com">email</a> to confirm</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">

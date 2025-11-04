@@ -22,7 +22,7 @@ export default function AboutPage() {
             src="/lib-image.png"
             alt="Modern digital library"
             fill
-            className="object-cover opacity-90 hover:scale-[1.016] transition-transform duration-300"
+            className="object-cover opacity-90 scale-[1.006] hover:scale-[1.016] transition-transform duration-300"
             priority
           />
         </div>
