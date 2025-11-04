@@ -1,8 +1,9 @@
-import { Star } from "lucide-react";
 import React from "react";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { useUser } from "@/components/nav/context/UserContext";
+import LibPage from "@/components/library/libPage";
+import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
 
 const homeContent = {
   heading: "Discover. Read. Share. — LibreBooks",
@@ -25,51 +26,16 @@ const homeContent = {
   },
 };
 
-function HomePage() {
+
+
+function HomePage(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const { user } = useUser()
+  if (user && pathname === '/') {
+    redirect('/library');
+  }
   return (
-    <section className="py-32">
-      <div className="container text-center">
-        <div className="mx-auto flex max-w-5xl flex-col gap-6">
-          <h1 className="text-3xl font-semibold lg:text-6xl">
-            {homeContent.heading}
-          </h1>
-          <p className="text-muted-foreground text-balance lg:text-lg">
-            {homeContent.description}
-          </p>
-        </div>
-
-        <Button asChild size="lg" className="mt-10">
-          <a href={homeContent.button.url}>{homeContent.button.text}</a>
-        </Button>
-
-        <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
-          <span className="mx-4 inline-flex items-center -space-x-4">
-            {homeContent.reviews.avatars.map((avatar, index) => (
-              <Avatar key={index} className="size-14 border">
-                <AvatarImage src={avatar.src} alt={avatar.alt} />
-              </Avatar>
-            ))}
-          </span>
-
-          <div>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, index) => (
-                <Star
-                  key={index}
-                  className="size-5 fill-yellow-400 text-yellow-400"
-                />
-              ))}
-              <span className="mr-1 font-semibold">
-                {homeContent.reviews.rating?.toFixed(1)}
-              </span>
-            </div>
-            <p className="text-muted-foreground text-left font-medium">
-              from {homeContent.reviews.count}+ reviews
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <LibPage {...homeContent} />
   );
 }
 
