@@ -4,6 +4,7 @@ import {ThemeProvider} from 'next-themes';
 import './globals.css';
 import './tiptap.scss';
 import PageShell from '@/components/layout/pageShell';
+import Head from 'next/head';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -92,6 +93,12 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1 themeColor: '#0f172a',"
+        />
+      </Head>
       <body className={`${geistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"
