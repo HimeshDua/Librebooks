@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Library, X } from 'lucide-react';
+import { Library, X, Search } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { Input } from '../ui/input';
 import { UserMenu } from '../user-menu';
 import {
   Drawer,
@@ -18,26 +17,31 @@ import { useUser } from './context/UserContext';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { user } = useUser()
-  const isUser = !!user
+  const { user } = useUser();
+  const isUser = !!user;
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50 supports-[backdrop-filter]:bg-background/50">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3">
-        {/* Left: Mobile Drawer Trigger / Brand */}
-        <div className="flex items-center gap-2">
-          {/* Drawer trigger only visible on mobile */}
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40 supports-[backdrop-filter]:bg-background/60">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3">
+        {/* ========== LEFT SIDE: Logo + Navigation ========== */}
+        <div className="flex items-center gap-6">
+          {/* Brand Logo */}
+          <Link href="/" className="hidden md:flex items-center gap-2 group">
+            <Library className="w-5 h-5" />
+            <span className="font-bold text-lg tracking-tight hidden sm:block">LibreBooks</span>
+          </Link>
+
           <div className="md:hidden">
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Open library">
-                  <Library className="w-5 h-5 text-primary" />
+                <Button variant="ghost" size="icon" aria-label="Open menu">
+                  <Library className="w-5 h-5" />
                 </Button>
               </DrawerTrigger>
 
-              <DrawerContent className="w-screen md:w-64 p-4 flex flex-col">
+              <DrawerContent className="w-screen p-4 flex flex-col">
                 <DrawerHeader className="flex items-center justify-between">
-                  <DrawerTitle className="font-semibold text-lg">Library Menu</DrawerTitle>
+                  <DrawerTitle className="font-semibold text-lg">Menu</DrawerTitle>
                   <DrawerClose asChild>
                     <Button variant="ghost" size="icon">
                       <X className="w-5 h-5" />
@@ -45,66 +49,95 @@ export default function Header() {
                   </DrawerClose>
                 </DrawerHeader>
 
-                <div className="flex flex-col gap-3 mt-4">
+                <div className="flex flex-col gap-4 mt-4">
                   <Link
                     href="/"
                     onClick={() => setOpen(false)}
-                    className="text-sm font-medium hover:text-primary"
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   >
-                    Browser Books
+                    Home
                   </Link>
                   <Link
-                      href="/about"
+                    href="/library"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  >
+                    Browse Books
+                  </Link>
+                  <Link
+                    href="/about"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  >
+                    About
+                  </Link>
+
+                  {isUser && (
+                    <Link
+                      href="/book/favorites"
                       onClick={() => setOpen(false)}
-                      className="text-sm font-medium hover:text-primary w-full"
+                      className="text-sm font-medium py-2 hover:text-primary transition-colors"
                     >
-                      About
+                      Favorites
                     </Link>
-                  {isUser ? (
-                    <>
-                      <Link
-                        href="/book/favorites"
-                        onClick={() => setOpen(false)}
-                        className="text-sm font-medium hover:text-primary"
-                      >
-                        Favorites
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-muted-foreground text-ellipsis text-sm px-1">
-                        Log In to Unlock More Pages ✨
-                      </p>
-                      <Button onClick={() => setOpen(false)}>
-                        <Link href="/auth/login" className="w-full h-full">
-                          Log In
-                        </Link>
-                      </Button>
-                    </>
                   )}
                 </div>
               </DrawerContent>
             </Drawer>
           </div>
 
-          {/* Brand name for larger screens */}
-          <Link href="/" className="hidden md:flex items-center gap-2">
-            <Library className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-lg tracking-tight">Libre Books</span>
-          </Link>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            <Link
+              href="/"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/library"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Browse
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </Link>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <UserMenu />
-          <form className="flex items-center gap-2">
-            <Input
-              name="q"
-              placeholder="Search title or author"
-              aria-label="Search books by title or author"
-              className="rounded-full backdrop-blur-md w-[160px] sm:w-[240px]"
-            />
-            <Button className="hidden md:flex rounded-full">Search</Button>
-          </form>
+        {/* ========== RIGHT SIDE: Auth / Profile ========== */}
+        <div className="flex items-center gap-3">
+          {/* Quick Search Icon (Mobile) */}
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label="Search books"
+          >
+            <Link href="/library">
+              <Search className="w-4 h-4" />
+            </Link>
+          </Button>
+
+          {isUser ? (
+            <UserMenu />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button asChild variant="ghost" className="hidden sm:flex">
+                <Link href="/auth/login">Log In</Link>
+              </Button>
+              <Button asChild className="rounded-full font-semibold">
+                <Link href="/auth/sign-up">Sign Up</Link>
+              </Button>
+            </div>
+          )}
+
+
         </div>
       </div>
     </nav>
