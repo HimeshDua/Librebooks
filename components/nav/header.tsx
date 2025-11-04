@@ -78,7 +78,7 @@ export default function Header() {
                       onClick={() => setOpen(false)}
                       className="text-sm font-medium py-2 hover:text-primary transition-colors"
                     >
-                     Your Favorites
+                      Your Favorites
                     </Link>
                   )}
                 </div>
@@ -100,12 +100,13 @@ export default function Header() {
             >
               Browse
             </Link>
-            <Link
-              href="/book/favorites"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Favorites
-            </Link>
+            {user &&
+              <Link
+                href="/book/favorites"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Favorites
+              </Link>}
             <Link
               href="/about"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
