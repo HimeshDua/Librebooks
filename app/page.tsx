@@ -21,13 +21,14 @@ interface HeroProps {
   };
 }
 
-export default function HomePage({ heading = "Discover. Read. Share. — LibreBooks",
-  description = "Your personal free books library. Read your favorite public books online, save them for later, and share what inspires you — beautifully built for both mobile and desktop readers.",
-  button = {
+const homeContent = {
+  heading: "Discover. Read. Share. — LibreBooks",
+  description: "Your personal free books library. Read your favorite public books online, save them for later, and share what inspires you — beautifully built for both mobile and desktop readers.",
+  button: {
     text: "Explore Library",
     url: "/library",
   },
-  reviews = {
+  reviews: {
     count: 200,
     rating: 5.0,
     avatars: [
@@ -53,22 +54,24 @@ export default function HomePage({ heading = "Discover. Read. Share. — LibreBo
       },
     ],
   },
-}: HeroProps) {
+}
+
+function HomePage() {
   return (
     <section className="py-32">
       <div className="container text-center">
         <div className="mx-auto flex max-w-5xl flex-col gap-6">
-          <h1 className="text-3xl font-semibold lg:text-6xl">{heading}</h1>
+          <h1 className="text-3xl font-semibold lg:text-6xl">{homeContent.heading}</h1>
           <p className="text-muted-foreground text-balance lg:text-lg">
-            {description}
+            {homeContent.description}
           </p>
         </div>
         <Button asChild size="lg" className="mt-10">
-          <a href={button.url}>{button.text}</a>
+          <a href={homeContent.button.url}>{homeContent.button.text}</a>
         </Button>
         <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
           <span className="mx-4 inline-flex items-center -space-x-4">
-            {reviews.avatars.map((avatar, index) => (
+            {homeContent.reviews.avatars.map((avatar, index) => (
               <Avatar key={index} className="size-14 border">
                 <AvatarImage src={avatar.src} alt={avatar.alt} />
               </Avatar>
@@ -83,11 +86,11 @@ export default function HomePage({ heading = "Discover. Read. Share. — LibreBo
                 />
               ))}
               <span className="mr-1 font-semibold">
-                {reviews.rating?.toFixed(1)}
+                {homeContent.reviews.rating?.toFixed(1)}
               </span>
             </div>
             <p className="text-muted-foreground text-left font-medium">
-              from {reviews.count}+ reviews
+              from {homeContent.reviews.count}+ reviews
             </p>
           </div>
         </div>
@@ -96,3 +99,4 @@ export default function HomePage({ heading = "Discover. Read. Share. — LibreBo
   );
 };
 
+export default HomePage
