@@ -123,6 +123,7 @@ export default async function Home({
                           <div className="relative w-full aspect-[3/4] bg-muted rounded-md overflow-hidden shadow-sm">
                             {book.cover_url ? (
                               <Image
+                                loading='lazy'
                                 src={book.cover_url}
                                 alt={book.title}
                                 fill
