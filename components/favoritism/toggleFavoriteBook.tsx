@@ -110,7 +110,7 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
               )}`}
               onClick={handleToggleFavorite}
             >
-              {isExists ? 'Remove from favorites' : 'Add to favorites'}
+              {isExists ? 'Unmark from Favorites' : 'Mark As Favorite'}
               {isExists ? <HeartOffIcon /> : <HeartIcon />}
             </Button>
           </ConfettiButton>

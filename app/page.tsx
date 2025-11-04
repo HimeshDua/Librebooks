@@ -1,7 +1,5 @@
 import React from "react";
-import { redirect } from "next/navigation";
 import LibPage from "@/components/library/libPage";
-import { createClient } from "@/lib/supabase/server";
 
 const homeContent = {
   heading: "Discover. Read. Share. — LibreBooks",
@@ -25,13 +23,6 @@ const homeContent = {
 };
 
 export default async function HomePage() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await (await supabase).auth.getUser();
-
-  if (user) redirect("/library");
 
   return <LibPage {...homeContent} />;
 }

@@ -38,8 +38,8 @@ export default function FavoritesPage() {
 
         const mapped = data.flatMap(fav => fav.books || []).filter(Boolean);
         setBooks(mapped);
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchFavorites();
   }, []);

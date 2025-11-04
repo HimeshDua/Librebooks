@@ -50,13 +50,13 @@ export default function Header() {
                 </DrawerHeader>
 
                 <div className="flex flex-col gap-4 mt-4">
-                  <Link
+                  {/* <Link
                     href="/"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   >
-                    Home
-                  </Link>
+                    Go Home
+                  </Link> */}
                   <Link
                     href="/library"
                     onClick={() => setOpen(false)}
@@ -69,7 +69,7 @@ export default function Header() {
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   >
-                    About
+                    Know About Us
                   </Link>
 
                   {isUser && (
@@ -78,7 +78,7 @@ export default function Header() {
                       onClick={() => setOpen(false)}
                       className="text-sm font-medium py-2 hover:text-primary transition-colors"
                     >
-                      Favorites
+                     Your Favorites
                     </Link>
                   )}
                 </div>
@@ -99,6 +99,12 @@ export default function Header() {
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Browse
+            </Link>
+            <Link
+              href="/book/favorites"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Favorites
             </Link>
             <Link
               href="/about"

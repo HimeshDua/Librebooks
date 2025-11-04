@@ -1,7 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { hasEnvVars } from '../utils';
-import { redirect } from 'next/navigation';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
