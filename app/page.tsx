@@ -1,9 +1,9 @@
 import React from "react";
 
-import { useUser } from "@/components/nav/context/UserContext";
 import LibPage from "@/components/library/libPage";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 const homeContent = {
   heading: "Discover. Read. Share. — LibreBooks",
@@ -28,10 +28,11 @@ const homeContent = {
 
 
 
-function HomePage(request: NextRequest) {
+async function HomePage(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const { user } = useUser()
-  if (user && pathname === '/') {
+  const supabase = createClient()
+  const { data: user } = await (await supabase).auth.getClaims()
+  if (user?.claims && pathname === '/') {
     redirect('/library');
   }
   return (
