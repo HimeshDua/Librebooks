@@ -23,8 +23,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: 'LibreBooks',
+  abstract: 'brief description',
   description: 'FreeBooks Library – Read, explore, and manage your favorite books online.',
   applicationName: 'LibreBooks',
+  authors: [{name: 'Himesh Dua', url: 'https://librebooks.vercel.app'}],
+  creator: 'Himesh Dua',
   // icons: {
   //   icon: [
   //     { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
