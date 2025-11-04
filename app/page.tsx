@@ -1,8 +1,6 @@
 import React from "react";
-
-import LibPage from "@/components/library/libPage";
 import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
+import LibPage from "@/components/library/libPage";
 import { createClient } from "@/lib/supabase/server";
 
 const homeContent = {
@@ -26,18 +24,14 @@ const homeContent = {
   },
 };
 
+export default async function HomePage() {
+  const supabase = createClient();
 
+  const {
+    data: { user },
+  } = await (await supabase).auth.getUser();
 
-async function HomePage(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-  const supabase = createClient()
-  const { data: user } = await (await supabase).auth.getClaims()
-  if (user?.claims && pathname === '/') {
-    redirect('/library');
-  }
-  return (
-    <LibPage {...homeContent} />
-  );
+  if (user) redirect("/library");
+
+  return <LibPage {...homeContent} />;
 }
-
-export default HomePage;
