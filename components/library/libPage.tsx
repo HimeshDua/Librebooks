@@ -23,7 +23,7 @@ export interface HeroProps {
 
 
 function LibPage({ heading, description, button, reviews }: HeroProps) {
-    return (<section className="py-32">
+    return <section className="py-32">
         <div className="container text-center">
             <div className="mx-auto flex max-w-5xl flex-col gap-6">
                 <h1 className="text-3xl font-semibold lg:text-6xl">
@@ -35,7 +35,7 @@ function LibPage({ heading, description, button, reviews }: HeroProps) {
             </div>
 
             <Button asChild size="lg" className="mt-10">
-                <Link href={button?.url || "/library"}>{button?.text}</a>
+                <Link href={button?.url || "/library"}>{button?.text}</Link>
             </Button>
 
             <div className="mx-auto mt-10 flex w-fit flex-col items-center gap-4 sm:flex-row">
@@ -66,7 +66,7 @@ function LibPage({ heading, description, button, reviews }: HeroProps) {
             </div>
         </div>
     </section>
-    )
+
 }
 
 export default LibPage
