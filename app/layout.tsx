@@ -99,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="width=device-width, initial-scale=1 themeColor: '#0f172a',"
         />
       </Head>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${geistSans.className} antialiased max-w-screen! min-h-[94vh]`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
