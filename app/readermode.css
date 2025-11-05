@@ -5,3 +5,11 @@
 .dark #reader-container>div>div>div {
     background-color: #1C1D21 !important;
 }
+
+#reader-container div a:hover {
+    color: none !important;
+}
+
+#reader-container div a:hover p {
+    color: none !important;
+}

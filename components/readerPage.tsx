@@ -2,21 +2,21 @@
 
 import { ReactReader } from "react-reader";
 import { useEffect, useState, useRef } from "react";
-import { Sun, Moon, Type, Maximize2, Loader2 } from "lucide-react";
+import { Type, Maximize2, Loader2, Minimize2, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { Button } from "./ui/button";
 
 type RenditionLike = {
   themes: {
     select: (theme: string) => void;
     fontSize: (size: string) => void;
-    // register: (name: string, styles: Record<string, any>) => void;
   };
   next?: () => void;
   prev?: () => void;
   display?: (target?: string) => void;
 };
 
-export default function ReaderPage({ slug }: { slug: string }) {
+export default function ReaderPage({ slug }: { slug: string; }) {
   const [bookData, setBookData] = useState<ArrayBuffer | null>(null);
   const [location, setLocation] = useState<string | number>(
     typeof window !== "undefined" ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
@@ -24,6 +24,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const [fontSize, setFontSize] = useState<number>(100);
   const [loading, setLoading] = useState(true);
   const renditionRef = useRef<RenditionLike | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -43,13 +44,22 @@ export default function ReaderPage({ slug }: { slug: string }) {
     })();
   }, [slug]);
 
+  useEffect(() => {
+    localStorage.setItem('theme', (theme || 'dark'));
+
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  });
+
+
   const handleLocationChange = (epubcfi: string) => {
     setLocation(epubcfi);
     localStorage.setItem(`book-${slug}-loc`, epubcfi);
   };
 
   const toggleTheme = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
+    const nextTheme = theme === "light" ? "dark" : "dark";
     setTheme(nextTheme);
     renditionRef.current?.themes.select(nextTheme);
   };
@@ -59,10 +69,26 @@ export default function ReaderPage({ slug }: { slug: string }) {
     setFontSize(newSize);
     renditionRef.current?.themes.fontSize(`${newSize}%`);
   };
+  const toggleFullScreen = () => {
+    const doc = document;
+    const docEl = document.documentElement as HTMLElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+      mozRequestFullScreen?: () => Promise<void>;
+      msRequestFullscreen?: () => Promise<void>;
+    };
 
-  const enterFullScreen = () => {
-    document.documentElement.requestFullscreen?.();
+    if (doc.fullscreenElement) {
+      doc.exitFullscreen?.();
+    } else {
+      docEl.requestFullscreen?.() ||
+        docEl.webkitRequestFullscreen?.() ||
+        docEl.mozRequestFullScreen?.() ||
+        docEl.msRequestFullscreen?.();
+    }
   };
+
+
+
 
   if (loading)
     return (
@@ -86,34 +112,35 @@ export default function ReaderPage({ slug }: { slug: string }) {
         <div className="font-semibold tracking-wide">📚 LibreBooks Reader</div>
 
         <div className="flex items-center gap-3">
-          <button
+          <Button
+            variant='ghost'
             onClick={() => adjustFontSize(-10)}
-            className="hover:text-primary transition"
             title="Decrease font size"
           >
             <Type className="w-4 h-4" />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant='ghost'
             onClick={() => adjustFontSize(10)}
-            className="hover:text-primary transition"
             title="Increase font size"
           >
             <Type className="w-5 h-5" />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant='ghost'
             onClick={toggleTheme}
-            className="hover:text-primary transition"
-            title="Toggle theme"
+            title="Toggle fullscreen"
           >
             {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-          </button>
-          <button
-            onClick={enterFullScreen}
+          </Button>
+          <Button
+            onClick={toggleFullScreen}
             className="hover:text-primary transition"
-            title="Full screen"
+            title="Toggle fullscreen"
           >
-            <Maximize2 className="w-5 h-5" />
-          </button>
+            {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+          </Button>
+
         </div>
       </header>
 
@@ -129,7 +156,14 @@ export default function ReaderPage({ slug }: { slug: string }) {
           getRendition={(rendition) => {
             renditionRef.current = rendition;
 
-            // Custom themes for readability
+            // rendition.themes.register("system", {
+            //   body: {
+            //     background: "#FFFACC",
+            //     color: "#111111",
+            //     height: "100%",
+            //   },
+            // });
+
             rendition.themes.register("light", {
               body: {
                 background: "#FFFACC",
@@ -145,6 +179,8 @@ export default function ReaderPage({ slug }: { slug: string }) {
               },
             });
 
+            // rendition.settings.resizeOnOrientationChange = true;
+
             rendition.themes.select(theme || "dark");
             rendition.themes.fontSize(`${fontSize}%`);
 
@@ -157,9 +193,9 @@ export default function ReaderPage({ slug }: { slug: string }) {
               container.style.transition = "background-color 0.3s ease";
             }
           }}
-          // styles={{
-          //   viewer: { height: "100%", background: "transparent" },
-          // }}
+        // styles={{
+        //   viewer: { height: "100%", background: "transparent" },
+        // }}
         />
       </div>
     </div>

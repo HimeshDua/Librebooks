@@ -5,9 +5,9 @@ export async function GET(_: Request, { params }: { params: Promise<{ id?: strin
   if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
   const epubUrl = `https://www.gutenberg.org/ebooks/${id}.epub.images`;
-
+  
   try {
-    const res = await fetch(epubUrl, { cache: "no-store" });
+    const res = await fetch(epubUrl, { cache: "no-store" , });
     if (!res.ok) {
       return NextResponse.json({ error: `Failed to fetch EPUB: ${res.status}` }, { status: res.status });
     }
