@@ -9,7 +9,7 @@ type RenditionLike = {
   themes: {
     select: (theme: string) => void;
     fontSize: (size: string) => void;
-    register: (name: string, styles: Record<string, any>) => void;
+    // register: (name: string, styles: Record<string, any>) => void;
   };
   next?: () => void;
   prev?: () => void;
