@@ -47,9 +47,9 @@ export default function BookReader({ slug }: { slug: string }) {
       </div>
     );
   } else return (
-    <div className="min-h-[96.4vh] w-screen max-w-2xl! flex flex-col bg-background text-foreground">
+    <div className="min-h-[96.4vh] w-screen max-w-fit! flex flex-col bg-background text-foreground">
       <article
-        className="prose dark:prose-invert max-w-2xl! mx-auto! p-6 md:p-8 leading-relaxed tracking-wide"
+        className="prose tiptap dark:prose-invert max-w-2xl! mx-auto! p-6 md:p-8 leading-relaxed tracking-wide"
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
