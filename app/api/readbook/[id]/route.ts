@@ -1,34 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-export async function GET(_: Request, { params }: { params: Promise<{ id?: string }> }) {
-  const id = (await params).id;
-  console.log('Fetching book with id:', id);
-  if (!id) {
-    return NextResponse.json({ error: 'Missing id parameter' }, { status: 400 });
-  }
+export async function GET(_: Request, { params }: { params: { id?: string } }) {
+  const id = params?.id?.replace(/\D/g, "");
+  if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
-  const safeId = id.replace(/\D/g, '');
-
-  if (!safeId) {
-    return NextResponse.json({ error: 'Invalid id parameter' }, { status: 400 });
-  }
-
-  const epubUrl = `https://www.gutenberg.org/ebooks/${safeId}.epub.images`; // direct EPUB URL
+  const epubUrl = `https://www.gutenberg.org/ebooks/${id}.epub.images`;
 
   try {
-    const res = await fetch(epubUrl, { cache: 'no-store' });
+    const res = await fetch(epubUrl, { cache: "no-store" });
     if (!res.ok) {
-      return NextResponse.json({ error: `Failed to fetch: ${res.status}` }, { status: res.status });
+      return NextResponse.json({ error: `Failed to fetch EPUB: ${res.status}` }, { status: res.status });
     }
 
-    return NextResponse.json({ epub: epubUrl });
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      console.error('Error fetching book:', e);
-      return NextResponse.json({ error: e?.message ?? 'Unknown error' }, { status: 500 });
-    } else {
-      console.error('Unknown error fetching book:', e);
-      return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-    }
+    const buffer = await res.arrayBuffer();
+    return new NextResponse(buffer, {
+      headers: {
+        "Content-Type": "application/epub+zip",
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (err) {
+    console.error("Error fetching EPUB:", err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -34,6 +34,7 @@
     "pwa-asset-generator": "^8.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-reader": "^2.0.15",
     "sass": "^1.93.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.0",
