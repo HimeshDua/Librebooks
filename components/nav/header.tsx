@@ -133,7 +133,7 @@ export default function Header() {
           </Button>
 
           {isUser ? (
-            <UserMenu />
+            <UserMenu user={user} />
           ) : (
             !hasEnvVars ?
               <EnvVarWarning /> :

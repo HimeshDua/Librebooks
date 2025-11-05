@@ -1,9 +1,9 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {Loader2} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
-export default function BookReader({slug}: {slug: string}) {
+export default function BookReader({ slug }: { slug: string }) {
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,17 +46,13 @@ export default function BookReader({slug}: {slug: string}) {
         <p>Loading the book content...</p>
       </div>
     );
-  }
-
-  return (
-    <div className="min-h-[96.4vh] flex flex-col bg-background text-foreground">
-      {/* Book Content */}
+  } else return (
+    <div className="min-h-[96.4vh] w-screen flex flex-col bg-background text-foreground">
       <article
-        className="prose dark:prose-invert max-w-3xl mx-auto p-6 md:p-8 leading-relaxed tracking-wide"
-        dangerouslySetInnerHTML={{__html: html}}
+        className="prose dark:prose-invert max-w-screen-2xl mx-auto p-6 md:p-8 leading-relaxed tracking-wide"
+        dangerouslySetInnerHTML={{ __html: html }}
       />
 
-      {/* Footer Attribution */}
       <footer className="border-t border-muted py-6 mt-auto text-center text-sm text-muted-foreground">
         <p>
           📚 This book content is sourced from the{' '}

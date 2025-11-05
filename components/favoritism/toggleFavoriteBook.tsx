@@ -146,10 +146,11 @@ function ToggleFavoriteBook({ id, bookId, bookTitle }: Props) {
       ) : (
         <AuthDialog
           description="save favorites"
+          triggerClassName='bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90'
           dialogTrigger={
-            <Button variant="destructive">
+            <>
               Add to favorites <HeartIcon />
-            </Button>
+            </>
           }
         />
       )}

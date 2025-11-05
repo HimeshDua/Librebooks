@@ -13,16 +13,13 @@ import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { toast } from 'sonner';
-import { useUser } from './nav/context/UserContext';
+import { User } from '@supabase/supabase-js';
 
-export function UserMenu() {
+export function UserMenu({ user }: { user: User }) {
   const { setTheme, theme } = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
-
-  const { user } = useUser()
-
 
   useEffect(() => {
     const supabase = createClient();

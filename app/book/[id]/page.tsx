@@ -124,7 +124,8 @@ export default async function DetailedBook({ params }: { params: Promise<{ id: s
                 ) : (
                   <AuthDialog
                     description="download books"
-                    dialogTrigger={<Button variant="outline">📚 Download ePub</Button>}
+                    triggerClassName='border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'
+                    dialogTrigger={<>📚 Download ePub</>}
                   />
                 )
               ) : null}
