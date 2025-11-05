@@ -13,7 +13,7 @@ export default function BookReader({ slug }: { slug: string }) {
   useEffect(() => {
     const loadBook = async () => {
       try {
-        const epubUrl = `/api/readbook/${slug}?format=epub`; // our new API route returns .epub URL
+        const epubUrl = `/api/readbook/${slug}?format=epub`;
         const res = await fetch(epubUrl);
         const { epub } = await res.json();
 
@@ -39,9 +39,12 @@ export default function BookReader({ slug }: { slug: string }) {
         };
         window.addEventListener('keydown', handleKey);
         return () => window.removeEventListener('keydown', handleKey);
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       }
     };
 
