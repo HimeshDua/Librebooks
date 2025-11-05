@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
-  const id = params?.id?.replace(/\D/g, "");
+export async function GET(_: Request, { params }: { params: Promise<{ id?: string }> }) {
+  const id = (await params).id?.replace(/\D/g, "");
   if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
   const epubUrl = `https://www.gutenberg.org/ebooks/${id}.epub.images`;
