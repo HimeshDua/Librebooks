@@ -1,21 +1,20 @@
 "use client";
 
 import { ReactReader } from "react-reader";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ReaderPage() {
-  const { slug: id } = useParams();
+export default function ReaderPage({ slug }: { slug: string }) {
+
   const [bookData, setBookData] = useState<ArrayBuffer | null>(null);
   const [location, setLocation] = useState<string | number>(0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!slug) return;
 
     (async () => {
       try {
-        const res = await fetch(`/api/readbook/${id}`);
+        const res = await fetch(`/api/readbook/${slug}`);
         if (!res.ok) throw new Error(`Failed to fetch book: ${res.status}`);
 
         const buffer = await res.arrayBuffer();
@@ -25,7 +24,7 @@ export default function ReaderPage() {
         setError(err instanceof Error ? err.message : "Unknown error");
       }
     })();
-  }, [id]);
+  }, [slug]);
 
   if (error) return <div className="text-red-500 p-6">{error}</div>;
   if (!bookData) return <div className="p-6 text-muted-foreground">Loading book...</div>;

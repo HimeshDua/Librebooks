@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET(_: Request, { params }: { params: { id?: string } }) {
+export async function GET(_: Request, { params }: { params: { id: string } }) {
   const id = params?.id?.replace(/\D/g, "");
   if (!id) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
