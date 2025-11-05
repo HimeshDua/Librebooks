@@ -1,0 +1,7 @@
+#reader-container>div>div>div {
+    background-color: #FFFACC !important;
+}
+
+.dark #reader-container>div>div>div {
+    background-color: #1C1D21 !important;
+}

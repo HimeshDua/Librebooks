@@ -3,8 +3,19 @@ import Link from 'next/link';
 
 function Footer() {
   return (
-    <footer className="mt-24 border-t border-border/40 py-10 text-center">
+    <footer className="border-t border-border/40 py-10 text-center">
       <div className="max-w-5xl mx-auto px-6 space-y-6 sm:space-y-4">
+        <p>
+          Sourced from{" "}
+          <a
+            href="https://www.gutenberg.org/"
+            target="_blank"
+            className="text-primary hover:underline"
+          >
+            Project Gutenberg
+          </a>{" "}
+          · LibreBooks
+        </p>
         {/* Project credit */}
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
           Built with <span className="text-rose-500">❤️</span> by{' '}

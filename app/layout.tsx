@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
 import './tiptap.scss';
+import './readermode.css';
 import PageShell from '@/components/layout/pageShell';
 import Head from 'next/head';
 
@@ -99,7 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="width=device-width, initial-scale=1 themeColor: '#0f172a',"
         />
       </Head>
-      <body className={`${geistSans.className} antialiased max-w-screen! min-h-[94vh]`}>
+      <body className={`${geistSans.className} antialiased reader max-w-screen! min-h-[94vh]`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

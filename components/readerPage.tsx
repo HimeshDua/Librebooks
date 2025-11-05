@@ -3,19 +3,32 @@
 import { ReactReader } from "react-reader";
 import { useEffect, useState, useRef } from "react";
 import { Sun, Moon, Type, Maximize2, Loader2 } from "lucide-react";
+import { useTheme } from "next-themes";
+
+type RenditionLike = {
+  themes: {
+    select: (theme: string) => void;
+    fontSize: (size: string) => void;
+    register: (name: string, styles: Record<string, any>) => void;
+  };
+  next?: () => void;
+  prev?: () => void;
+  display?: (target?: string) => void;
+};
 
 export default function ReaderPage({ slug }: { slug: string }) {
   const [bookData, setBookData] = useState<ArrayBuffer | null>(null);
   const [location, setLocation] = useState<string | number>(
     typeof window !== "undefined" ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
   );
-  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [fontSize, setFontSize] = useState<number>(100);
   const [loading, setLoading] = useState(true);
-  const renditionRef = useRef<any>(null);
+  const renditionRef = useRef<RenditionLike | null>(null);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     if (!slug) return;
+
     (async () => {
       try {
         const res = await fetch(`/api/readbook/${slug}`);
@@ -38,17 +51,13 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const toggleTheme = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
-    if (renditionRef.current) {
-      renditionRef.current.themes.select(nextTheme);
-    }
+    renditionRef.current?.themes.select(nextTheme);
   };
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.min(160, Math.max(80, fontSize + delta));
     setFontSize(newSize);
-    if (renditionRef.current) {
-      renditionRef.current.themes.fontSize(`${newSize}%`);
-    }
+    renditionRef.current?.themes.fontSize(`${newSize}%`);
   };
 
   const enterFullScreen = () => {
@@ -71,7 +80,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
     );
 
   return (
-    <div className="relative flex flex-col h-screen bg-background text-foreground transition-all">
+    <div className="relative reader! flex flex-col h-screen bg-background text-foreground transition-all">
       {/* Top Bar */}
       <header className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/70 backdrop-blur-md sticky top-0 z-20">
         <div className="font-semibold tracking-wide">📚 LibreBooks Reader</div>
@@ -109,46 +118,50 @@ export default function ReaderPage({ slug }: { slug: string }) {
       </header>
 
       {/* Reader Container */}
-      <div className="flex-1 overflow-hidden">
+      <div
+        id="reader-container"
+        className="flex-1 overflow-hidden bg-[#FFFACC] dark:bg-[#1C1D21] transition-colors duration-300"
+      >
         <ReactReader
           url={bookData}
           location={location}
           locationChanged={handleLocationChange}
           getRendition={(rendition) => {
             renditionRef.current = rendition;
+
+            // Custom themes for readability
             rendition.themes.register("light", {
               body: {
-                background: "#ffffff",
+                background: "#FFFACC",
                 color: "#111111",
+                height: "100%",
               },
             });
             rendition.themes.register("dark", {
               body: {
-                background: "#0f0f0f",
+                background: "#1C1D21",
                 color: "#e5e5e5",
+                height: "100%",
               },
             });
-            rendition.themes.select(theme);
-            rendition.themes.fontSize(`${fontSize}%`);
-          }}
 
+            rendition.themes.select(theme || "dark");
+            rendition.themes.fontSize(`${fontSize}%`);
+
+            const container = document.querySelector(
+              "#reader-container > div"
+            ) as HTMLElement | null;
+            if (container) {
+              container.style.backgroundColor = "#1C1D21";
+              container.style.height = "100%";
+              container.style.transition = "background-color 0.3s ease";
+            }
+          }}
+          // styles={{
+          //   viewer: { height: "100%", background: "transparent" },
+          // }}
         />
       </div>
-
-      {/* Footer */}
-      <footer className="text-center text-xs text-muted-foreground py-3 border-t border-border bg-background/60">
-        <p>
-          Sourced from{" "}
-          <a
-            href="https://www.gutenberg.org/"
-            target="_blank"
-            className="text-primary hover:underline"
-          >
-            Project Gutenberg
-          </a>{" "}
-          · LibreBooks
-        </p>
-      </footer>
     </div>
   );
 }
