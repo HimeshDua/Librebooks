@@ -1,76 +1,72 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import ePub, { Rendition } from 'epubjs';
 import { Loader2 } from 'lucide-react';
 
 export default function BookReader({ slug }: { slug: string }) {
-  const [html, setHtml] = useState<string | null>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+  const renditionRef = useRef<Rendition | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchHtml = async () => {
-      console.log(`Fetching book with slug: ${slug}`);
+    const loadBook = async () => {
       try {
-        const res = await fetch(`/api/readbook/${slug}`);
-        const data = await res.json();
+        const epubUrl = `/api/readbook/${slug}?format=epub`; // our new API route returns .epub URL
+        const res = await fetch(epubUrl);
+        const { epub } = await res.json();
 
-        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-        if (data.html) setHtml(data.html);
-        else throw new Error('No HTML content found');
-      } catch (err: unknown) {
+        if (!epub) throw new Error('EPUB not found');
+
+        const book = ePub(epub);
+        const rendition = book.renderTo(viewerRef.current!, {
+          width: '100%',
+          height: '96vh',
+          spread: 'auto',
+          allowScriptedContent: true,
+        });
+
+        renditionRef.current = rendition;
+        rendition.display();
+
+        setLoading(false);
+
+        // Optional: keyboard navigation
+        const handleKey = (e: KeyboardEvent) => {
+          if (e.key === 'ArrowRight') rendition.next();
+          if (e.key === 'ArrowLeft') rendition.prev();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+      } catch (err: any) {
         console.error(err);
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('An unknown error occurred');
-        }
+        setError(err.message);
       }
     };
 
-    fetchHtml();
+    loadBook();
   }, [slug]);
 
-  if (error) {
+  if (error)
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-center text-red-500">
-        <h2 className="text-xl font-semibold mb-2">❌ Failed to load book</h2>
+      <div className="min-h-screen flex flex-col items-center justify-center text-red-500 text-center">
+        <h2 className="text-lg font-semibold mb-2">Failed to load book</h2>
         <p className="text-sm text-muted-foreground">{error}</p>
       </div>
     );
-  }
 
-  if (!html) {
+  if (loading)
     return (
-      <div className="min-h-[96.4vh] flex flex-col items-center justify-center text-center text-muted-foreground">
+      <div className="min-h-screen flex flex-col items-center justify-center text-muted-foreground">
         <Loader2 className="w-6 h-6 animate-spin mb-3 text-primary" />
-        <p>Loading the book content...</p>
+        <p>Loading EPUB...</p>
       </div>
     );
-  } else return (
-    <div className="min-h-[96.4vh] w-screen max-w-fit! flex flex-col bg-background text-foreground">
-      <article
-        className="prose tiptap dark:prose-invert max-w-2xl! mx-auto! p-6 md:p-8 leading-relaxed tracking-wide"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
 
-      <footer className="border-t border-muted py-6 mt-auto text-center text-sm text-muted-foreground">
-        <p>
-          📚 This book content is sourced from the{' '}
-          <a
-            href="https://www.gutenberg.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline font-medium"
-          >
-            Project Gutenberg
-          </a>{' '}
-          public domain collection.
-        </p>
-        <p className="mt-1">
-          Powered by <strong>GudenIndex API</strong> — providing access to <strong>30,000+</strong>{' '}
-          free books worldwide.
-        </p>
-      </footer>
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div ref={viewerRef} className="mx-auto w-full max-w-4xl overflow-hidden" />
     </div>
   );
 }
