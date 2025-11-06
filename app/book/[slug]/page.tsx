@@ -139,12 +139,57 @@ export async function generateMetadata({
 }
 
 // Add JSON-LD structured data as a separate component
-function StructuredData({data}: {data: any}) {
+interface BookStructuredData {
+  '@context': string;
+  '@type': 'Book';
+  name: string;
+  author: {
+    '@type': 'Person';
+    name: string;
+  };
+  bookFormat: string;
+  datePublished?: string;
+  description: string;
+  inLanguage: string;
+  isAccessibleForFree: boolean;
+  image: string;
+  publisher: {
+    '@type': 'Organization';
+    name: string;
+  };
+  workExample: {
+    '@type': 'Book';
+    isbn?: string;
+    bookFormat: string;
+    potentialAction: {
+      '@type': 'ReadAction';
+      target: {
+        '@type': 'EntryPoint';
+        urlTemplate: string;
+      };
+    };
+  };
+  offers: {
+    '@type': 'Offer';
+    price: string;
+    priceCurrency: string;
+    availability: string;
+    seller: {
+      '@type': 'Organization';
+      name: string;
+    };
+  };
+}
+
+interface StructuredDataProps {
+  data: BookStructuredData;
+}
+
+function StructuredData({data}: StructuredDataProps) {
   return (
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}} />
   );
 }
-
 export default async function DetailedBook({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
   const supabase = await createClient();
@@ -170,7 +215,7 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
   const book: Book = data;
 
   // Prepare structured data for this specific book
-  const structuredData = {
+  const structuredData: BookStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Book',
     name: book.title,
