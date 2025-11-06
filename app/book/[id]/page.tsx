@@ -1,24 +1,30 @@
-
-
-import { Button } from '@/components/ui/button';
+import {Button} from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BookOpen } from 'lucide-react';
-import { Suspense } from 'react';
-import ToggleFavoriteBook, { ToggleFavoriteBookSkeleton } from '@/components/favoritism/toggleFavoriteBook';
+import {BookOpen} from 'lucide-react';
+import {Suspense} from 'react';
+import ToggleFavoriteBook, {
+  ToggleFavoriteBookSkeleton,
+} from '@/components/favoritism/toggleFavoriteBook';
 import AuthDialog from '@/components/auth-dialog';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import type { Book } from '@/types';
-import { createClient } from '@/lib/supabase/server';
-import { getUserById } from '@/lib/getUserId';
-import { getBookfromId } from '@/lib/getBookfromId';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import type {Book} from '@/types';
+import {createClient} from '@/lib/supabase/server';
+import {getUserById} from '@/lib/getUserId';
+import {getBookfromId} from '@/lib/getBookfromId';
 
-export default async function DetailedBook({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function DetailedBook({params}: {params: Promise<{id: string}>}) {
+  const {id} = await params;
   const supabase = await createClient();
 
-  const { data, error } = await getBookfromId(supabase, id);
-  const { userId } = await getUserById(supabase);
+  const {data, error} = await getBookfromId(supabase, id);
+  const {userId} = await getUserById(supabase);
 
   if (error || !data) {
     return (
@@ -91,9 +97,7 @@ export default async function DetailedBook({ params }: { params: Promise<{ id: s
             {book.languages?.length > 0 && (
               <p className="text-sm mb-6 text-muted-foreground">
                 Language:{' '}
-                <span className="font-medium text-foreground">
-                  {book.languages.join(', ')}
-                </span>
+                <span className="font-medium text-foreground">{book.languages.join(', ')}</span>
               </p>
             )}
 
@@ -106,25 +110,25 @@ export default async function DetailedBook({ params }: { params: Promise<{ id: s
             )}
 
             <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center gap-3">
-              {book.download_links?.pdf && (
-                <Button className='w-full py-4 md:w-auto' asChild>
+              {book?.epub && (
+                <Button className="w-full py-4 md:w-auto" asChild>
                   <Link href={`/read/${book.id}`} target="_blank">
                     <BookOpen className="w-4 h-4 mr-2" /> Read Online
                   </Link>
                 </Button>
               )}
 
-              {book.download_links?.epub ? (
+              {book?.epub ? (
                 userId ? (
-                  <Button className='w-full py-4 md:w-auto' asChild variant="outline">
-                    <Link href={book.download_links.epub} target="_blank">
+                  <Button className="w-full py-4 md:w-auto" asChild variant="outline">
+                    <Link href={book.epub} target="_blank">
                       📚 Download ePub
                     </Link>
                   </Button>
                 ) : (
                   <AuthDialog
                     description="download books"
-                    triggerClassName='w-full py-4 md:w-auto border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'
+                    triggerClassName="w-full py-4 md:w-auto border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
                     dialogTrigger={<>📚 Download ePub</>}
                   />
                 )

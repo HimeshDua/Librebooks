@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { Library, X, Search } from 'lucide-react';
+import {useState} from 'react';
+import {Library, X, Search} from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '../ui/button';
-import { UserMenu } from '../user-menu';
+import {Button} from '../ui/button';
+import {UserMenu} from '../user-menu';
 import {
   Drawer,
   DrawerContent,
@@ -13,13 +13,13 @@ import {
   DrawerTrigger,
   DrawerClose,
 } from '@/components/ui/drawer';
-import { useUser } from './context/UserContext';
-import { hasEnvVars } from '@/lib/utils';
-import { EnvVarWarning } from '../env-var-warning';
+import {useUser} from './context/UserContext';
+import {hasEnvVars} from '@/lib/utils';
+import {EnvVarWarning} from '../env-var-warning';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { user } = useUser();
+  const {user} = useUser();
   const isUser = !!user;
 
   return (
@@ -52,14 +52,16 @@ export default function Header() {
                 </DrawerHeader>
 
                 <div className="flex flex-col gap-4 mt-4">
-                  {!isUser && <Link
-                    href="/"
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  >
-                    Go Home
-                  </Link>
-                  } <Link
+                  {!isUser && (
+                    <Link
+                      href="/"
+                      onClick={() => setOpen(false)}
+                      className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                    >
+                      Go Home
+                    </Link>
+                  )}{' '}
+                  <Link
                     href="/library"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
@@ -89,25 +91,28 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-6">
-            {!user && <Link
-              href="/"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Home
-            </Link>}
+            {!user && (
+              <Link
+                href="/"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Home
+              </Link>
+            )}
             <Link
               href="/library"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Browse
             </Link>
-            {user &&
+            {user && (
               <Link
                 href="/book/favorites"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 Favorites
-              </Link>}
+              </Link>
+            )}
             <Link
               href="/about"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -134,20 +139,18 @@ export default function Header() {
 
           {isUser ? (
             <UserMenu user={user} />
+          ) : !hasEnvVars ? (
+            <EnvVarWarning />
           ) : (
-            !hasEnvVars ?
-              <EnvVarWarning /> :
-              (<div className="flex items-center gap-2">
-                <Button asChild variant="ghost" className="hidden sm:flex">
-                  <Link href="/auth/login">Log In</Link>
-                </Button>
-                <Button asChild className="rounded-full font-semibold">
-                  <Link href="/auth/sign-up">Sign Up</Link>
-                </Button>
-              </div>)
+            <div className="flex items-center gap-2">
+              <Button asChild variant="ghost" className="hidden sm:flex">
+                <Link href="/auth/login">Log In</Link>
+              </Button>
+              <Button asChild className="rounded-full font-semibold">
+                <Link href="/auth/sign-up">Sign Up</Link>
+              </Button>
+            </div>
           )}
-
-
         </div>
       </div>
     </nav>

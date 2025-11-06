@@ -1,19 +1,18 @@
 import BookFallback from '@/components/book/bookFallback';
-import { Separator } from '@/components/ui/separator';
-import { createClient } from '@/lib/supabase/server';
-import type { Book } from '@/types';
-import { ViewModeToggle } from '@/components/library/viewMode';
-import { BookDisplay } from '@/components/library/bookDisplay';
+import {Separator} from '@/components/ui/separator';
+import {createClient} from '@/lib/supabase/server';
+import type {Book} from '@/types';
+import {ViewModeToggle} from '@/components/library/viewMode';
+import {BookDisplay} from '@/components/library/bookDisplay';
 import SelectBookCategory from '@/components/book/bookCategory';
-import { SearchForm } from '@/components/library/searchForm';
-import { PaginationControls } from '@/components/library/paginationControl';
-import { Suspense } from 'react';
-
+import {SearchForm} from '@/components/library/searchForm';
+import {PaginationControls} from '@/components/library/paginationControl';
+import {Suspense} from 'react';
 
 export default async function Library({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; q?: string; category?: string; view?: string }>;
+  searchParams: Promise<{page?: string; q?: string; category?: string; view?: string}>;
 }) {
   const supabase = await createClient();
   const PAGE_SIZE = 12;
@@ -26,8 +25,8 @@ export default async function Library({
   const selectColumns = 'id,title,author,cover_url,download_count';
   const builder = supabase
     .from('books')
-    .select(selectColumns, { count: 'exact' })
-    .order('download_count', { ascending: false })
+    .select(selectColumns, {count: 'exact'})
+    .order('download_count', {ascending: false})
     .range(from, to);
 
   const category = (await searchParams).category || 'All';
@@ -38,7 +37,7 @@ export default async function Library({
     builder.or(`title.ilike.%${trimmedQuery}%,author.ilike.%${trimmedQuery}%`);
   }
 
-  const { data: dataBooks, error, count } = await builder;
+  const {data: dataBooks, error, count} = await builder;
   const books: Book[] = (dataBooks ?? []) as Book[];
 
   if (error) {
@@ -86,7 +85,7 @@ export default async function Library({
           </div>
 
           <div className="flex items-center gap-3">
-            <ViewModeToggle className='order-2 sm:order-1' />
+            <ViewModeToggle className="order-2 sm:order-1" />
 
             <SelectBookCategory className="w-full sm:w-auto min-w-[160px]" />
           </div>
@@ -96,11 +95,7 @@ export default async function Library({
 
         {/* Books Display */}
         <Suspense fallback={<BookFallback />}>
-          <BookDisplay
-            books={books}
-            query={query}
-            urlViewMode={urlViewMode}
-          />
+          <BookDisplay books={books} query={query} urlViewMode={urlViewMode} />
         </Suspense>
 
         {books && books.length > 0 && (
