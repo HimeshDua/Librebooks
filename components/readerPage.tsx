@@ -81,6 +81,9 @@ export default function ReaderPage({slug}: {slug: string}) {
 
   // Auto-hide controls
   useEffect(() => {
+    const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
+    setTheme(nextTheme);
+
     const handleMouseMove = () => {
       setShowControls(true);
 
@@ -331,7 +334,7 @@ export default function ReaderPage({slug}: {slug: string}) {
             </Button>
           </div>
         </div>
-        <div className="h-full overflow-y-auto p-4 pb-36">
+        <div className="h-full overflow-y-auto p-4 pb-36 sm:pb-4">
           {toc.length > 0 ? (
             <ul className="space-y-2">
               {toc.map((item, index) => (
@@ -440,6 +443,8 @@ export default function ReaderPage({slug}: {slug: string}) {
                 setToc(tocItems);
               }
             });
+
+            rendition.themes.default('dark');
 
             // Register themes
             rendition.themes.register('light', {
