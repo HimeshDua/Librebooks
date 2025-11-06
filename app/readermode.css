@@ -1,15 +1,19 @@
-#reader-container>div>div>div {
-    background-color: #FFFACC !important;
+#reader-container > div > div > div {
+  background-color: #fffacc !important;
 }
 
-.dark #reader-container>div>div>div {
-    background-color: #1C1D21 !important;
+#reader-container > div > div > button {
+  display: none !important;
+}
+
+.dark #reader-container > div > div > div {
+  background-color: #1c1d21 !important;
 }
 
 #reader-container div a:hover {
-    color: none !important;
+  color: none !important;
 }
 
 #reader-container div a:hover p {
-    color: none !important;
+  color: none !important;
 }

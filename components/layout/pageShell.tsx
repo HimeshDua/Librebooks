@@ -5,7 +5,7 @@ import React from 'react';
 import {Toaster} from 'sonner';
 import Footer from '../nav/footer';
 import Header from '../nav/header';
-import { UserProvider } from '../nav/context/UserContext';
+import {UserProvider} from '../nav/context/UserContext';
 
 function PageShell({children}: {children: React.ReactNode}) {
   const {theme} = useTheme();
@@ -15,12 +15,12 @@ function PageShell({children}: {children: React.ReactNode}) {
 
   return (
     <main>
-     <UserProvider>
-      <Header />
-      {children}
-      <Toaster richColors theme={toasterTheme} />
-      <Footer />
-     </UserProvider>
+      <UserProvider>
+        <Header />
+        {children}
+        <Toaster richColors theme={toasterTheme} />
+        <Footer />
+      </UserProvider>
     </main>
   );
 }
