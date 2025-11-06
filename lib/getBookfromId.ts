@@ -4,9 +4,9 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 
 export async function getBookfromId(
   supabase: SupabaseClient,
-  id: string
+  slug: string
 ): Promise<{data: Book | null; error: Error | null}> {
-  const {data, error} = await supabase.from('books').select('*').eq('id', id).single();
+  const {data, error} = await supabase.from('books').select('*').eq('slug', slug).single();
 
   return {data, error};
 }

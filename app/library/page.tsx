@@ -22,7 +22,7 @@ export default async function Library({
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
-  const selectColumns = 'id,title,author,cover_url,download_count';
+  const selectColumns = 'id,slug,title,author,cover_url,download_count';
   const builder = supabase
     .from('books')
     .select(selectColumns, {count: 'exact'})

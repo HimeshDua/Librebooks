@@ -19,11 +19,11 @@ import {createClient} from '@/lib/supabase/server';
 import {getUserById} from '@/lib/getUserId';
 import {getBookfromId} from '@/lib/getBookfromId';
 
-export default async function DetailedBook({params}: {params: Promise<{id: string}>}) {
-  const {id} = await params;
+export default async function DetailedBook({params}: {params: Promise<{slug: string}>}) {
+  const {slug} = await params;
   const supabase = await createClient();
 
-  const {data, error} = await getBookfromId(supabase, id);
+  const {data, error} = await getBookfromId(supabase, slug);
   const {userId} = await getUserById(supabase);
 
   if (error || !data) {
@@ -31,7 +31,7 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
       <div className="min-h-screen flex flex-col items-center justify-center text-center p-6 bg-background text-foreground">
         <h2 className="text-xl font-bold mb-2 text-destructive">Book not found</h2>
         <p className="text-sm text-muted-foreground">
-          {error ? error.message : `No book found related to ID: ${id}`}
+          {error ? error.message : `No book found related to ID: ${slug}`}
         </p>
         <Button asChild className="mt-6">
           <Link href="/">← Back to Library</Link>
@@ -135,7 +135,7 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
               ) : null}
 
               <Suspense fallback={<ToggleFavoriteBookSkeleton />}>
-                <ToggleFavoriteBook id={userId} bookId={id} bookTitle={book.title} />
+                <ToggleFavoriteBook id={userId} bookId={book.id} bookTitle={book.title} />
               </Suspense>
             </div>
 

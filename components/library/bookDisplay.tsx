@@ -58,12 +58,12 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
     // Compact View
     <div className="space-y-2">
       {books.map((book: Book) => (
-        <HoverCard key={book.id} openDelay={150} closeDelay={100}>
+        <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <div className="group/card relative transition-all duration-200 hover:bg-muted/50 rounded-lg border border-transparent hover:border-border">
               <Link
                 target="_blank"
-                href={`/book/${book.id}`}
+                href={`/book/${book.slug}`}
                 aria-label={`Open ${book.title}`}
                 className="flex items-center gap-4 p-3"
               >
@@ -137,12 +137,12 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
     // Grid View
     <ul className="group/card-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 transition-all duration-300">
       {books.map((book: Book) => (
-        <HoverCard key={book.id} openDelay={150} closeDelay={100}>
+        <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <li className="group/card relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80 md:hover:!opacity-100 md:hover:!blur-none">
               <Link
                 target="_blank"
-                href={`/book/${book.id}`}
+                href={`/book/${book.slug}`}
                 aria-label={`Open ${book.title}`}
                 className="block"
               >
