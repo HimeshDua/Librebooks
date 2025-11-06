@@ -1,7 +1,7 @@
 'use client';
 
 import {ReactReader} from 'react-reader';
-import {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+import {useEffect, useState, useRef, useCallback} from 'react';
 import {
   Type,
   Maximize2,
