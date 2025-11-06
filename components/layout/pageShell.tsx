@@ -1,7 +1,7 @@
 'use client';
 
 import {useTheme} from 'next-themes';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Toaster} from 'sonner';
 import Footer from '../nav/footer';
 import Header from '../nav/header';
@@ -9,17 +9,30 @@ import {UserProvider} from '../nav/context/UserContext';
 
 function PageShell({children}: {children: React.ReactNode}) {
   const {theme} = useTheme();
+  const [showLayout, setShowLayout] = useState(true);
   // console.log(theme);
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!document.fullscreenElement;
+      setShowLayout(!isFullscreen);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const toasterTheme =
     theme === 'light' || theme === 'dark' || theme === 'system' ? theme : undefined;
 
   return (
     <main>
       <UserProvider>
-        <Header />
+        {showLayout && <Header />}
         {children}
         <Toaster richColors theme={toasterTheme} />
-        <Footer />
+        {showLayout && <Footer />}
       </UserProvider>
     </main>
   );

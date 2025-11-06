@@ -211,7 +211,7 @@ export default function ReaderPage({slug}: {slug: string}) {
   }
 
   return (
-    <div className="relative flex flex-col h-screen bg-background text-foreground transition-all overflow-hidden">
+    <div className="relative flex flex-col h-screen pb-8 bg-background text-foreground transition-all overflow-hidden">
       {/* Top Controls */}
       <div
         className={`
@@ -219,7 +219,7 @@ export default function ReaderPage({slug}: {slug: string}) {
         ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
       `}
       >
-        <header className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/95 backdrop-blur-lg">
+        <header className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -265,7 +265,7 @@ export default function ReaderPage({slug}: {slug: string}) {
                 size="sm"
                 onClick={resetFontSize}
                 title="Reset font size"
-                className="h-9 px-2 text-xs font-normal"
+                className="h-9 px-2 text-xs font-normal "
               >
                 {fontSize}%
               </Button>
@@ -331,7 +331,7 @@ export default function ReaderPage({slug}: {slug: string}) {
             </Button>
           </div>
         </div>
-        <div className="h-full overflow-y-auto p-4">
+        <div className="h-full overflow-y-auto p-4 pb-36">
           {toc.length > 0 ? (
             <ul className="space-y-2">
               {toc.map((item, index) => (
@@ -503,14 +503,8 @@ export default function ReaderPage({slug}: {slug: string}) {
       </div>
 
       {/* Mobile Bottom Controls */}
-      <div className="sm:hidden">
-        <div
-          className={`
-          fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-border/50
-          transition-all duration-300 p-3
-          ${showControls ? 'translate-y-0' : 'translate-y-full'}
-        `}
-        >
+      {isMobile && (
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
           <div className="flex justify-between items-center">
             <Button variant="ghost" size="sm" onClick={handlePrev} className="flex-1">
               <ChevronLeft className="w-4 h-4 mr-2" />
@@ -528,7 +522,7 @@ export default function ReaderPage({slug}: {slug: string}) {
             </Button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

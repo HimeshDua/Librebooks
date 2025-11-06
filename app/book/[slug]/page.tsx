@@ -18,6 +18,132 @@ import type {Book} from '@/types';
 import {createClient} from '@/lib/supabase/server';
 import {getUserById} from '@/lib/getUserId';
 import {getBookfromSlug} from '@/lib/getBookfromSlug';
+import type {Metadata} from 'next';
+
+// Generate metadata for SEO
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{slug: string}>;
+}): Promise<Metadata> {
+  const {slug} = await params;
+  const supabase = await createClient();
+  const {data: book} = await getBookfromSlug(supabase, slug);
+
+  if (!book) {
+    return {
+      title: 'Book Not Found | LibreBooks',
+      description: 'The requested book could not be found.',
+    };
+  }
+
+  const metaTitle = `${book.title} by ${book.author || 'Unknown Author'} | LibreBooks`;
+  const metaDescription = book.description
+    ? `${book.description.substring(0, 160)}...`
+    : `Read "${book.title}" by ${
+        book.author || 'Unknown Author'
+      } online for free. Download EPUB format.`;
+  const metaImage = book.cover_url || '/default-book-cover.jpg';
+  const canonicalUrl = `https://yourdomain.com/books/${slug}`;
+  const authorName = book.author || 'Unknown Author';
+  const bookLanguage = book.languages?.[0] || 'English';
+
+  // Structured data for rich results
+  // const jsonLd = {
+  //   '@context': 'https://schema.org',
+  //   '@type': 'Book',
+  //   name: book.title,
+  //   author: {
+  //     '@type': 'Person',
+  //     name: authorName,
+  //   },
+  //   bookFormat: 'https://schema.org/EBook',
+  //   datePublished: book.issued,
+  //   description: metaDescription,
+  //   inLanguage: bookLanguage,
+  //   isAccessibleForFree: true,
+  //   image: metaImage,
+  //   publisher: {
+  //     '@type': 'Organization',
+  //     name: 'Project Gutenberg',
+  //   },
+  //   workExample: {
+  //     '@type': 'Book',
+  //     isbn: book.gutenberg_id?.toString(),
+  //     bookFormat: 'https://schema.org/EBook',
+  //     potentialAction: {
+  //       '@type': 'ReadAction',
+  //       target: {
+  //         '@type': 'EntryPoint',
+  //         urlTemplate: `https://yourdomain.com/read/${book.gutenberg_id}`,
+  //       },
+  //     },
+  //   },
+  //   offers: {
+  //     '@type': 'Offer',
+  //     price: '0',
+  //     priceCurrency: 'USD',
+  //     availability: 'https://schema.org/InStock',
+  //     seller: {
+  //       '@type': 'Organization',
+  //       name: 'LibreBooks',
+  //     },
+  //   },
+  // };
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    keywords: [`${book.title}`, authorName, 'free ebook', 'epub', 'online reader', bookLanguage],
+    authors: [{name: authorName}],
+    openGraph: {
+      type: 'book',
+      url: canonicalUrl,
+      title: metaTitle,
+      description: metaDescription,
+      siteName: 'LibreBooks',
+      images: [
+        {
+          url: metaImage,
+          width: 800,
+          height: 600,
+          alt: `Cover of ${book.title}`,
+        },
+      ],
+      // books: {
+      //   authors: [{name: authorName}],
+      //   isbn: book.gutenberg_id?.toString(),
+      // },
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: metaTitle,
+      description: metaDescription,
+      images: [metaImage],
+      creator: '@librebooks', // Replace with your actual Twitter handle
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    other: {
+      'book:title': book.title,
+      'book:author': authorName,
+      'book:language': bookLanguage,
+      'book:format': 'EPUB',
+    },
+  };
+}
+
+// Add JSON-LD structured data as a separate component
+function StructuredData({data}: {data: any}) {
+  return (
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}} />
+  );
+}
 
 export default async function DetailedBook({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
@@ -43,15 +169,62 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
 
   const book: Book = data;
 
+  // Prepare structured data for this specific book
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: book.title,
+    author: {
+      '@type': 'Person',
+      name: book.author || 'Unknown Author',
+    },
+    bookFormat: 'https://schema.org/EBook',
+    description:
+      book.description ||
+      `Read "${book.title}" by ${book.author || 'Unknown Author'} online for free.`,
+    inLanguage: book.languages?.[0] || 'English',
+    isAccessibleForFree: true,
+    image: book.cover_url || '/default-book-cover.jpg',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Project Gutenberg',
+    },
+    workExample: {
+      '@type': 'Book',
+      isbn: book.gutenberg_id?.toString(),
+      bookFormat: 'https://schema.org/EBook',
+      potentialAction: {
+        '@type': 'ReadAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `https://yourdomain.com/read/${book.gutenberg_id}`,
+        },
+      },
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'LibreBooks',
+      },
+    },
+  };
+
   return (
     <main className="min-h-screen bg-background text-foreground">
+      {/* Add structured data */}
+      <StructuredData data={structuredData} />
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* 🧭 Breadcrumb */}
         <Breadcrumb className="mb-6 text-sm">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/library">Home</Link>
+                <Link href="/library">Library</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -69,7 +242,7 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
               {book.cover_url ? (
                 <Image
                   src={book.cover_url}
-                  alt={book.title}
+                  alt={`Cover of ${book.title} by ${book.author || 'Unknown Author'}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
