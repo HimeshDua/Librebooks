@@ -2,7 +2,7 @@
 import type {Book} from '@/types';
 import type {SupabaseClient} from '@supabase/supabase-js';
 
-export async function getBookfromId(
+export async function getBookfromSlug(
   supabase: SupabaseClient,
   slug: string
 ): Promise<{data: Book | null; error: Error | null}> {

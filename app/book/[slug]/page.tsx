@@ -17,13 +17,14 @@ import {
 import type {Book} from '@/types';
 import {createClient} from '@/lib/supabase/server';
 import {getUserById} from '@/lib/getUserId';
-import {getBookfromId} from '@/lib/getBookfromId';
+import {getBookfromSlug} from '@/lib/getBookfromSlug';
 
 export default async function DetailedBook({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
   const supabase = await createClient();
 
-  const {data, error} = await getBookfromId(supabase, slug);
+  console.log('slug ', slug);
+  const {data, error} = await getBookfromSlug(supabase, slug);
   const {userId} = await getUserById(supabase);
 
   if (error || !data) {
@@ -112,7 +113,7 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
             <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center gap-3">
               {book?.epub && (
                 <Button className="w-full py-4 md:w-auto" asChild>
-                  <Link href={`/read/${book.id}`} target="_blank">
+                  <Link href={`/read/${book.gutenberg_id}`}>
                     <BookOpen className="w-4 h-4 mr-2" /> Read Online
                   </Link>
                 </Button>

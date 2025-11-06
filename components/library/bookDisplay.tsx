@@ -62,7 +62,6 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
           <HoverCardTrigger asChild>
             <div className="group/card relative transition-all duration-200 hover:bg-muted/50 rounded-lg border border-transparent hover:border-border">
               <Link
-                target="_blank"
                 href={`/book/${book.slug}`}
                 aria-label={`Open ${book.title}`}
                 className="flex items-center gap-4 p-3"
@@ -140,12 +139,7 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
         <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <li className="group/card relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80 md:hover:!opacity-100 md:hover:!blur-none">
-              <Link
-                target="_blank"
-                href={`/book/${book.slug}`}
-                aria-label={`Open ${book.title}`}
-                className="block"
-              >
+              <Link href={`/book/${book.slug}`} aria-label={`Open ${book.title}`} className="block">
                 <div className="relative w-full aspect-[3/4] bg-muted rounded-lg overflow-hidden shadow-sm border border-border/50">
                   {book.cover_url ? (
                     <Image

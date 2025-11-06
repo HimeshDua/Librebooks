@@ -1,22 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
-import { LogoutButton } from './logout-button';
+import {useState, useEffect} from 'react';
+import {useTheme} from 'next-themes';
+import {Popover, PopoverTrigger, PopoverContent} from '@/components/ui/popover';
+import {Button} from '@/components/ui/button';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Separator} from '@/components/ui/separator';
+import {SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart} from 'lucide-react';
+import {createClient} from '@/lib/supabase/client';
+import {LogoutButton} from './logout-button';
 import Link from 'next/link';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { useIsMobile } from '@/hooks/useIsMobile';
-import { toast } from 'sonner';
-import { User } from '@supabase/supabase-js';
+import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
+import {useIsMobile} from '@/hooks/useIsMobile';
+import {toast} from 'sonner';
+import {User} from '@supabase/supabase-js';
 
-export function UserMenu({ user }: { user: User }) {
-  const { setTheme, theme } = useTheme();
+export function UserMenu({user}: {user: User}) {
+  const {setTheme, theme} = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
@@ -24,7 +24,7 @@ export function UserMenu({ user }: { user: User }) {
   useEffect(() => {
     const supabase = createClient();
     const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
-    const isLogWarnGiven = localStorage.getItem("LogWarnGiven") !== '1' || false
+    const isLogWarnGiven = localStorage.getItem('LogWarnGiven') !== '1' || false;
 
     if (pathName === '/' && isLogWarnGiven) {
       setTimeout(() => {
@@ -40,12 +40,12 @@ export function UserMenu({ user }: { user: User }) {
           },
         });
       }, 300);
-      localStorage.setItem("LogWarnGiven", '1')
+      localStorage.setItem('LogWarnGiven', '1');
     }
 
     async function fetchFavorites() {
       if (user?.id) {
-        const { data, error } = await supabase.from('favorites').select('id').eq('user_id', user.id);
+        const {data, error} = await supabase.from('favorites').select('id').eq('user_id', user.id);
         if (error) throw new Error(error.message);
         const dataLength = data.length;
         setCount(dataLength || 0);
@@ -59,8 +59,6 @@ export function UserMenu({ user }: { user: User }) {
     }
     fetchFavorites();
   }, [user, isMob]);
-
-
 
   if (!user) return null;
 
@@ -88,7 +86,6 @@ export function UserMenu({ user }: { user: User }) {
         className="w-screen md:w-64 mt-2 rounded-xl border-border/60 shadow-lg backdrop-blur-sm bg-background/90"
       >
         <div className="flex flex-col gap-3">
-
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-muted-foreground" />
@@ -120,7 +117,6 @@ export function UserMenu({ user }: { user: User }) {
           {count > 0 && (
             <Link
               href="/book/favorites"
-              target="_blank"
               className="group flex items-center justify-between bg-muted/40 hover:bg-muted/60 transition-colors rounded-lg px-3 py-2"
             >
               <div className="flex items-center gap-2">
