@@ -1,29 +1,24 @@
-/* --- Light Mode --- */
-#reader-container > div > div > div {
-  background-color: #faf7ef !important; /* soft cream paper tone */
+#reader-container>div>div>div {
+  background-color: #faf7ef !important;
   color: #1b1b1b !important;
 }
 
-/* Hide unwanted controls */
-#reader-container > div > div > button {
-  display: none !important;
-}
-
-/* --- Dark Mode --- */
 .dark #reader-container > div > div > div {
-  background-color: #111214 !important; /* neutral dark gray */
-  color: #d6d6d6 !important;
+  background-color: #1b1d1e !important;
+  color: #d8d3c3 !important;
 }
 
-/* --- Sepia Mode (optional, if you add a 3rd theme) --- */
-.sepia #reader-container > div > div > div {
-  background-color: #f3ead7 !important;
-  color: #2b2b2b !important;
-}
+/* .dark #reader-container > div > div > div {
+  background-color: #202124 !important;
+  color: #f1f1f0 !important;
+} */
 
-/* --- Link Hover Fix --- */
 #reader-container div a:hover,
 #reader-container div a:hover p {
   color: inherit !important;
   text-decoration: underline !important;
+}
+
+#reader-container>div>div>button {
+  display: none !important;
 }

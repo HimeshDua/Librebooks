@@ -74,8 +74,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
 
   useEffect(() => {
     if (!slug) return;
-    const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
-    setTheme(nextTheme);
 
     (async () => {
       try {
@@ -109,7 +107,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
 
-  // Auto-hide controls
   useEffect(() => {
 
     const handleMouseMove = () => {
@@ -367,7 +364,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
         id="reader-container"
         className="relative flex-1 overflow-hidden bg-[#FFFACC] dark:bg-[#1C1D21] transition-colors duration-300"
       >
-        {/* Navigation Buttons - Visible on hover */}
+        {/* Navigation Buttons */}
         <div
           className={`
           absolute inset-0 z-40 pointer-events-none
@@ -382,7 +379,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
                h-12 w-12 rounded-full bg-primary/80 hover:bg-primary
                backdrop-blur-sm transition-all duration-200
                sm:left-4 sm:h-14 sm:w-14`,
-              isMobile && 'opacity-70' // Slightly transparent on mobile
+              isMobile && 'opacity-70'
             )}
             size="icon"
           >
@@ -435,7 +432,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
           getRendition={rendition => {
             renditionRef.current = rendition;
 
-            // Get table of contents
             rendition.book.loaded.navigation.then(tocData => {
               if (tocData?.toc) {
                 const tocItems: TocItem[] = tocData.toc.map(item => ({
@@ -446,34 +442,12 @@ export default function ReaderPage({ slug }: { slug: string }) {
               }
             });
 
-            rendition.themes.default('sepia');
+            rendition.themes.default('light');
 
-
-            rendition.themes.register("sepia", {
-              body: {
-                background: "#F3EAD7",
-                color: "#2B2B2B",
-                height: "100%",
-                lineHeight: "1.8",
-                margin: "0",
-                padding: "2.5rem",
-                fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
-                textRendering: "optimizeLegibility",
-              },
-              "p, div, span": {
-                lineHeight: "inherit",
-              },
-              a: {
-                color: "#805C2E",
-              },
-            });
-
-
-            // Register themes
             rendition.themes.register("light", {
               body: {
-                background: "#FAF7EF", // soft warm cream
-                color: "#1B1B1B",      // deep neutral black for easy reading
+                background: "#fffacc",
+                color: "#1B1B1B",
                 height: "100%",
                 lineHeight: "1.8",
                 margin: "0",
@@ -483,21 +457,19 @@ export default function ReaderPage({ slug }: { slug: string }) {
               },
               "p, div, span": {
                 lineHeight: "inherit",
+                color: 'inherit',
               },
-              a: {
-                color: "#5B6C94",
+              'a:hover, p:hover': {
+                color: 'inherit',
                 textDecoration: "none",
-              },
-              "a:hover": {
-                textDecoration: "underline",
               },
             });
 
 
             rendition.themes.register("dark", {
               body: {
-                background: "#111214",  // deep neutral black-gray, no pure black
-                color: "#D6D6D6",       // softer white to avoid glare
+                background: "#1b1d1e",
+                color: "#D8D3C3",
                 height: "100%",
                 lineHeight: "1.8",
                 margin: "0",
@@ -507,13 +479,11 @@ export default function ReaderPage({ slug }: { slug: string }) {
               },
               "p, div, span": {
                 lineHeight: "inherit",
+                color: 'inherit',
               },
-              a: {
-                color: "#8BA6F9",
+              'a:hover, p:hover': {
+                color: 'inherit',
                 textDecoration: "none",
-              },
-              "a:hover": {
-                textDecoration: "underline",
               },
             });
 
@@ -521,7 +491,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
             rendition.themes.select(theme || 'dark');
             rendition.themes.fontSize(`${fontSize}%`);
 
-            // Style the container
             const reactReaderContainer = document.querySelector(
               '#reader-container > div'
             ) as HTMLElement;
@@ -531,16 +500,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
               reactReaderContainer.style.flexDirection = 'column';
             }
           }}
-        // styles={{
-        //   container: {
-        //     height: '100%',
-        //     position: 'relative',
-        //   },
-        //   readerArea: {
-        //     height: '100%',
-        //     backgroundColor: 'transparent',
-        //   },
-        // }}
         />
       </div>
 
