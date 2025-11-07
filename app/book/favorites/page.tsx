@@ -94,7 +94,7 @@ export default function FavoritesPage() {
           {books.map(book => (
             <motion.div
               key={book.id}
-              whileHover={{scale: 1.03, y: -4}}
+              whileHover={{scale: 1.01, y: -4}}
               transition={{type: 'spring', stiffness: 300, damping: 20}}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
@@ -106,7 +106,7 @@ export default function FavoritesPage() {
                       alt={`Cover of ${book.title}`}
                       width={400}
                       height={600}
-                      className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                      className="object-cover group-hover:scale-[1.026] transition-transform duration-300"
                       priority
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="

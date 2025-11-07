@@ -14,6 +14,15 @@ export type Book = {
   bookshelves: string[];
 };
 
+export type LocalBook = {
+  id: number;
+  slug: string;
+  title: string;
+  author: string;
+  download_count: number | null;
+  cover_url: string | null;
+};
+
 export type localSupabase = {
   auth: {
     getClaims: () => Promise<{

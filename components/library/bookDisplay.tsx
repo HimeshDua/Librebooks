@@ -6,10 +6,10 @@ import Image from 'next/image';
 import {HoverCard, HoverCardContent, HoverCardTrigger} from '@/components/ui/hover-card';
 import {Search} from 'lucide-react';
 import {Button} from '@/components/ui/button';
-import {Book} from '@/types';
+import {LocalBook} from '@/types';
 
 interface BookDisplayProps {
-  books: Book[];
+  books: LocalBook[];
   query: string;
   urlViewMode?: string;
 }
@@ -59,7 +59,7 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
   return viewMode === 'compact' ? (
     // Compact View
     <div className="space-y-2">
-      {books.map((book: Book) => (
+      {books.map((book: LocalBook) => (
         <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <div className="group/card relative transition-all duration-200 hover:bg-muted/50 rounded-lg border border-transparent hover:border-border">
@@ -137,7 +137,7 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
   ) : (
     // Grid View
     <ul className="group/card-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 transition-all duration-300">
-      {books.map((book: Book) => (
+      {books.map((book: LocalBook) => (
         <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <li className="group/card relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80 md:hover:!opacity-100 md:hover:!blur-none">

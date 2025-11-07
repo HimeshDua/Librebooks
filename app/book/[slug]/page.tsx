@@ -15,12 +15,29 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import type {Book} from '@/types';
-import {createClient} from '@/lib/supabase/server';
+import {publicSupabase} from '@/lib/supabase/public';
 import {getUserById} from '@/lib/getUserId';
 import {getBookfromSlug} from '@/lib/getBookfromSlug';
 import type {Metadata} from 'next';
+import {createClient} from '@/lib/supabase/server';
 
-// export const revalidate = 3600 * 12;
+export async function generateStaticParams() {
+  const supabase = publicSupabase;
+
+  const {data: popularBooks} = await supabase
+    .from('books')
+    .select('slug')
+    .order('download_count', {ascending: false})
+    .limit(100);
+
+  return (
+    popularBooks?.map(book => ({
+      slug: book.slug,
+    })) || []
+  );
+}
+
+export const revalidate = 3600 * 12;
 
 // Generate metadata for SEO
 export async function generateMetadata({
@@ -243,14 +260,13 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
           <div className="lg:col-span-2 flex flex-col items-center">
             <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl bg-muted">
               {book.cover_url ? (
-                // In your book detail page
                 <Image
                   src={book.cover_url || '/default-book-cover.jpg'}
                   alt={`Cover of ${book.title}`}
                   width={400}
                   height={600}
                   className="object-cover"
-                  priority // Add priority for above-the-fold images
+                  priority
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="
                 />
