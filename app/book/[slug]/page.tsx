@@ -19,8 +19,6 @@ import {publicSupabase} from '@/lib/supabase/public';
 import {getUserById} from '@/lib/getUserId';
 import {getBookfromSlug} from '@/lib/getBookfromSlug';
 import type {Metadata} from 'next';
-import {createClient} from '@/lib/supabase/server';
-
 export async function generateStaticParams() {
   const supabase = publicSupabase;
 
@@ -37,7 +35,7 @@ export async function generateStaticParams() {
   );
 }
 
-export const revalidate = 3600 * 12;
+export const revalidate = 43200;
 
 // Generate metadata for SEO
 export async function generateMetadata({
@@ -45,8 +43,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{slug: string}>;
 }): Promise<Metadata> {
+  const supabase = publicSupabase;
   const {slug} = await params;
-  const supabase = await createClient();
   const {data: book} = await getBookfromSlug(supabase, slug);
 
   if (!book) {
@@ -167,7 +165,7 @@ function StructuredData({data}: StructuredDataProps) {
 }
 export default async function DetailedBook({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
-  const supabase = await createClient();
+  const supabase = publicSupabase;
 
   console.log('slug ', slug);
   const {data, error} = await getBookfromSlug(supabase, slug);

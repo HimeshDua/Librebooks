@@ -1,14 +1,11 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { toast } from 'sonner';
+import type {SupabaseClient} from '@supabase/supabase-js';
+import {toast} from 'sonner';
 
-export async function getUserById(
-  supabase: SupabaseClient
-): Promise<{ userId: string | null }> {
-  const { data, error } = await supabase.auth.getClaims();
+export async function getUserById(supabase: SupabaseClient): Promise<{userId: string | null}> {
+  const {data, error} = await supabase.auth.getClaims();
   const user = data?.claims;
   const userId = user?.sub ?? null;
   const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
-
 
   if (error) {
     setTimeout(() => {
@@ -25,7 +22,7 @@ export async function getUserById(
         },
       });
     }, 300);
-  } else if (!userId && pathName !== "/") {
+  } else if (!userId && pathName !== '/') {
     setTimeout(() => {
       toast.info('Log in for a better experience', {
         description: 'Please try again later.',
@@ -43,5 +40,5 @@ export async function getUserById(
     }, 1000);
   }
 
-  return { userId };
+  return {userId};
 }
