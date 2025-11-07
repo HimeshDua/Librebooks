@@ -1,14 +1,14 @@
 'use client';
 
-import {useTheme} from 'next-themes';
-import React, {useEffect, useState} from 'react';
-import {Toaster} from 'sonner';
+import { useTheme } from 'next-themes';
+import React, { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 import Footer from '../nav/footer';
 import Header from '../nav/header';
-import {UserProvider} from '../nav/context/UserContext';
+import { UserProvider } from '../nav/context/UserContext';
 
-function PageShell({children}: {children: React.ReactNode}) {
-  const {theme} = useTheme();
+function PageShell({ children }: { children: React.ReactNode }) {
+  const { theme } = useTheme();
   const [showLayout, setShowLayout] = useState(true);
   // console.log(theme);
   useEffect(() => {
@@ -31,7 +31,7 @@ function PageShell({children}: {children: React.ReactNode}) {
       <UserProvider>
         {showLayout && <Header />}
         {children}
-        <Toaster richColors theme={toasterTheme} />
+        <Toaster className='z-50' richColors theme={toasterTheme} />
         {showLayout && <Footer />}
       </UserProvider>
     </main>

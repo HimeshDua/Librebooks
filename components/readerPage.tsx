@@ -1,7 +1,7 @@
 'use client';
 
-import {ReactReader} from 'react-reader';
-import {useEffect, useState, useRef, useCallback} from 'react';
+import { ReactReader } from 'react-reader';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import {
   Type,
   Maximize2,
@@ -15,12 +15,13 @@ import {
   Home,
   Menu,
 } from 'lucide-react';
-import {useTheme} from 'next-themes';
-import {Button} from './ui/button';
-import {useRouter} from 'next/navigation';
-import {useIsMobile} from '@/hooks/useIsMobile';
-import {cn} from '@/lib/utils';
-import {toast} from 'sonner';
+import { useTheme } from 'next-themes';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+import { ThemeToggleButton } from './book/toggleThemeButton';
 
 type RenditionLike = {
   themes: {
@@ -37,7 +38,7 @@ type TocItem = {
   href: string;
 };
 
-export default function ReaderPage({slug}: {slug: string}) {
+export default function ReaderPage({ slug }: { slug: string }) {
   const [bookData, setBookData] = useState<ArrayBuffer | null>(null);
   const [location, setLocation] = useState<string | number>(
     typeof window !== 'undefined' ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
@@ -49,12 +50,14 @@ export default function ReaderPage({slug}: {slug: string}) {
   const [showControls, setShowControls] = useState(true);
   const [showToc, setShowToc] = useState(false);
   const [toc, setToc] = useState<TocItem[]>([]);
-  const {theme, setTheme} = useTheme();
+  const { theme, setTheme } = useTheme();
   const renditionRef = useRef<RenditionLike | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   useEffect(() => {
+    const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
+    setTheme(nextTheme);
     if (!slug) return;
 
     (async () => {
@@ -81,8 +84,6 @@ export default function ReaderPage({slug}: {slug: string}) {
 
   // Auto-hide controls
   useEffect(() => {
-    const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
-    setTheme(nextTheme);
 
     const handleMouseMove = () => {
       setShowControls(true);
@@ -96,7 +97,7 @@ export default function ReaderPage({slug}: {slug: string}) {
       }, 3000);
     };
 
-    handleMouseMove(); // Initial setup
+    handleMouseMove();
 
     document.addEventListener('mousemove', handleMouseMove);
     return () => {
@@ -115,12 +116,11 @@ export default function ReaderPage({slug}: {slug: string}) {
     [slug]
   );
 
-  // Theme synchronization with reader
+
   useEffect(() => {
     if (renditionRef.current) {
       renditionRef.current.themes.select(theme || 'dark');
 
-      // Also update the container background
       const container = document.querySelector('#reader-container') as HTMLElement;
       if (container) {
         container.style.backgroundColor = theme === 'light' ? '#FFFACC' : '#1C1D21';
@@ -128,15 +128,6 @@ export default function ReaderPage({slug}: {slug: string}) {
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    setTimeout(() => {
-      toast.info('Refresh the page after changing theme', {
-        duration: 3,
-      });
-    }, 300);
-  };
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.min(160, Math.max(80, fontSize + delta));
@@ -285,23 +276,7 @@ export default function ReaderPage({slug}: {slug: string}) {
               </Button>
             </div>
 
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-              className="h-9 w-9"
-            >
-              {theme === 'light' ? (
-                <Moon className="w-4 h-4" />
-              ) : theme === 'system' ? (
-                <Laptop className="w-4 h-4" />
-              ) : (
-                <Sun className="w-4 h-4" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+            <ThemeToggleButton />
 
             {/* Fullscreen Toggle */}
             <Button
@@ -419,7 +394,7 @@ export default function ReaderPage({slug}: {slug: string}) {
             <div className="z-50 w-full bg-muted/50 rounded-full h-2">
               <div
                 className="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
-                style={{width: typeof location === 'string' ? '0%' : `${location}%`}}
+                style={{ width: typeof location === 'string' ? '0%' : `${location}%` }}
               />
             </div>
           </div>
@@ -444,42 +419,77 @@ export default function ReaderPage({slug}: {slug: string}) {
               }
             });
 
-            rendition.themes.default('dark');
+            rendition.themes.default('sepia');
+
+
+            rendition.themes.register("sepia", {
+              body: {
+                background: "#F3EAD7",
+                color: "#2B2B2B",
+                height: "100%",
+                lineHeight: "1.8",
+                margin: "0",
+                padding: "2.5rem",
+                fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
+                textRendering: "optimizeLegibility",
+              },
+              "p, div, span": {
+                lineHeight: "inherit",
+              },
+              a: {
+                color: "#805C2E",
+              },
+            });
+
 
             // Register themes
-            rendition.themes.register('light', {
+            rendition.themes.register("light", {
               body: {
-                background: '#FFFACC',
-                color: '#111111',
-                height: '100%',
-                lineHeight: '1.6',
-                margin: '0',
-                padding: '2rem',
+                background: "#FAF7EF", // soft warm cream
+                color: "#1B1B1B",      // deep neutral black for easy reading
+                height: "100%",
+                lineHeight: "1.8",
+                margin: "0",
+                padding: "2.5rem",
+                fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
+                textRendering: "optimizeLegibility",
               },
-              'p, div, span': {
-                lineHeight: 'inherit',
+              "p, div, span": {
+                lineHeight: "inherit",
               },
-              'a:hover, p:hover': {
-                color: 'inherit',
+              a: {
+                color: "#5B6C94",
+                textDecoration: "none",
+              },
+              "a:hover": {
+                textDecoration: "underline",
               },
             });
 
-            rendition.themes.register('dark', {
+
+            rendition.themes.register("dark", {
               body: {
-                background: '#1C1D21',
-                color: '#e5e5e5',
-                height: '100%',
-                lineHeight: '1.6',
-                margin: '0',
-                padding: '2rem',
+                background: "#111214",  // deep neutral black-gray, no pure black
+                color: "#D6D6D6",       // softer white to avoid glare
+                height: "100%",
+                lineHeight: "1.8",
+                margin: "0",
+                padding: "2.5rem",
+                fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
+                textRendering: "optimizeLegibility",
               },
-              'p, div, span': {
-                lineHeight: 'inherit',
+              "p, div, span": {
+                lineHeight: "inherit",
               },
-              'a:hover, p:hover': {
-                color: 'inherit',
+              a: {
+                color: "#8BA6F9",
+                textDecoration: "none",
+              },
+              "a:hover": {
+                textDecoration: "underline",
               },
             });
+
 
             rendition.themes.select(theme || 'dark');
             rendition.themes.fontSize(`${fontSize}%`);
@@ -494,16 +504,16 @@ export default function ReaderPage({slug}: {slug: string}) {
               reactReaderContainer.style.flexDirection = 'column';
             }
           }}
-          // styles={{
-          //   container: {
-          //     height: '100%',
-          //     position: 'relative',
-          //   },
-          //   readerArea: {
-          //     height: '100%',
-          //     backgroundColor: 'transparent',
-          //   },
-          // }}
+        // styles={{
+        //   container: {
+        //     height: '100%',
+        //     position: 'relative',
+        //   },
+        //   readerArea: {
+        //     height: '100%',
+        //     backgroundColor: 'transparent',
+        //   },
+        // }}
         />
       </div>
 

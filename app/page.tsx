@@ -22,7 +22,7 @@ const homeContent = {
   },
 };
 
-export default async function HomePage() {
+export default function HomePage() {
 
   return <LibPage {...homeContent} />;
 }
