@@ -1,5 +1,5 @@
-#reader-container>div>div>div {
-  background-color: #faf7ef !important;
+#reader-container > div > div > div {
+  background-color: #fffacc !important;
   color: #1b1b1b !important;
 }
 
@@ -19,6 +19,6 @@
   text-decoration: underline !important;
 }
 
-#reader-container>div>div>button {
+#reader-container > div > div > button {
   display: none !important;
 }
