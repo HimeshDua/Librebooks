@@ -7,9 +7,6 @@ import {
   Maximize2,
   Loader2,
   Minimize2,
-  Moon,
-  Sun,
-  Laptop,
   ChevronLeft,
   ChevronRight,
   Home,
@@ -20,7 +17,7 @@ import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
+import { get, set } from 'idb-keyval';
 import { ThemeToggleButton } from './book/toggleThemeButton';
 
 type RenditionLike = {
@@ -45,7 +42,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
   );
   const [fontSize, setFontSize] = useState<number>(100);
   const [loading, setLoading] = useState(true);
-  const [loadingServer, setLoadingServer] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [showToc, setShowToc] = useState(false);
@@ -55,18 +51,49 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
+  //   setTheme(nextTheme);
+  //   if (!slug) return;
+
+  //   (async () => {
+  //     try {
+  //       setLoadingServer(true);
+  //       const res = await fetch(`/api/readbook/${slug}`);
+  //       if (!res.ok) throw new Error(`Failed to fetch book: ${res.status}`);
+  //       const buffer = await res.arrayBuffer();
+  //       setLoadingServer(false);
+  //       setBookData(buffer);
+  //     } catch (err) {
+  //       console.error('Error loading EPUB:', err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   })();
+  // }, [slug]);
+
   useEffect(() => {
+    if (!slug) return;
     const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
     setTheme(nextTheme);
-    if (!slug) return;
 
     (async () => {
       try {
-        setLoadingServer(true);
+        const cachedBook = await get(`book-${slug}`);
+        if (cachedBook) {
+          console.log('Loaded from IndexedDB');
+          setBookData(cachedBook);
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch(`/api/readbook/${slug}`);
         if (!res.ok) throw new Error(`Failed to fetch book: ${res.status}`);
         const buffer = await res.arrayBuffer();
-        setLoadingServer(false);
+
+        await set(`book-${slug}`, buffer);
+        console.log('Saved to IndexedDB');
+
         setBookData(buffer);
       } catch (err) {
         console.error('Error loading EPUB:', err);
@@ -172,13 +199,13 @@ export default function ReaderPage({ slug }: { slug: string }) {
 
   const isMobile = useIsMobile();
 
-  if (loadingServer || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
         <div className="flex items-center gap-3 mb-4">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
           <span className="text-lg font-medium">
-            {loadingServer ? 'Downloading your book' : 'Loading your book'}...
+            Loading your book...
           </span>
         </div>
         <p className="text-muted-foreground text-balance text-center">
