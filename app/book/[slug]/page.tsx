@@ -20,6 +20,8 @@ import {getUserById} from '@/lib/getUserId';
 import {getBookfromSlug} from '@/lib/getBookfromSlug';
 import type {Metadata} from 'next';
 
+// export const revalidate = 3600 * 12;
+
 // Generate metadata for SEO
 export async function generateMetadata({
   params,
@@ -47,49 +49,6 @@ export async function generateMetadata({
   const canonicalUrl = `https://yourdomain.com/books/${slug}`;
   const authorName = book.author || 'Unknown Author';
   const bookLanguage = book.languages?.[0] || 'English';
-
-  // Structured data for rich results
-  // const jsonLd = {
-  //   '@context': 'https://schema.org',
-  //   '@type': 'Book',
-  //   name: book.title,
-  //   author: {
-  //     '@type': 'Person',
-  //     name: authorName,
-  //   },
-  //   bookFormat: 'https://schema.org/EBook',
-  //   datePublished: book.issued,
-  //   description: metaDescription,
-  //   inLanguage: bookLanguage,
-  //   isAccessibleForFree: true,
-  //   image: metaImage,
-  //   publisher: {
-  //     '@type': 'Organization',
-  //     name: 'Project Gutenberg',
-  //   },
-  //   workExample: {
-  //     '@type': 'Book',
-  //     isbn: book.gutenberg_id?.toString(),
-  //     bookFormat: 'https://schema.org/EBook',
-  //     potentialAction: {
-  //       '@type': 'ReadAction',
-  //       target: {
-  //         '@type': 'EntryPoint',
-  //         urlTemplate: `https://yourdomain.com/read/${book.gutenberg_id}`,
-  //       },
-  //     },
-  //   },
-  //   offers: {
-  //     '@type': 'Offer',
-  //     price: '0',
-  //     priceCurrency: 'USD',
-  //     availability: 'https://schema.org/InStock',
-  //     seller: {
-  //       '@type': 'Organization',
-  //       name: 'LibreBooks',
-  //     },
-  //   },
-  // };
 
   return {
     title: metaTitle,
@@ -138,7 +97,6 @@ export async function generateMetadata({
   };
 }
 
-// Add JSON-LD structured data as a separate component
 interface BookStructuredData {
   '@context': string;
   '@type': 'Book';
@@ -206,7 +164,9 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
           {error ? error.message : `No book found related to ID: ${slug}`}
         </p>
         <Button asChild className="mt-6">
-          <Link href="/">← Back to Library</Link>
+          <Link prefetch={true} href="/">
+            ← Back to Library
+          </Link>
         </Button>
       </div>
     );
@@ -214,7 +174,6 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
 
   const book: Book = data;
 
-  // Prepare structured data for this specific book
   const structuredData: BookStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Book',
@@ -260,7 +219,6 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      {/* Add structured data */}
       <StructuredData data={structuredData} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -285,13 +243,16 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
           <div className="lg:col-span-2 flex flex-col items-center">
             <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl bg-muted">
               {book.cover_url ? (
+                // In your book detail page
                 <Image
-                  src={book.cover_url}
-                  alt={`Cover of ${book.title} by ${book.author || 'Unknown Author'}`}
-                  fill
+                  src={book.cover_url || '/default-book-cover.jpg'}
+                  alt={`Cover of ${book.title}`}
+                  width={400}
+                  height={600}
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
+                  priority // Add priority for above-the-fold images
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-sm text-muted-foreground">

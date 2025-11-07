@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import { getUserById } from '@/lib/getUserId';
+import {useEffect, useState} from 'react';
+import {createClient} from '@/lib/supabase/client';
+import {getUserById} from '@/lib/getUserId';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, LibraryBig, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import type { Book } from '@/types';
+import {Heart, LibraryBig, Loader2} from 'lucide-react';
+import {Button} from '@/components/ui/button';
+import {motion} from 'framer-motion';
+import type {Book} from '@/types';
 
 type FavoriteResponse = {
   books: Book[];
@@ -21,13 +21,13 @@ export default function FavoritesPage() {
   useEffect(() => {
     async function fetchFavorites() {
       const supabase = createClient();
-      const { userId } = await getUserById(supabase);
+      const {userId} = await getUserById(supabase);
       if (userId) {
-        const { data, error } = await supabase
+        const {data, error} = await supabase
           .from('favorites')
           .select('book_id, books(id, title, author, cover_url)')
           .eq('user_id', userId)
-          .order('id', { ascending: false })
+          .order('id', {ascending: false})
           .returns<FavoriteResponse[]>();
 
         if (error) {
@@ -61,7 +61,7 @@ export default function FavoritesPage() {
         <p className="text-muted-foreground mt-2 mb-4">
           You haven’t added any favorites yet — start exploring and show some love!
         </p>
-        <Link href="/">
+        <Link prefetch={true} href="/">
           <Button className="rounded-full px-6">Browse Library</Button>
         </Link>
       </div>
@@ -82,7 +82,7 @@ export default function FavoritesPage() {
               {books.length} {books.length === 1 ? 'book' : 'books'} you loved ❤️
             </p>
           </div>
-          <Link href="/">
+          <Link prefetch={true} href="/">
             <Button variant="outline" className="rounded-full">
               Discover More
             </Button>
@@ -94,19 +94,22 @@ export default function FavoritesPage() {
           {books.map(book => (
             <motion.div
               key={book.id}
-              whileHover={{ scale: 1.03, y: -4 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              whileHover={{scale: 1.03, y: -4}}
+              transition={{type: 'spring', stiffness: 300, damping: 20}}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
               <Link href={`/book/${book.id}`}>
                 <div className="relative aspect-[3/4] w-full overflow-hidden">
                   {book.cover_url ? (
                     <Image
-                      loading='lazy'
-                      src={book.cover_url}
-                      alt={book.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      src={book.cover_url || '/default-book-cover.jpg'}
+                      alt={`Cover of ${book.title}`}
+                      width={400}
+                      height={600}
+                      className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                      priority
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
@@ -117,7 +120,6 @@ export default function FavoritesPage() {
                     <Heart className="w-4 h-4 text-red-500" fill="red" />
                   </div>
                 </div>
-
 
                 <div className="p-3 space-y-1">
                   <h3 className="font-semibold truncate">{book.title}</h3>

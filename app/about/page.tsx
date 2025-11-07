@@ -1,7 +1,7 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import Image from 'next/image';
+import Link from 'next/link';
+import {Button} from '@/components/ui/button';
+import {ArrowRight} from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -12,8 +12,8 @@ export default function AboutPage() {
         </h1>
 
         <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-          A clean, modern space for readers who value simplicity and depth.
-          BookVerse is built to help you <strong>discover</strong>, <strong>read</strong>, and
+          A clean, modern space for readers who value simplicity and depth. BookVerse is built to
+          help you <strong>discover</strong>, <strong>read</strong>, and
           <strong> cherish</strong> the books that matter — without distractions.
         </p>
 
@@ -28,16 +28,16 @@ export default function AboutPage() {
         </div>
 
         <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-          Designed with confidence, crafted for clarity — BookVerse isn’t just a library,
-          it’s your digital reading companion.
+          Designed with confidence, crafted for clarity — BookVerse isn’t just a library, it’s your
+          digital reading companion.
         </p>
 
         <Button asChild size="lg" className="font-semibold mt-4">
-          <Link href="/library">
+          <Link prefetch={true} href="/library">
             Explore Library <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>
       </div>
     </main>
-  )
+  );
 }

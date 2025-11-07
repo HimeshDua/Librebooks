@@ -28,7 +28,7 @@ export default function Header() {
         {/* ========== LEFT SIDE: Logo + Navigation ========== */}
         <div className="flex items-center gap-6">
           {/* Brand Logo */}
-          <Link href="/" className="hidden sm:flex items-center gap-2 group">
+          <Link prefetch={true} href="/" className="hidden sm:flex items-center gap-2 group">
             <Library className="w-5 h-5" />
             <span className="font-bold text-lg tracking-tight hidden sm:block">LibreBooks</span>
           </Link>
@@ -62,6 +62,7 @@ export default function Header() {
                     </Link>
                   )}{' '}
                   <Link
+                    prefetch={true}
                     href="/library"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
@@ -70,6 +71,7 @@ export default function Header() {
                   </Link>
                   {isUser && (
                     <Link
+                      prefetch={true}
                       href="/book/favorites"
                       onClick={() => setOpen(false)}
                       className="text-sm font-medium py-2 hover:text-primary transition-colors"
@@ -78,6 +80,7 @@ export default function Header() {
                     </Link>
                   )}
                   <Link
+                    prefetch={true}
                     href="/about"
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
@@ -93,6 +96,7 @@ export default function Header() {
           <div className="hidden sm:flex items-center gap-6">
             {!user && (
               <Link
+                prefetch={true}
                 href="/"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -100,6 +104,7 @@ export default function Header() {
               </Link>
             )}
             <Link
+              prefetch={true}
               href="/library"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -107,6 +112,7 @@ export default function Header() {
             </Link>
             {user && (
               <Link
+                prefetch={true}
                 href="/book/favorites"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -114,6 +120,7 @@ export default function Header() {
               </Link>
             )}
             <Link
+              prefetch={true}
               href="/about"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -132,7 +139,7 @@ export default function Header() {
             className="sm:hidden"
             aria-label="Search books"
           >
-            <Link href="/library">
+            <Link prefetch={true} href="/library">
               <Search className="w-4 h-4" />
             </Link>
           </Button>
@@ -144,10 +151,14 @@ export default function Header() {
           ) : (
             <div className="flex items-center gap-2">
               <Button asChild variant="ghost" className="hidden sm:flex">
-                <Link href="/auth/login">Log In</Link>
+                <Link prefetch={true} href="/auth/login">
+                  Log In
+                </Link>
               </Button>
               <Button asChild className="rounded-full font-semibold">
-                <Link href="/auth/sign-up">Sign Up</Link>
+                <Link prefetch={true} href="/auth/sign-up">
+                  Sign Up
+                </Link>
               </Button>
             </div>
           )}

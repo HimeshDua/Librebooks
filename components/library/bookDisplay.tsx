@@ -46,7 +46,9 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
           </p>
           {query && (
             <Button asChild variant="outline" className="mt-4">
-              <Link href="/library">Browse All Books</Link>
+              <Link prefetch={true} href="/library">
+                Browse All Books
+              </Link>
             </Button>
           )}
         </div>
@@ -139,7 +141,12 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
         <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
             <li className="group/card relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80 md:hover:!opacity-100 md:hover:!blur-none">
-              <Link href={`/book/${book.slug}`} aria-label={`Open ${book.title}`} className="block">
+              <Link
+                prefetch={true}
+                href={`/book/${book.slug}`}
+                aria-label={`Open ${book.title}`}
+                className="block"
+              >
                 <div className="relative w-full aspect-[3/4] bg-muted rounded-lg overflow-hidden shadow-sm border border-border/50">
                   {book.cover_url ? (
                     <Image
