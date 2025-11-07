@@ -46,7 +46,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const [showControls, setShowControls] = useState(true);
   const [showToc, setShowToc] = useState(false);
   const [toc, setToc] = useState<TocItem[]>([]);
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const renditionRef = useRef<RenditionLike | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
