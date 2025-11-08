@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {Suspense, useState} from 'react';
 import {Library, X, Search} from 'lucide-react';
 import Link from 'next/link';
 import {Button} from '../ui/button';
@@ -17,6 +17,7 @@ import {useUser} from './context/UserContext';
 import {hasEnvVars} from '@/lib/utils';
 import {EnvVarWarning} from '../env-var-warning';
 import {ThemeToggleButton} from '../book/toggleThemeButton';
+import {AuthButtonsSkeleton} from '../AuthButtonsSkeleton';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -142,8 +143,11 @@ export default function Header() {
               <Search className="w-4 h-4" />
             </Link>
           </Button>
-          {isUser ? (
-            <UserMenu user={user} />
+          <AuthButtonsSkeleton />
+          {typeof window !== 'undefined' && isUser ? (
+            <Suspense fallback={<AuthButtonsSkeleton />}>
+              <UserMenu user={user} />
+            </Suspense>
           ) : !hasEnvVars ? (
             <EnvVarWarning />
           ) : (

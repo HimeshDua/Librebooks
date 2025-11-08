@@ -1,20 +1,19 @@
-import { updateSession } from '@/lib/supabase/middleware';
-import { NextResponse, type NextRequest } from 'next/server';
-import { createClient } from './lib/supabase/server';
+import {updateSession} from '@/lib/supabase/middleware';
+import {type NextRequest} from 'next/server';
+// import {createClient} from './lib/supabase/server';
 
 export async function middleware(request: NextRequest) {
+  // const supabase = createClient();
 
-  const supabase = createClient();
+  // const path = request.nextUrl.pathname;
+  // const redirectUrl = request.nextUrl.clone();
+  // redirectUrl.pathname = '/library';
 
-  const path = request.nextUrl.pathname;
-  const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = '/library';
+  // const { data: { user } } = await (await supabase).auth.getUser();
 
-  const { data: { user } } = await (await supabase).auth.getUser();
-
-  if (user && path === '/') {
-    return NextResponse.redirect(redirectUrl);
-  }
+  // if (user && path === '/') {
+  //   return NextResponse.redirect(redirectUrl);
+  // }
   return await updateSession(request);
 }
 

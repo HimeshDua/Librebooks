@@ -5,6 +5,7 @@ import './globals.css';
 import './tiptap.scss';
 import './readermode.css';
 import PageShell from '@/components/layout/pageShell';
+import NextTopLoader from 'nextjs-toploader';
 
 export const dynamic = 'auto';
 export const dynamicParams = true;
@@ -73,7 +74,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <PageShell>{children}</PageShell>
+          <PageShell>
+            <NextTopLoader />
+            {children}
+          </PageShell>
         </ThemeProvider>
       </body>
     </html>

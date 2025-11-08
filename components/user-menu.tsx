@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Suspense} from 'react';
 import {useTheme} from 'next-themes';
 import {Popover, PopoverTrigger, PopoverContent} from '@/components/ui/popover';
 import {Button} from '@/components/ui/button';
@@ -73,7 +73,11 @@ export function UserMenu({user}: {user: User}) {
           className="order-2 md:order-1 rounded-full hover:border-primary/60 transition-all"
         >
           <Avatar className="w-8 h-8">
-            <AvatarImage src="/avatars/default-user.png" alt={user.email} />
+            <AvatarImage
+              className="object-cover "
+              src="/avatars/default-user.png"
+              alt={user.email}
+            />
             <AvatarFallback className="bg-muted text-sm">
               {user.email?.charAt(0).toUpperCase()}
             </AvatarFallback>
@@ -135,32 +139,40 @@ export function UserMenu({user}: {user: User}) {
 
         <Separator className="my-3" />
 
-        <div className="flex justify-around mb-3">
-          <Button
-            size="icon"
-            variant={theme === 'light' ? 'default' : 'outline'}
-            onClick={() => setTheme('light')}
-            aria-label="Light mode"
-          >
-            <SunIcon className="w-4 h-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant={theme === 'dark' ? 'default' : 'outline'}
-            onClick={() => setTheme('dark')}
-            aria-label="Dark mode"
-          >
-            <MoonIcon className="w-4 h-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant={theme === 'system' ? 'default' : 'outline'}
-            onClick={() => setTheme('system')}
-            aria-label="System theme"
-          >
-            <LaptopIcon className="w-4 h-4" />
-          </Button>
-        </div>
+        <Suspense
+          fallback={
+            <Button size="icon" variant={'default'} aria-label="System theme">
+              <LaptopIcon className="w-4 h-4" />
+            </Button>
+          }
+        >
+          <div className="flex justify-around mb-3">
+            <Button
+              size="icon"
+              variant={theme === 'light' ? 'default' : 'outline'}
+              onClick={() => setTheme('light')}
+              aria-label="Light mode"
+            >
+              <SunIcon className="w-4 h-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant={theme === 'dark' ? 'default' : 'outline'}
+              onClick={() => setTheme('dark')}
+              aria-label="Dark mode"
+            >
+              <MoonIcon className="w-4 h-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant={theme === 'system' ? 'default' : 'outline'}
+              onClick={() => setTheme('system')}
+              aria-label="System theme"
+            >
+              <LaptopIcon className="w-4 h-4" />
+            </Button>
+          </div>
+        </Suspense>
 
         <Separator className="my-2" />
 

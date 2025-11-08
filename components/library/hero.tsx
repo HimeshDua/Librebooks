@@ -1,3 +1,4 @@
+'use server';
 import React from 'react';
 import {Button} from '../ui/button';
 import Link from 'next/link';
@@ -21,7 +22,7 @@ export interface HeroProps {
   };
 }
 
-function LibPage({heading, description, button, reviews}: HeroProps) {
+async function Hero({heading, description, button, reviews}: HeroProps) {
   return (
     <section className="py-32 mx-auto">
       <div className="container mx-auto text-center">
@@ -62,4 +63,4 @@ function LibPage({heading, description, button, reviews}: HeroProps) {
   );
 }
 
-export default LibPage;
+export default Hero;
