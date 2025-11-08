@@ -1,3 +1,4 @@
+'use server';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
@@ -19,6 +20,7 @@ export default function AboutPage() {
 
         <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md">
           <Image
+            loading="eager"
             src="/lib-image.png"
             alt="Modern digital library"
             fill
