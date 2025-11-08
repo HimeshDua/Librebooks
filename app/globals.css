@@ -69,7 +69,10 @@
   }
 }
 
-
 .pg-boilerplate {
   display: none;
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
 }

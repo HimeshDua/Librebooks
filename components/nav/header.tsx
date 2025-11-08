@@ -16,6 +16,7 @@ import {
 import {useUser} from './context/UserContext';
 import {hasEnvVars} from '@/lib/utils';
 import {EnvVarWarning} from '../env-var-warning';
+import {ThemeToggleButton} from '../book/toggleThemeButton';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -52,15 +53,13 @@ export default function Header() {
                 </DrawerHeader>
 
                 <div className="flex flex-col gap-4 mt-4">
-                  {!isUser && (
-                    <Link
-                      href="/"
-                      onClick={() => setOpen(false)}
-                      className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                    >
-                      Go Home
-                    </Link>
-                  )}{' '}
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  >
+                    Go Home
+                  </Link>
                   <Link
                     prefetch={true}
                     href="/library"
@@ -92,7 +91,6 @@ export default function Header() {
             </Drawer>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-6">
             {!user && (
               <Link
@@ -131,6 +129,7 @@ export default function Header() {
 
         {/* ========== RIGHT SIDE: Auth / Profile ========== */}
         <div className="flex items-center gap-3">
+          <ThemeToggleButton />
           {/* Quick Search Icon (Mobile) */}
           <Button
             asChild
@@ -143,7 +142,6 @@ export default function Header() {
               <Search className="w-4 h-4" />
             </Link>
           </Button>
-
           {isUser ? (
             <UserMenu user={user} />
           ) : !hasEnvVars ? (
