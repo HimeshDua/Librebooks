@@ -167,9 +167,9 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
   const {slug} = await params;
   const supabase = publicSupabase;
 
-  console.log('slug ', slug);
+  // console.log('slug ', slug);
   const {data, error} = await getBookfromSlug(supabase, slug);
-  const {userId} = await getUserById(supabase);
+  const {userId} = await getUserById();
 
   if (error || !data) {
     return (
@@ -263,7 +263,7 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
                   alt={`Cover of ${book.title}`}
                   width={400}
                   height={600}
-                  className="object-cover"
+                  className="object-cover w-full aspect-[3/4]"
                   priority
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="

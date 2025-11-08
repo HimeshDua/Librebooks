@@ -22,6 +22,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
+  themeColor: '#0f172a',
 };
 
 export const metadata: Metadata = {
@@ -31,7 +32,6 @@ export const metadata: Metadata = {
   applicationName: 'LibreBooks',
   authors: [{name: 'Himesh Dua', url: 'https://librebooks.vercel.app'}],
   creator: 'Himesh Dua',
-  themeColor: '#0f172a',
   appleWebApp: {
     capable: true,
     title: 'LibreBooks',
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
       {url: '/ios/1024.png', media: '(max-resolution: 1024x1024)'},
     ],
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest.ts',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

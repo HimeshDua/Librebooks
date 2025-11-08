@@ -20,6 +20,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   const [isExists, setIsExists] = useState(false);
 
   useEffect(() => {
+    // console.log('id', id, ' bookId', bookId, ' bookTitle', bookTitle);
     const fetchFavorite = async () => {
       const supabase = createClient();
       const {data, error: selectError} = await supabase

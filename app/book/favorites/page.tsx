@@ -21,7 +21,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     async function fetchFavorites() {
       const supabase = createClient();
-      const {userId} = await getUserById(supabase);
+      const {userId} = await getUserById();
       if (userId) {
         const {data, error} = await supabase
           .from('favorites')
