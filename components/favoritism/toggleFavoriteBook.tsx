@@ -24,7 +24,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   // console.log('ID: ', id);
 
   useEffect(() => {
-    // console.log('id', id, ' bookId', bookId, ' bookTitle', bookTitle);
+    console.log('id', id, ' bookId', bookId, ' bookTitle', bookTitle);
     const fetchFavorite = async () => {
       const supabase = createClient();
       const {data, error: selectError} = await supabase
@@ -39,7 +39,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
         return;
       }
 
-      setIsExists(!!data);
+      setIsExists((data?.length ?? 0) > 0);
     };
 
     if (id && bookId) {
