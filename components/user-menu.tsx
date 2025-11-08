@@ -74,8 +74,8 @@ export function UserMenu({user}: {user: User}) {
         >
           <Avatar className="w-8 h-8">
             <AvatarImage
-              className="object-cover "
-              src="/avatars/default-user.png"
+              className="object-fill "
+              src="/avatars/default-user.jpg"
               alt={user.email}
             />
             <AvatarFallback className="bg-muted text-sm">

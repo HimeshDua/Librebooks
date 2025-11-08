@@ -140,7 +140,7 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
       {books.map((book: LocalBook) => (
         <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
           <HoverCardTrigger asChild>
-            <li className="group/card relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:group-hover/card-grid:blur-[1.2px] md:group-hover/card-grid:opacity-80 md:hover:!opacity-100 md:hover:!blur-none">
+            <li className="relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:hover:!blur-none">
               <Link
                 prefetch={true}
                 href={`/book/${book.slug}`}
