@@ -25,9 +25,9 @@ export default function FavoritesPage() {
       if (userId) {
         const {data, error} = await supabase
           .from('favorites')
-          .select('book_id, books(id, title, author, cover_url)')
+          .select('book_id, books(slug,  title, author, cover_url)')
           .eq('user_id', userId)
-          .order('id', {ascending: false})
+          .order('created_at', {ascending: false})
           .returns<FavoriteResponse[]>();
 
         if (error) {
@@ -93,12 +93,12 @@ export default function FavoritesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {books.map(book => (
             <motion.div
-              key={book.id}
+              key={book.slug}
               whileHover={{scale: 1.01, y: -4}}
               transition={{type: 'spring', stiffness: 300, damping: 20}}
               className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
             >
-              <Link href={`/book/${book.id}`}>
+              <Link href={`/book/${book.slug}`}>
                 <div className="relative aspect-[3/4] w-full overflow-hidden">
                   {book.cover_url ? (
                     <Image

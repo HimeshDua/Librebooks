@@ -7,7 +7,6 @@ import {Button} from '@/components/ui/button';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Separator} from '@/components/ui/separator';
 import {SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart} from 'lucide-react';
-import {createClient} from '@/lib/supabase/client';
 import {LogoutButton} from './logout-button';
 import Link from 'next/link';
 import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
@@ -15,14 +14,12 @@ import {useIsMobile} from '@/hooks/useIsMobile';
 import {toast} from 'sonner';
 import {User} from '@supabase/supabase-js';
 
-export function UserMenu({user}: {user: User}) {
+export function UserMenu({user, favoriteCount}: {user: User; favoriteCount: number}) {
   const {setTheme, theme} = useTheme();
-  const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
 
   useEffect(() => {
-    const supabase = createClient();
     const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
     const isLogWarnGiven = localStorage.getItem('LogWarnGiven') !== '1' || false;
 
@@ -43,21 +40,11 @@ export function UserMenu({user}: {user: User}) {
       localStorage.setItem('LogWarnGiven', '1');
     }
 
-    async function fetchFavorites() {
-      if (user?.id) {
-        const {data, error} = await supabase.from('favorites').select('id').eq('user_id', user.id);
-        if (error) throw new Error(error.message);
-        const dataLength = data.length;
-        setCount(dataLength || 0);
-      }
-    }
-
     if (isMob === null) {
       return;
     } else {
       setIsMobile(isMob);
     }
-    fetchFavorites();
   }, [user, isMob]);
 
   if (!user) return null;
@@ -118,7 +105,7 @@ export function UserMenu({user}: {user: User}) {
             )}
           </div>
 
-          {count > 0 && (
+          {favoriteCount > 0 && (
             <Link
               href="/book/favorites"
               className="group flex items-center justify-between bg-muted/40 hover:bg-muted/60 transition-colors rounded-lg px-3 py-2"
@@ -131,7 +118,7 @@ export function UserMenu({user}: {user: User}) {
                 <span className="text-sm font-medium">Books Loved by You</span>
               </div>
               <span className="text-xs font-semibold text-muted-foreground bg-background/80 rounded-full px-2 py-0.5">
-                {count}
+                {favoriteCount || 0}
               </span>
             </Link>
           )}

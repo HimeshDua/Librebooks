@@ -8,6 +8,7 @@ import {toast} from 'sonner';
 import {ConfettiButton} from '../ui/confetti';
 import AuthDialog from '../auth-dialog';
 import {cn} from '@/lib/utils';
+import {useUser} from '../nav/context/UserContext';
 
 type Props = {
   id: string | null;
@@ -17,7 +18,10 @@ type Props = {
 
 function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   const [loading, setLoading] = useState(false);
+  const {setFavoriteCount} = useUser();
   const [isExists, setIsExists] = useState(false);
+
+  // console.log('ID: ', id);
 
   useEffect(() => {
     // console.log('id', id, ' bookId', bookId, ' bookTitle', bookTitle);
@@ -68,6 +72,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
           return;
         }
 
+        setFavoriteCount(prev => prev - 1);
         setIsExists(false);
         setTimeout(() => {
           toast.success(`Removed "${bookTitle}" from favorites`, {
@@ -85,6 +90,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
           });
         }, 30);
       } else {
+        setFavoriteCount(prev => prev + 1);
         const {error: insertError} = await supabase
           .from('favorites')
           .insert({book_id: bookId, user_id: id});

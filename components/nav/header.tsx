@@ -21,7 +21,7 @@ import {AuthButtonsSkeleton} from '../AuthButtonsSkeleton';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const {user} = useUser();
+  const {user, favoriteCount} = useUser();
   const isUser = !!user;
 
   return (
@@ -146,7 +146,7 @@ export default function Header() {
           <AuthButtonsSkeleton />
           {typeof window !== 'undefined' && isUser ? (
             <Suspense fallback={<AuthButtonsSkeleton />}>
-              <UserMenu user={user} />
+              <UserMenu user={user} favoriteCount={favoriteCount} />
             </Suspense>
           ) : !hasEnvVars ? (
             <EnvVarWarning />

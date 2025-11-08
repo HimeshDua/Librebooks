@@ -19,6 +19,7 @@ import {publicSupabase} from '@/lib/supabase/public';
 import {getUserById} from '@/lib/getUserId';
 import {getBookfromSlug} from '@/lib/getBookfromSlug';
 import type {Metadata} from 'next';
+import BackButton from '@/components/back-button';
 export async function generateStaticParams() {
   const supabase = publicSupabase;
 
@@ -240,6 +241,12 @@ export default async function DetailedBook({params}: {params: Promise<{slug: str
         {/* 🧭 Breadcrumb */}
         <Breadcrumb className="mb-6 text-sm">
           <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink className="text-center">
+                <BackButton />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link href="/library">Library</Link>
