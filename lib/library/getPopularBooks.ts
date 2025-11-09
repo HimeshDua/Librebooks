@@ -20,7 +20,7 @@ export async function getPopularBooks(page: number, pageSize: number) {
       console.log('Fetched popular books from database.');
       return {data: data || [], count: count || 0, error: null};
     },
-    ['popular-books'],
+    ['popular-books', `page-${page}`, `size-${pageSize}`],
     {revalidate: 3600, tags: ['books', 'popular']}
   );
 

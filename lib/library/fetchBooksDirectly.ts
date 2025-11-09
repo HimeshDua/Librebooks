@@ -15,6 +15,7 @@ export async function fetchBooksDirectly(
     .order('download_count', {ascending: false})
     .range(from, to);
 
+  console.log('Fetching books directly from database:');
   if (category && category !== 'All') {
     builder = builder.contains('bookshelves', [category]);
   }
