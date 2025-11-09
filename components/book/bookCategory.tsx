@@ -46,7 +46,10 @@ function SelectBookCategory({className}: {className?: string}) {
     const params = new URLSearchParams(window.location.search);
 
     if (value === 'All') params.delete('category');
-    else params.set('category', value);
+    else {
+      params.set('page', '1');
+      params.set('category', value);
+    }
 
     router.push(`/library?${params.toString()}`);
   };

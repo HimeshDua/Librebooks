@@ -17,16 +17,19 @@ export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
           className="pl-10 pr-4 py-2 rounded-full w-full"
           value={value}
           onChange={e => setValue(e.target.value)}
-          defaultValue={initialQuery}
         />
-        {value && value.length > 2 && (
-          <button
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-            onClick={() => setValue('')}
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
+        {(value && value.length > 2) ||
+          (initialQuery.length > 2 && (
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+              onClick={() => {
+                setValue('');
+              }}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          ))}
       </div>
       <Button type="submit" className="rounded-full px-6 cursor-pointer">
         Search

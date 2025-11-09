@@ -30,6 +30,7 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
       });
       if (error) throw error;
       router.back();
+      router.refresh();
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {

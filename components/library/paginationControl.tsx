@@ -2,10 +2,14 @@ import Link from 'next/link';
 import {Button} from '../ui/button';
 
 export function PaginationControls({
+  view,
+  category,
   query,
   page,
   totalPages,
 }: {
+  view?: string;
+  category: string;
   query: string;
   page: number;
   totalPages: number;
@@ -16,6 +20,8 @@ export function PaginationControls({
   const makeUrl = (newPage: number) => {
     const params = new URLSearchParams();
     if (query) params.set('q', query);
+    if (category) params.set('category', category);
+    if (view) params.set('view', view);
     params.set('page', newPage.toString());
     return `/library?${params.toString()}`;
   };

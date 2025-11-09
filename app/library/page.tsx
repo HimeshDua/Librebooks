@@ -202,7 +202,13 @@ export default async function Library({
 
         {books && books.length > 0 && (
           <div className="mt-8">
-            <PaginationControls query={query} page={page} totalPages={totalPages} />
+            <PaginationControls
+              page={page}
+              query={query}
+              view={urlViewMode}
+              category={category}
+              totalPages={totalPages}
+            />
           </div>
         )}
       </div>

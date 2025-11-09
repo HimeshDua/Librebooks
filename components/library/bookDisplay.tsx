@@ -138,7 +138,7 @@ export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {
     // Grid View
     <ul className="group/card-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 transition-all duration-300">
       {books.map((book: LocalBook) => (
-        <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
+        <HoverCard key={book.slug} openDelay={180} closeDelay={100}>
           <HoverCardTrigger asChild>
             <li className="relative transition-all duration-500 md:hover:scale-[1.03] md:hover:z-10 md:hover:!blur-none">
               <Link
