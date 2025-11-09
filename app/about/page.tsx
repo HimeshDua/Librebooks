@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {ArrowRight} from 'lucide-react';
 
-export default function AboutPage() {
+export default async function AboutPage() {
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-3xl w-full text-center space-y-8">
