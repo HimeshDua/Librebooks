@@ -2,7 +2,7 @@ import {Button} from './ui/button';
 
 export function AuthButtonsSkeleton() {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" suppressHydrationWarning>
       <Button
         asChild
         variant="ghost"

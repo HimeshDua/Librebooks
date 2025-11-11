@@ -76,7 +76,7 @@ export function UserMenu({user, favoriteCount}: {user: User; favoriteCount: numb
         align="end"
         className="w-screen md:w-64 mt-2 rounded-xl border-border/60 shadow-lg backdrop-blur-sm bg-background/90"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3" suppressHydrationWarning>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-muted-foreground" />

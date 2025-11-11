@@ -82,7 +82,7 @@ export default function FavoritesPage() {
               {books.length} {books.length === 1 ? 'book' : 'books'} you loved ❤️
             </p>
           </div>
-          <Link prefetch={true} href="/">
+          <Link prefetch={true} href="/library">
             <Button variant="outline" className="rounded-full">
               Discover More
             </Button>
