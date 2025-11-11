@@ -7,7 +7,7 @@ import {SearchForm} from '@/components/library/searchForm';
 import {PaginationControls} from '@/components/library/paginationControl';
 import {Suspense} from 'react';
 import BookDisplaySkeleton from '@/components/library/bookDisplaySkeleton';
-// import {getPopularBooks} from '@/lib/library/getPopularBooks';
+import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import {getBooksByCategory} from '@/lib/library/getBooksByCategory';
 import {fetchBooksDirectly} from '@/lib/library/fetchBooksDirectly';
 import {LIBRARY_CONFIG} from '@/lib/library/config';
@@ -124,8 +124,7 @@ export default async function Library({
       count = result.count;
       error = result.error?.message || null;
     } else if (category === 'All') {
-      // const result = await getPopularBooks(page, PAGE_SIZE);
-      const result = await fetchBooksDirectly(page, PAGE_SIZE);
+      const result = await getPopularBooks(page, PAGE_SIZE);
       books = result.data;
       count = result.count;
       error = result.error?.message || null;
