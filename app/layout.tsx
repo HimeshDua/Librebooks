@@ -28,6 +28,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
+  verification: {google: 'ZqN_pVPqcbynnIC9mI9y7Zk3IDzxfkwuP9hapELyTuU'},
   title: 'LibreBooks',
   description: 'FreeBooks Library – Read, explore, and manage your favorite books online.',
   applicationName: 'LibreBooks',
