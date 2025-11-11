@@ -96,6 +96,17 @@ export function SignUpForm({className, ...props}: React.ComponentPropsWithoutRef
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? 'Creating an account...' : 'Sign up'}
               </Button>
+              <Button
+                className="w-full"
+                variant="outline"
+                type="button"
+                onClick={async () => {
+                  const supabase = createClient();
+                  await supabase.auth.signInWithOAuth({provider: 'google'});
+                }}
+              >
+                Sign up with Google
+              </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{' '}

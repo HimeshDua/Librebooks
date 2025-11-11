@@ -81,6 +81,23 @@ export function LoginForm({className, ...props}: React.ComponentPropsWithoutRef<
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
+              <Button
+                className="w-full"
+                variant="outline"
+                type="button"
+                onClick={async () => {
+                  const supabase = createClient();
+                  const {error} = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                      redirectTo: `${window.location.origin}/auth/callback`, // optional
+                    },
+                  });
+                  if (error) console.error('Google sign-in error:', error.message);
+                }}
+              >
+                Login with Google
+              </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
