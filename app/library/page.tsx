@@ -95,11 +95,16 @@ export const metadata: Metadata = {
   classification: 'Digital Library',
 };
 
-export default async function Library({
-  searchParams,
-}: {
-  searchParams: Promise<{page?: string; q?: string; category?: string; view?: string}>;
-}) {
+type LibraryProps = {
+  searchParams: Promise<{
+    page?: string;
+    q?: string;
+    category?: string;
+    view?: string;
+  }>;
+};
+
+export default async function Library({searchParams}: LibraryProps) {
   const resolvedParams = await searchParams;
   const page = Math.max(1, Number(resolvedParams.page) || 1);
   const query = (resolvedParams.q || '').trim();
@@ -194,7 +199,7 @@ export default async function Library({
           </div>
         </div>
 
-        <Separator />
+        <Separator className="my-5" />
 
         <Suspense fallback={<BookDisplaySkeleton />}>
           <BookDisplay books={books} query={query} urlViewMode={urlViewMode} />
