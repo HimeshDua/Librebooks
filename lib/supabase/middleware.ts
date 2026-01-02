@@ -51,6 +51,7 @@ export async function updateSession(request: NextRequest) {
     !pathname.startsWith('/login') &&
     !pathname.startsWith('/book') &&
     !pathname.startsWith('/about') &&
+    !pathname.startsWith('/testicals') &&
     !pathname.startsWith('/library') &&
     !pathname.startsWith('/book/favorites') &&
     !pathname.startsWith('/read') &&

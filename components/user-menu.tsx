@@ -14,7 +14,7 @@ import {useIsMobile} from '@/hooks/useIsMobile';
 import {toast} from 'sonner';
 import {User} from '@supabase/supabase-js';
 
-export function UserMenu({user, favoriteCount}: {user: User; favoriteCount: number}) {
+export function UserMenu({user, favoriteCount = 0}: {user: User; favoriteCount?: number}) {
   const {setTheme, theme} = useTheme();
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();

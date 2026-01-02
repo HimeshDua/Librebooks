@@ -5,13 +5,13 @@ import {BookDisplay} from '@/components/library/bookDisplay';
 import SelectBookCategory from '@/components/book/bookCategory';
 import {SearchForm} from '@/components/library/searchForm';
 import {PaginationControls} from '@/components/library/paginationControl';
-import {Suspense} from 'react';
 import BookDisplaySkeleton from '@/components/library/bookDisplaySkeleton';
-// import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import {getBooksByCategory} from '@/lib/library/getBooksByCategory';
 import {fetchBooksDirectly} from '@/lib/library/fetchBooksDirectly';
 import {LIBRARY_CONFIG} from '@/lib/library/config';
+import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import type {Metadata} from 'next';
+import {Suspense} from 'react';
 
 export const metadata: Metadata = {
   title: 'Free Public Domain Books | LibreBooks Library',
@@ -109,7 +109,7 @@ export default async function Library({searchParams}: LibraryProps) {
   const page = Math.max(1, Number(resolvedParams.page) || 1);
   const query = (resolvedParams.q || '').trim();
   const category = resolvedParams.category || 'All';
-  const urlViewMode = resolvedParams.view;
+  const urlViewMode = (resolvedParams.view as 'grid' | 'compact') || 'grid';
 
   const {PAGE_SIZE, MAX_CACHED_PAGE, CACHED_CATEGORIES} = LIBRARY_CONFIG;
 
@@ -119,25 +119,28 @@ export default async function Library({searchParams}: LibraryProps) {
 
   try {
     if (query) {
-      const result = await fetchBooksDirectly(page, PAGE_SIZE, category, query);
+      ///cached
+      const result = await getPopularBooks(page, PAGE_SIZE);
       books = result.data;
       count = result.count;
-      error = result.error?.message || null;
+      error = result.error || null;
     } else if (page > MAX_CACHED_PAGE) {
       const result = await fetchBooksDirectly(page, PAGE_SIZE, category);
       books = result.data;
       count = result.count;
       error = result.error?.message || null;
     } else if (category === 'All') {
-      const result = await fetchBooksDirectly(page, PAGE_SIZE);
+      ///cached
+      const result = await getPopularBooks(page, PAGE_SIZE);
       books = result.data;
       count = result.count;
-      error = result.error?.message || null;
+      error = result.error || null;
     } else if (CACHED_CATEGORIES.includes(category as (typeof CACHED_CATEGORIES)[number])) {
+      ///cached
       const result = await getBooksByCategory(category, page, PAGE_SIZE);
       books = result.data;
       count = result.count;
-      error = result.error?.message || null;
+      error = result.error || null;
     } else {
       const result = await fetchBooksDirectly(page, PAGE_SIZE, category);
       books = result.data;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button} from '../ui/button';
 import {HeartIcon, HeartOffIcon} from 'lucide-react';
 import {createClient} from '@/lib/supabase/client';
@@ -8,7 +8,6 @@ import {toast} from 'sonner';
 import {ConfettiButton} from '../ui/confetti';
 import AuthDialog from '../auth-dialog';
 import {cn} from '@/lib/utils';
-import {useUser} from '../nav/context/UserContext';
 
 type Props = {
   id: string | null;
@@ -18,9 +17,9 @@ type Props = {
 
 function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   const [loading, setLoading] = useState(false);
-  const {setFavoriteCount} = useUser();
+  // const {setFavoriteCount} = useUser();
   const [isExists, setIsExists] = useState(false);
-
+  const [favoriteCount, setFavoriteCount] = useState(0);
   // console.log('ID: ', id);
 
   useEffect(() => {

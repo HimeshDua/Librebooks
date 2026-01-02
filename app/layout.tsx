@@ -4,11 +4,10 @@ import {ThemeProvider} from 'next-themes';
 import './globals.css';
 import './tiptap.scss';
 import './readermode.css';
-import PageShell from '@/components/layout/pageShell';
 import NextTopLoader from 'nextjs-toploader';
-
-export const dynamic = 'auto';
-export const dynamicParams = true;
+import Header from '@/components/nav/header';
+import Footer from '@/components/nav/footer';
+import {Toaster} from 'sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -70,15 +69,25 @@ export const metadata: Metadata = {
   manifest: '/manifest.ts',
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default async function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <PageShell>
-            <NextTopLoader />
-            {children}
-          </PageShell>
+          <Header />
+          <NextTopLoader />
+          {children}
+          <Toaster
+            className="z-50"
+            mobileOffset={20}
+            expand
+            closeButton
+            containerAriaLabel="Message Box"
+            position="bottom-center"
+            richColors
+            // theme={toasterTheme}
+          />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

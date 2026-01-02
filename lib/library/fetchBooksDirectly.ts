@@ -15,7 +15,6 @@ export async function fetchBooksDirectly(
     .order('download_count', {ascending: false})
     .range(from, to);
 
-  console.log('Fetching books directly from database:');
   if (category && category !== 'All') {
     builder = builder.contains('bookshelves', [category]);
   }
@@ -30,6 +29,5 @@ export async function fetchBooksDirectly(
     console.error('Error fetching books directly:', error);
     return {data: [], count: 0, error};
   }
-  console.log('Fetched books with query:', query, ' without caching');
   return {data: data || [], count: count || 0, error: null};
 }

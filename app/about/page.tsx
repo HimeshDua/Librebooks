@@ -1,10 +1,10 @@
-'use server';
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {ArrowRight} from 'lucide-react';
 
-export default async function AboutPage() {
+export default function page() {
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-3xl w-full text-center space-y-8">
@@ -23,7 +23,8 @@ export default async function AboutPage() {
             loading="eager"
             src="/lib-image.png"
             alt="Modern digital library"
-            fill
+            height={500}
+            width={600}
             className="object-cover opacity-90 scale-[1.006] hover:scale-[1.016] transition-transform duration-300"
             priority
           />
@@ -35,7 +36,7 @@ export default async function AboutPage() {
         </p>
 
         <Button asChild size="lg" className="font-semibold mt-4">
-          <Link prefetch={true} href="/library">
+          <Link prefetch href="/library">
             Explore Library <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>

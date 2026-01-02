@@ -11,7 +11,7 @@ import {LocalBook} from '@/types';
 interface BookDisplayProps {
   books: LocalBook[];
   query: string;
-  urlViewMode?: string;
+  urlViewMode: 'grid' | 'compact';
 }
 
 export function BookDisplay({books, query, urlViewMode}: BookDisplayProps) {

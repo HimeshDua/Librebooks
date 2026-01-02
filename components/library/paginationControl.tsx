@@ -1,19 +1,21 @@
 import Link from 'next/link';
 import {Button} from '../ui/button';
 
+type PaginationControlsProps = {
+  view?: string;
+  category: string;
+  query: string;
+  page: number;
+  totalPages: number;
+};
+
 export function PaginationControls({
   view,
   category,
   query,
   page,
   totalPages,
-}: {
-  view?: string;
-  category: string;
-  query: string;
-  page: number;
-  totalPages: number;
-}) {
+}: PaginationControlsProps) {
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
 

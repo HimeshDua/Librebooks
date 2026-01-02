@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import {createClient} from '@/lib/supabase/client';
-import {getUserById} from '@/lib/getUserId';
+import {getUserByInfo} from '@/lib/getUserByInfo';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Heart, LibraryBig, Loader2} from 'lucide-react';
@@ -21,7 +21,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     async function fetchFavorites() {
       const supabase = createClient();
-      const {userId} = await getUserById();
+      const userId = (await getUserByInfo()).user?.id;
       if (userId) {
         const {data, error} = await supabase
           .from('favorites')

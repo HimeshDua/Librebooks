@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "next dev --turbopack --debug-prerender",
+    "build": "next build ",
     "start": "next start",
     "lint": "eslint ."
   },
