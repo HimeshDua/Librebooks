@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {createClient} from '@/lib/supabase/client';
 import {getUserByInfo} from '@/lib/getUserByInfo';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +8,7 @@ import {Heart, LibraryBig, Loader2} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {motion} from 'framer-motion';
 import type {Book} from '@/types';
+import {supabase} from '@/lib/supabase/client';
 
 type FavoriteResponse = {
   books: Book[];
@@ -20,7 +20,6 @@ export default function FavoritesPage() {
 
   useEffect(() => {
     async function fetchFavorites() {
-      const supabase = createClient();
       const userId = (await getUserByInfo()).user?.id;
       if (userId) {
         const {data, error} = await supabase

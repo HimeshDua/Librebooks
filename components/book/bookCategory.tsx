@@ -1,6 +1,6 @@
 'use client';
 
-import {createClient} from '@/lib/supabase/client';
+import {supabase} from '@/lib/supabase/client';
 import {
   Select,
   SelectContent,
@@ -25,7 +25,6 @@ function SelectBookCategory({className}: {className?: string}) {
       setCategories(JSON.parse(storedCategories));
     } else {
       (async () => {
-        const supabase = createClient();
         const {data, error} = await supabase.from('category').select('categories');
 
         if (error) {
