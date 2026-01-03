@@ -12,7 +12,9 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
     pathname.startsWith('/manifest') ||
-    pathname.startsWith('/auth') ||
+    pathname.startsWith('/auth/error') ||
+    pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/auth/') ||
     pathname.endsWith('.webmanifest') ||
     pathname.endsWith('.png') ||
     pathname.endsWith('.ico')
@@ -43,11 +45,9 @@ export async function updateSession(request: NextRequest) {
   );
 
   if (pathname === '/book/favorites') {
-    const {
-      data: {session},
-    } = await supabase.auth.getSession();
+    const {data} = await supabase.auth.getSession();
 
-    if (!session) {
+    if (!data.session) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
   }
