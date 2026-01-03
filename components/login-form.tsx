@@ -11,9 +11,7 @@ export function LoginForm() {
       toast.info('Redirecting to Google sign-in...');
       const {error} = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          redirectTo: `https://librebooks.vercel.app/auth/callback`,
-        },
+        options: {redirectTo: `${window.location.origin}/auth/callback`},
       });
 
       if (error) {
