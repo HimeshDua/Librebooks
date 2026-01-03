@@ -1,6 +1,6 @@
 'use client';
 
-import {createClient} from '@/lib/supabase/client';
+import {supabase} from '@/lib/supabase/client';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {toast} from 'sonner';
@@ -8,14 +8,11 @@ import {toast} from 'sonner';
 export function LoginForm() {
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient();
-
       toast.info('Redirecting to Google sign-in...');
-
       const {error} = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `https://librebook.vercel.app/auth/callback`,
         },
       });
 

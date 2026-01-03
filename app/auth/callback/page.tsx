@@ -1,14 +1,15 @@
+// app/auth/callback/page.tsx
 'use client';
 
 import {useEffect} from 'react';
 import {useRouter} from 'next/navigation';
-import {publicSupabase as supabase} from '@/lib/supabase/public';
+import {supabase} from '@/lib/supabase/client';
 
-export default function AuthCallbackPage() {
+export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    const finalize = async () => {
+    const run = async () => {
       const {error} = await supabase.auth.exchangeCodeForSession(window.location.search);
 
       if (error) {
@@ -20,7 +21,7 @@ export default function AuthCallbackPage() {
       router.replace('/library');
     };
 
-    finalize();
+    run();
   }, [router]);
 
   return <p>Signing you in…</p>;
