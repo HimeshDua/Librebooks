@@ -12,6 +12,7 @@ import {LIBRARY_CONFIG} from '@/lib/library/config';
 import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
+import Header from '@/components/library/header';
 
 export const metadata: Metadata = {
   title: 'Free Public Domain Books | LibreBooks Library',
@@ -168,22 +169,11 @@ export default async function Library({searchParams}: LibraryProps) {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Enhanced Header Section */}
-        <header className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Libre Books
-          </h1>
-          <p className="text-base sm:text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
-            Discover 30,000+ free public-domain books. Curated, searchable, and ready to read.
-          </p>
-        </header>
-
-        {/* Search Section */}
+        <Header />
         <section className="mb-8">
           <SearchForm initialQuery={query} />
         </section>
 
-        {/* Filters and Results Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <h2 className="text-lg text-nowrap font-semibold">

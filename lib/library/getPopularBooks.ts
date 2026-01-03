@@ -1,6 +1,7 @@
 import {publicSupabase} from '@/lib/supabase/public';
+import {cache} from 'react';
 
-export async function getPopularBooks(page: number, pageSize: number) {
+export const getPopularBooks = cache(async (page: number, pageSize: number) => {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
@@ -19,4 +20,4 @@ export async function getPopularBooks(page: number, pageSize: number) {
   }
 
   return {data: data ?? [], count: count ?? 0, error: null};
-}
+});
