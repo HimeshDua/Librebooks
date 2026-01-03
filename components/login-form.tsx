@@ -12,7 +12,7 @@ export function LoginForm() {
       const {error} = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://librebook.vercel.app/auth/callback`,
+          redirectTo: `https://librebooks.vercel.app/auth/callback`,
         },
       });
 
