@@ -12,6 +12,7 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
     pathname.startsWith('/manifest') ||
+    pathname.startsWith('/auth') ||
     pathname.endsWith('.webmanifest') ||
     pathname.endsWith('.png') ||
     pathname.endsWith('.ico')
