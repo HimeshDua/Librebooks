@@ -74,6 +74,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <script src="https://accounts.google.com/gsi/client" async></script>
           <Header />
           <NextTopLoader />
           {children}

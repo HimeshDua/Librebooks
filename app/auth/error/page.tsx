@@ -1,11 +1,21 @@
-'use server';
+'use client';
+
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {useEffect} from 'react';
 
 type AuthErrorProps = {
-  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
+  searchParams: {[key: string]: string | string[] | undefined};
 };
-export default async function ErrorPage({searchParams}: AuthErrorProps) {
-  const params = await searchParams;
+
+export default function ErrorPage({searchParams}: AuthErrorProps) {
+  useEffect(() => {
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  const params = searchParams;
+  console.log(params as any);
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
