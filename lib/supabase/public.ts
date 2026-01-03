@@ -14,7 +14,7 @@ export const publicSupabase = createClient(
     auth: {
       persistSession: false,
       autoRefreshToken: false,
-      detectSessionInUrl: false,
+      detectSessionInUrl: true,
     },
   }
 );
