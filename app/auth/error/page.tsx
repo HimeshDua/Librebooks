@@ -18,7 +18,9 @@ export default async function ErrorPage({searchParams}: AuthErrorProps) {
               {params?.error ? (
                 <p className="text-sm text-muted-foreground">Code error: {params.error}</p>
               ) : (
-                <p className="text-sm text-muted-foreground">An unspecified error occurred.</p>
+                <p className="text-sm text-muted-foreground">
+                  An unspecified error occurred. {params as any}
+                </p>
               )}
             </CardContent>
           </Card>

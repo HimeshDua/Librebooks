@@ -7,6 +7,17 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  const pathname = request.nextUrl.pathname;
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/manifest') ||
+    pathname.endsWith('.webmanifest') ||
+    pathname.endsWith('.png') ||
+    pathname.endsWith('.ico')
+  ) {
+    return NextResponse.next();
+  }
   if (!hasEnvVars) {
     return supabaseResponse;
   }
@@ -30,14 +41,16 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const {data} = await supabase.auth.getClaims();
-  const user = data?.claims;
-  const pathname = request.nextUrl.pathname;
-  if (!user && pathname === '/book/favorites') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth/login';
-    return NextResponse.redirect(url);
+  if (pathname === '/book/favorites') {
+    const {
+      data: {session},
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
   }
+
   // if (
   //   pathname !== '/' &&
   //   !user &&
