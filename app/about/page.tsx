@@ -1,10 +1,9 @@
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {ArrowRight} from 'lucide-react';
 
-export default function page() {
+export default async function page() {
   return (
     <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 py-20">
       <div className="max-w-3xl w-full text-center space-y-8">
@@ -20,13 +19,13 @@ export default function page() {
 
         <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-md">
           <Image
+            fill
+            preload
+            priority
             loading="eager"
             src="/lib-image.png"
             alt="Modern digital library"
-            height={500}
-            width={600}
-            className="object-cover opacity-90 scale-[1.006] hover:scale-[1.016] transition-transform duration-300"
-            priority
+            className="object-cover aspect-[16/9] opacity-90 scale-[1.006] hover:scale-[1.016] transition-all  duration-300"
           />
         </div>
 
