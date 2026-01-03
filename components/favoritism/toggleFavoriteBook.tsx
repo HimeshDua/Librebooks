@@ -3,11 +3,13 @@
 import {useEffect, useState} from 'react';
 import {Button} from '../ui/button';
 import {HeartIcon, HeartOffIcon} from 'lucide-react';
-import {createClient} from '@/lib/supabase/client';
 import {toast} from 'sonner';
 import {ConfettiButton} from '../ui/confetti';
 import AuthDialog from '../auth-dialog';
 import {cn} from '@/lib/utils';
+import {useFavorite} from '@/store/index';
+import {getUserFavorites} from '@/lib/library/books/getUserFavorites';
+import {publicSupabase as supabase} from '@/lib/supabase/public';
 
 type Props = {
   id: string | null;
@@ -16,158 +18,81 @@ type Props = {
 };
 
 function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
+  const {favorites, toggle, setAll} = useFavorite();
+
   const [loading, setLoading] = useState(false);
-  // const {setFavoriteCount} = useUser();
-  const [isExists, setIsExists] = useState(false);
-  const [favoriteCount, setFavoriteCount] = useState(0);
-  // console.log('ID: ', id);
+  const isFavorite = favorites.has(bookId);
 
+  // 🔹 Hydrate favorites once
   useEffect(() => {
-    console.log('id', id, ' bookId', bookId, ' bookTitle', bookTitle);
-    const fetchFavorite = async () => {
-      const supabase = createClient();
-      const {data, error: selectError} = await supabase
-        .from('favorites')
-        .select('user_id,book_id')
-        .eq('user_id', id)
-        .eq('book_id', bookId);
+    if (!id) return;
 
-      if (selectError) {
-        console.error('Select error:', selectError);
-        toast.error('Failed to check favorite status');
-        return;
-      }
-
-      setIsExists((data?.length ?? 0) > 0);
-    };
-
-    if (id && bookId) {
-      fetchFavorite();
-    }
-  }, [id, bookId]);
+    getUserFavorites(id)
+      .then(setAll)
+      .catch(() => toast.error('Failed to load favorites'));
+  }, [id, setAll]);
 
   const handleToggleFavorite = async () => {
-    if (!id && !bookId) return;
-    if (!bookTitle) {
-      console.error('Book Title not found!');
-      toast.error('Book title is missing');
-      return;
-    }
-
+    if (!id) return;
     setLoading(true);
 
     try {
-      const supabase = createClient();
-
-      if (isExists) {
-        const {error: deleteError} = await supabase
+      if (isFavorite) {
+        const {error} = await supabase
           .from('favorites')
           .delete()
           .match({user_id: id, book_id: bookId});
 
-        if (deleteError) {
-          console.error('Delete error:', deleteError);
-          toast.error('Failed to remove from favorites');
-          return;
-        }
+        if (error) throw error;
 
-        setFavoriteCount(prev => prev - 1);
-        setIsExists(false);
-        setTimeout(() => {
-          toast.success(`Removed "${bookTitle}" from favorites`, {
-            duration: 3,
-            cancel: 'Juice',
-            action: {
-              label: 'View Book',
-              actionButtonStyle: {
-                padding: '0.25rem 0.75rem',
-              },
-              onClick: () => {
-                window.location.href = `/book/${bookId}`;
-              },
-            },
-          });
-        }, 30);
+        toggle(bookId);
+        toast.success(`Removed "${bookTitle}" from favorites`);
       } else {
-        setFavoriteCount(prev => prev + 1);
-        const {error: insertError} = await supabase
-          .from('favorites')
-          .insert({book_id: bookId, user_id: id});
+        const {error} = await supabase.from('favorites').insert({user_id: id, book_id: bookId});
 
-        if (insertError) {
-          console.error('Insert error:', insertError);
-          toast.error('Failed to add to favorites');
-          return;
-        }
+        if (error) throw error;
 
-        setIsExists(true);
-        setTimeout(() => {
-          toast.success(`Marked "${bookTitle}" to favorites`, {
-            duration: 3,
-            cancel: 'Juice',
-            action: {
-              label: 'View Book',
-              actionButtonStyle: {
-                padding: '0.25rem 0.75rem',
-              },
-              onClick: () => {
-                window.location.href = `/book/${bookId}`;
-              },
-            },
-          });
-        }, 30);
+        toggle(bookId);
+        toast.success(`Added "${bookTitle}" to favorites`);
       }
-    } catch (error) {
-      console.error('Unexpected error:', error);
-      toast.error('An unexpected error occurred');
+    } catch (err) {
+      console.error(err);
+      toast.error('Something went wrong');
     } finally {
       setLoading(false);
     }
   };
 
+  if (!id) {
+    return (
+      <AuthDialog
+        description="save favorites"
+        triggerClassName="w-full py-4 md:w-auto bg-destructive text-destructive-foreground"
+        dialogTrigger={
+          <>
+            Add to favorites <HeartIcon />
+          </>
+        }
+      />
+    );
+  }
+
   return (
-    <>
-      {id ? (
-        !loading ? (
-          <ConfettiButton className="w-full md:w-auto" turnConfettiOn={!isExists}>
-            <Button
-              disabled={loading}
-              variant="destructive"
-              className={`${cn(
-                loading ? 'cursor-move' : 'cursor-pointer',
-                'w-full py-4 md:w-auto ',
-                isExists ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
-              )}`}
-              onClick={handleToggleFavorite}
-            >
-              {isExists ? 'Unmark from Favorites' : 'Mark As Favorite'}
-              {isExists ? <HeartOffIcon /> : <HeartIcon />}
-            </Button>
-          </ConfettiButton>
-        ) : (
-          <ToggleFavoriteBookSkeleton />
-        )
-      ) : (
-        <AuthDialog
-          description="save favorites"
-          triggerClassName="w-full py-4 md:w-auto bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90"
-          dialogTrigger={
-            <>
-              Add to favorites <HeartIcon />
-            </>
-          }
-        />
-      )}
-    </>
+    <ConfettiButton className="w-full md:w-auto" turnConfettiOn={!isFavorite}>
+      <Button
+        disabled={loading}
+        onClick={handleToggleFavorite}
+        variant="destructive"
+        className={cn(
+          'w-full py-4 md:w-auto',
+          isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
+        )}
+      >
+        {isFavorite ? 'Unmark from Favorites' : 'Mark As Favorite'}
+        {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
+      </Button>
+    </ConfettiButton>
   );
 }
 
 export default ToggleFavoriteBook;
-
-export const ToggleFavoriteBookSkeleton = () => {
-  return (
-    <Button className="w-full md:w-auto bg-red-700 hover:bg-red-700/90" variant="destructive">
-      <div className="w-3/4 md:w-20 h-4 animate-pulse duration-1000  bg-destructive-foreground/30 rounded"></div>
-    </Button>
-  );
-};
