@@ -13,11 +13,13 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
 
   const supabase = await createClient();
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://librebooks.vercel.app';
+
   const {error} = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      emailRedirectTo: `${siteUrl}/api/auth/callback`,
     },
   });
 
@@ -30,11 +32,12 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
 
 export async function signupWithGoogle() {
   const supabase = await createClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://librebooks.vercel.app';
 
   const {data, error} = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${siteUrl}/auth/callback`,
     },
   });
 

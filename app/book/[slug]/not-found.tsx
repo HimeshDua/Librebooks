@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {BookX, ArrowLeft, BookOpen} from 'lucide-react';
+import Header from '@/components/nav/header';
+import Footer from '@/components/nav/footer';
 
 export default function MinimalBookNotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/5 p-4">
-      <div className="relative w-full max-w-md">
-        <div className="absolute -inset-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-3xl blur-xl opacity-50" />
-
-        <div className="relative bg-background/80 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-2xl">
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <div className="min-h-[90vh] flex items-center justify-center p-4">
+        <div className="relative bg-background/80 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-2xl  w-full max-w-md">
           <div className="flex justify-center mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-lg" />
@@ -18,6 +19,7 @@ export default function MinimalBookNotFound() {
             </div>
           </div>
 
+          {/* Content */}
           <div className="text-center space-y-4">
             <div>
               <h1 className="text-2xl font-bold text-foreground mb-2">Book Unavailable</h1>
@@ -47,7 +49,7 @@ export default function MinimalBookNotFound() {
 
             <div className="pt-6 border-t border-border/30">
               <p className="text-sm text-muted-foreground">
-                Need help finding a book?
+                Need help finding a book?{' '}
                 <Link href="/library?search=" className="text-primary hover:underline">
                   Search our collection
                 </Link>
@@ -56,6 +58,7 @@ export default function MinimalBookNotFound() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

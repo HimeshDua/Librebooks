@@ -6,6 +6,7 @@ import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {signup, signupWithGoogle} from '@/lib/auth/actions/signup';
 import {Loader2} from 'lucide-react';
+import Link from 'next/link';
 
 function SubmitButton() {
   const {pending} = useFormStatus();
@@ -26,7 +27,7 @@ function SignUpForm() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Create account</CardTitle>
-          <CardDescription>Sign up with email or Google</CardDescription>
+          <CardDescription>Sign up with email</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4">
@@ -50,7 +51,11 @@ function SignUpForm() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+              <Link href="/auth/login">
+                <span className="bg-card px-2 text-muted-foreground hover:underline underline-offset-2">
+                  Or login to an existing account
+                </span>
+              </Link>
             </div>
           </div>
 

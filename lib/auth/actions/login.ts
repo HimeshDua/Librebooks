@@ -23,11 +23,12 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
 
 export async function loginWithGoogle() {
   const supabase = await createClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://librebooks.vercel.app';
 
   const {data, error} = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      redirectTo: `${siteUrl}/api/auth/callback`,
     },
   });
 

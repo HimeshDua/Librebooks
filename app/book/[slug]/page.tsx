@@ -24,7 +24,7 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
   const {slug} = await params;
   if (!slug) return notFound();
   const {data: book, error} = await getBookFromSlug(slug);
-  if (error || !book) return <BookError error={error?.message || null} slug={slug} />;
+  if (error || !book) return notFound();
   return (
     <div className="container max-w-screen min-h-[94vh] mx-auto">
       <Header />
