@@ -5,6 +5,8 @@ import {publicSupabase as supabase} from '@/lib/supabase/public';
 import DetailedBook from '@/components/book/detailedBook';
 import BookError from '@/components/book/book-error';
 import {notFound} from 'next/navigation';
+import Header from '@/components/nav/header';
+import Footer from '@/components/nav/footer';
 export async function generateStaticParams() {
   const {data: popularBooks} = await supabase
     .from('books')
@@ -21,5 +23,11 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
   if (!slug) return notFound();
   const {data: book, error} = await getBookFromSlug(slug);
   if (error || !book) return <BookError error={error?.message || null} slug={slug} />;
-  return <DetailedBook book={book} />;
+  return (
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <DetailedBook book={book} />
+      <Footer />
+    </div>
+  );
 }

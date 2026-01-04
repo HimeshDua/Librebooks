@@ -1,11 +1,13 @@
-import {SignUpForm} from '@/components/sign-up-form';
+import SignUpForm from '@/components/auth/signup-form';
+import Footer from '@/components/nav/footer';
+import Header from '@/components/nav/header';
 
-export default function Page() {
+export default async function SignupPage() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <SignUpForm />
-      </div>
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <SignUpForm />
+      <Footer />
     </div>
   );
 }

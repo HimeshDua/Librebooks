@@ -1,6 +1,7 @@
 'use server';
-import React from 'react';
 import Hero from '@/components/library/hero';
+import Header from '@/components/nav/header';
+import Footer from '@/components/nav/footer';
 
 const homeContent = {
   heading: 'Discover. Read. Share. — LibreBooks',
@@ -39,5 +40,13 @@ const homeContent = {
 };
 
 export default async function HomePage() {
-  return <Hero {...homeContent} />;
+  return (
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <main className="min-h-screen py-10 px-4 mx-auto">
+        <Hero {...homeContent} />{' '}
+      </main>
+      <Footer />
+    </div>
+  );
 }
