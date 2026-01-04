@@ -1,6 +1,7 @@
+'use server';
 import Link from 'next/link';
 
-function Footer() {
+async function Footer() {
   return (
     <footer className="border-t border-border/40 py-10 text-center">
       <div className="max-w-5xl mx-auto px-6 space-y-6 sm:space-y-4">
@@ -29,7 +30,6 @@ function Footer() {
           truly free for everyone.
         </p>
 
-        {/* API credit */}
         <p className="text-xs sm:text-sm text-muted-foreground">
           Powered by{' '}
           <a

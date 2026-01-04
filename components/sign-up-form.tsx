@@ -15,23 +15,27 @@ export function SignUpForm() {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const supabase = await createClient();
-    const {error} = await supabase.auth.signUp({
-      email,
-      password,
-    });
+      const supabase = await createClient();
+      const {error} = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-    setLoading(false);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
 
-    if (error) {
-      toast.error(error.message);
-      return;
+      toast.success('Account created. You are now logged in.');
+      router.push('/library');
+    } catch (error) {
+      if (error) console.error(error);
+    } finally {
+      setLoading(false);
     }
-
-    toast.success('Account created. You are now logged in.');
-    router.push('/library');
   };
 
   return (

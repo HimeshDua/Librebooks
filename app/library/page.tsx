@@ -12,7 +12,9 @@ import {LIBRARY_CONFIG} from '@/lib/library/config';
 import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
-import Header from '@/components/library/header';
+import LibHeader from '@/components/library/header';
+import Footer from '@/components/nav/footer';
+import Header from '@/components/nav/header';
 
 export const metadata: Metadata = {
   title: 'Free Public Domain Books | LibreBooks Library',
@@ -167,49 +169,53 @@ export default async function Library({searchParams}: LibraryProps) {
   const totalPages = Math.max(1, Math.ceil((count || 0) / PAGE_SIZE));
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Header />
-        <section className="mb-8">
-          <SearchForm initialQuery={query} />
-        </section>
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <main className="min-h-screen py-10 px-4 mx-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <LibHeader />
+          <section className="mb-8">
+            <SearchForm initialQuery={query} />
+          </section>
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <h2 className="text-lg text-nowrap font-semibold">
-              {query ? `Search results for "${query}"` : 'Popular Books'}
-            </h2>
-            {count !== null && (
-              <span className="px-2 py-1 text-nowrap bg-muted rounded-full text-xs font-medium">
-                {count} books
-              </span>
-            )}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg text-nowrap font-semibold">
+                {query ? `Search results for "${query}"` : 'Popular Books'}
+              </h2>
+              {count !== null && (
+                <span className="px-2 py-1 text-nowrap bg-muted rounded-full text-xs font-medium">
+                  {count} books
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <ViewModeToggle className="order-2 sm:order-1" />
+              <SelectBookCategory className="w-full sm:w-auto min-w-[160px]" />
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <ViewModeToggle className="order-2 sm:order-1" />
-            <SelectBookCategory className="w-full sm:w-auto min-w-[160px]" />
-          </div>
+          <Separator className="my-5" />
+
+          <Suspense fallback={<BookDisplaySkeleton />}>
+            <BookDisplay books={books} query={query} urlViewMode={urlViewMode} />
+          </Suspense>
+
+          {books && books.length > 0 && (
+            <div className="mt-8">
+              <PaginationControls
+                page={page}
+                query={query}
+                view={urlViewMode}
+                category={category}
+                totalPages={totalPages}
+              />
+            </div>
+          )}
         </div>
-
-        <Separator className="my-5" />
-
-        <Suspense fallback={<BookDisplaySkeleton />}>
-          <BookDisplay books={books} query={query} urlViewMode={urlViewMode} />
-        </Suspense>
-
-        {books && books.length > 0 && (
-          <div className="mt-8">
-            <PaginationControls
-              page={page}
-              query={query}
-              view={urlViewMode}
-              category={category}
-              totalPages={totalPages}
-            />
-          </div>
-        )}
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }

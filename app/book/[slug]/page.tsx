@@ -1,6 +1,6 @@
 'use server';
 import {generateMetadataComponent} from '@/components/book/bookmetacomponents';
-import {getBookFromSlug} from '@/lib/library/books/getBookfromSlug';
+import {getBookFromSlug} from '@/lib/library/books/actions/getBookfromSlug';
 import {publicSupabase as supabase} from '@/lib/supabase/public';
 import DetailedBook from '@/components/book/detailedBook';
 import BookError from '@/components/book/book-error';

@@ -8,8 +8,8 @@ import {ConfettiButton} from '../ui/confetti';
 import AuthDialog from '../auth-dialog';
 import {cn} from '@/lib/utils';
 import {useFavorite} from '@/store/index';
-import {getUserFavorites} from '@/lib/library/books/getUserFavorites';
-import {publicSupabase as supabase} from '@/lib/supabase/public';
+import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook';
+import {getUserFavorites} from '@/lib/library/books/favorites/actions/getUserFavorites';
 
 type Props = {
   id: string | null;
@@ -20,41 +20,37 @@ type Props = {
 function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   const {favorites, toggle, setAll} = useFavorite();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
 
-  // 🔹 Hydrate favorites once
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setLoading(false);
+      return;
+    }
 
     getUserFavorites(id)
       .then(setAll)
-      .catch(() => toast.error('Failed to load favorites'));
+      .catch(() => toast.error('Failed to load favorites'))
+      .then(() => setLoading(false));
   }, [id, setAll]);
 
   const handleToggleFavorite = async () => {
-    if (!id) return;
-    setLoading(true);
+    if (!id) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      if (isFavorite) {
-        const {error} = await supabase
-          .from('favorites')
-          .delete()
-          .match({user_id: id, book_id: bookId});
-
-        if (error) throw error;
-
-        toggle(bookId);
-        toast.success(`Removed "${bookTitle}" from favorites`);
-      } else {
-        const {error} = await supabase.from('favorites').insert({user_id: id, book_id: bookId});
-
-        if (error) throw error;
-
-        toggle(bookId);
-        toast.success(`Added "${bookTitle}" to favorites`);
-      }
+      const {error, message} = await toggleFavoriteBook({
+        isFavorite,
+        book_id: bookId,
+        bookTitle,
+        user_id: id,
+      });
+      if (error) throw error;
+      toggle(bookId);
+      toast.success(message);
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong');
@@ -85,6 +81,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
         variant="destructive"
         className={cn(
           'w-full py-4 md:w-auto',
+          loading && 'animate-pulse transition',
           isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
         )}
       >

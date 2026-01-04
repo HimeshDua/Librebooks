@@ -1,3 +1,4 @@
+'use server';
 import {Suspense} from 'react';
 import {Library, Search} from 'lucide-react';
 import Link from 'next/link';

@@ -1,6 +1,6 @@
 'use client';
 import {Button} from '@/components/ui/button';
-import React, {useState} from 'react';
+import {useState} from 'react';
 
 function ImportBooks() {
   const [loading, setLoading] = useState(false);
@@ -18,11 +18,12 @@ function ImportBooks() {
   }
 
   return (
-    <div className="min-h-[69vh] gap-y-2 w-screen flex flex-col text-center justify-center">
-      Import Books
+    <div className="min-h-[69vh] gap-y-2 w-screen flex flex-col text-lg text-center justify-center">
+      <h1 className="text-xl font-semibold">Import Books</h1>
       <Button
         disabled={loading}
-        className="text-center w-fit mx-auto"
+        variant="destructive"
+        className="text-center w-full max-w-md mx-auto text-md"
         onClick={() => importBooks()}
       >
         Import

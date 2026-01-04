@@ -1,4 +1,4 @@
-import {getBookFromSlug} from '@/lib/library/books/getBookfromSlug';
+import {getBookFromSlug} from '@/lib/library/books/actions/getBookfromSlug';
 import {bookDescriptionMetaData} from '@/lib/library/books/utils';
 import type {Book} from '@/types';
 import type {Metadata} from 'next';

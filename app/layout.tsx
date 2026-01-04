@@ -73,9 +73,9 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
+        <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <script src="https://accounts.google.com/gsi/client" async></script>
-          <Header />
+          {/* <Header /> */}
           <NextTopLoader />
           {children}
           <Toaster
@@ -88,7 +88,6 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             richColors
             // theme={toasterTheme}
           />
-          <Footer />
         </ThemeProvider>
       </body>
     </html>

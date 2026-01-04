@@ -1,3 +1,4 @@
+'use server';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
@@ -21,7 +22,6 @@ export default async function page() {
           <Image
             fill
             preload
-            priority
             loading="eager"
             src="/lib-image.png"
             alt="Modern digital library"

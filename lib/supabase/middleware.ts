@@ -40,7 +40,6 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // ✅ Only protect specific routes
   if (pathname === '/book/favorites') {
     const {
       data: {session},

@@ -28,9 +28,7 @@ export function UserMenu({user, favoriteCount = 0}: {user: User; favoriteCount?:
         toast.info('Log in for a better experience', {
           action: {
             label: 'Log in',
-            actionButtonStyle: {
-              padding: '0.25rem 0.75rem',
-            },
+            actionButtonStyle: {padding: '0.25rem 0.75rem'},
             onClick: () => {
               window.location.href = '/auth/login';
             },

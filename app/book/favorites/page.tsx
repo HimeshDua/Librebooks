@@ -1,66 +1,31 @@
-'use client';
-
-import {useEffect, useState} from 'react';
-import {getUserByInfo} from '@/lib/getUserByInfo';
+import {getFavoriteBooks} from '@/lib/library/books/favorites/actions/getFavorites';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Heart, LibraryBig, Loader2} from 'lucide-react';
+import {Heart, LibraryBig} from 'lucide-react';
 import {Button} from '@/components/ui/button';
-import {motion} from 'framer-motion';
-import type {Book} from '@/types';
-import {supabase} from '@/lib/supabase/client';
+import {getUserByInfo} from '@/lib/getUserByInfo';
+import Footer from '@/components/nav/footer';
+import Header from '@/components/nav/header';
 
-type FavoriteResponse = {
-  books: Book[];
-};
-
-export default function FavoritesPage() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchFavorites() {
-      const userId = (await getUserByInfo()).user?.id;
-      if (userId) {
-        const {data, error} = await supabase
-          .from('favorites')
-          .select('book_id, books(slug,  title, author, cover_url)')
-          .eq('user_id', userId)
-          .order('created_at', {ascending: false})
-          .returns<FavoriteResponse[]>();
-
-        if (error) {
-          console.error(error);
-          setLoading(false);
-          return;
-        }
-
-        const mapped = data.flatMap(fav => fav.books || []).filter(Boolean);
-        setBooks(mapped);
-        setLoading(false);
-      }
-    }
-    fetchFavorites();
-  }, []);
-
-  if (loading) {
+export default async function FavoritesPage() {
+  const {user} = await getUserByInfo();
+  if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center h-[80vh] text-muted-foreground">
-        <Loader2 className="animate-spin w-6 h-6 mb-2" />
-        <p>Loading your favorite reads...</p>
+      <div className="flex items-center justify-center h-[80vh]">
+        <p className="text-muted-foreground">Please sign in to view favorites.</p>
       </div>
     );
   }
+
+  const {books} = await getFavoriteBooks({userId: user.id});
 
   if (books.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[80vh] text-center px-6">
         <Heart className="w-12 h-12 text-red-500 mb-3" />
         <h2 className="text-2xl font-bold">No Favorite Books Yet</h2>
-        <p className="text-muted-foreground mt-2 mb-4">
-          You haven’t added any favorites yet — start exploring and show some love!
-        </p>
-        <Link prefetch={true} href="/">
+        <p className="text-muted-foreground mt-2 mb-4">Start exploring and add some favorites.</p>
+        <Link href="/library">
           <Button className="rounded-full px-6">Browse Library</Button>
         </Link>
       </div>
@@ -68,69 +33,38 @@ export default function FavoritesPage() {
   }
 
   return (
-    <main className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/30">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <LibraryBig className="w-6 h-6 text-primary" />
-              Your Favorites
+    <div className="container max-w-screen min-h-[94vh] mx-auto">
+      <Header />
+      <main className="min-h-screen py-10 px-4 mx-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between mb-8">
+            <h1 className="text-3xl font-bold flex gap-2">
+              <LibraryBig /> Your Favorites
             </h1>
-            <p className="text-muted-foreground text-sm">
-              {books.length} {books.length === 1 ? 'book' : 'books'} you loved ❤️
-            </p>
           </div>
-          <Link prefetch={true} href="/library">
-            <Button variant="outline" className="rounded-full">
-              Discover More
-            </Button>
-          </Link>
-        </div>
-
-        {/* Books Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          {books.map(book => (
-            <motion.div
-              key={book.slug}
-              whileHover={{scale: 1.01, y: -4}}
-              transition={{type: 'spring', stiffness: 300, damping: 20}}
-              className="group relative bg-card/70 backdrop-blur-md border border-border/40 shadow-sm hover:shadow-md rounded-2xl overflow-hidden"
-            >
-              <Link href={`/book/${book.slug}`}>
-                <div className="relative aspect-[3/4] w-full overflow-hidden">
-                  {book.cover_url ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {books.map(book => (
+              <Link key={book.slug} href={`/book/${book.slug}`}>
+                <div className="rounded-2xl overflow-hidden border hover:shadow-md transition">
+                  <div className="relative aspect-[3/4]">
                     <Image
                       src={book.cover_url || '/default-book-cover.jpg'}
-                      alt={`Cover of ${book.title}`}
-                      width={400}
-                      height={600}
-                      className="object-cover group-hover:scale-[1.026] transition-transform duration-300"
-                      priority
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="
+                      alt={book.title}
+                      fill
+                      className="object-cover"
                     />
-                  ) : (
-                    <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
-                      No Cover
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2 bg-background/60 rounded-full p-1.5 backdrop-blur-sm">
-                    <Heart className="w-4 h-4 text-red-500" fill="red" />
+                  </div>
+                  <div className="p-3">
+                    <h3 className="font-semibold truncate">{book.title}</h3>
+                    <p className="text-xs text-muted-foreground truncate">{book.author}</p>
                   </div>
                 </div>
-
-                <div className="p-3 space-y-1">
-                  <h3 className="font-semibold truncate">{book.title}</h3>
-                  {book.author && (
-                    <p className="text-xs text-muted-foreground truncate">{book.author}</p>
-                  )}
-                </div>
               </Link>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }
