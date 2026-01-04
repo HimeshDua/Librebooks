@@ -1,12 +1,12 @@
 'use client';
 
 import {useState} from 'react';
-import {supabase} from '@/lib/supabase/client';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
 import {toast} from 'sonner';
 import {useRouter} from 'next/navigation';
+import {createClient} from '@/lib/supabase/server';
 
 export function LoginForm() {
   const router = useRouter();
@@ -17,6 +17,7 @@ export function LoginForm() {
   const handleLogin = async () => {
     setLoading(true);
 
+    const supabase = await createClient();
     const {error} = await supabase.auth.signInWithPassword({
       email,
       password,
