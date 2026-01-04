@@ -122,8 +122,7 @@ export default async function Library({searchParams}: LibraryProps) {
 
   try {
     if (query) {
-      ///cached
-      const result = await getPopularBooks(page, PAGE_SIZE);
+      const result = await fetchBooksDirectly(page, PAGE_SIZE, 'All', query);
       books = result.data;
       count = result.count;
       error = result.error || null;
@@ -131,7 +130,7 @@ export default async function Library({searchParams}: LibraryProps) {
       const result = await fetchBooksDirectly(page, PAGE_SIZE, category);
       books = result.data;
       count = result.count;
-      error = result.error?.message || null;
+      error = result.error || null;
     } else if (category === 'All') {
       ///cached
       const result = await getPopularBooks(page, PAGE_SIZE);
@@ -148,7 +147,7 @@ export default async function Library({searchParams}: LibraryProps) {
       const result = await fetchBooksDirectly(page, PAGE_SIZE, category);
       books = result.data;
       count = result.count;
-      error = result.error?.message || null;
+      error = result.error || null;
     }
   } catch (err) {
     console.error('Error fetching books:', err);

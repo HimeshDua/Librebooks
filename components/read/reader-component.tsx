@@ -1,24 +1,16 @@
 'use client';
 
-import { ReactReader } from 'react-reader';
-import { useEffect, useState, useRef, useCallback } from 'react';
-import {
-  Type,
-  Maximize2,
-  Loader2,
-  Minimize2,
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  Menu,
-} from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { Button } from './ui/button';
-import { useRouter } from 'next/navigation';
-import { useIsMobile } from '@/hooks/useIsMobile';
-import { cn } from '@/lib/utils';
-import { get, set } from 'idb-keyval';
-import { ThemeToggleButton } from './book/toggleThemeButton';
+import {Type, Maximize2, Minimize2, ChevronLeft, ChevronRight, Home, Menu} from 'lucide-react';
+import {useEffect, useState, useRef, useCallback} from 'react';
+import {ThemeToggleButton} from '../book/toggleThemeButton';
+import {useIsMobile} from '@/hooks/useIsMobile';
+import {useRouter} from 'next/navigation';
+import {ReactReader} from 'react-reader';
+import {useTheme} from 'next-themes';
+import {Button} from '../ui/button';
+import {get, set} from 'idb-keyval';
+import {cn} from '@/lib/utils';
+import ReaderSkeleton from './reader-loading';
 
 type RenditionLike = {
   themes: {
@@ -35,8 +27,12 @@ type TocItem = {
   href: string;
 };
 
-export default function ReaderPage({ slug }: { slug: string }) {
-  const [bookData, setBookData] = useState<ArrayBuffer | null>(null);
+type ReaderPageProps = {
+  slug: string;
+};
+
+export default function ReaderComponent({slug}: ReaderPageProps) {
+  const [bookData, setBookData] = useState<ArrayBuffer | null>();
   const [location, setLocation] = useState<string | number>(
     typeof window !== 'undefined' ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
   );
@@ -46,31 +42,10 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const [showControls, setShowControls] = useState(true);
   const [showToc, setShowToc] = useState(false);
   const [toc, setToc] = useState<TocItem[]>([]);
-  const { theme } = useTheme();
+  const {theme} = useTheme();
   const renditionRef = useRef<RenditionLike | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const nextTheme = theme === 'light' ? 'dark' : theme === 'system' ? 'dark' : 'light';
-  //   setTheme(nextTheme);
-  //   if (!slug) return;
-
-  //   (async () => {
-  //     try {
-  //       setLoadingServer(true);
-  //       const res = await fetch(`/api/readbook/${slug}`);
-  //       if (!res.ok) throw new Error(`Failed to fetch book: ${res.status}`);
-  //       const buffer = await res.arrayBuffer();
-  //       setLoadingServer(false);
-  //       setBookData(buffer);
-  //     } catch (err) {
-  //       console.error('Error loading EPUB:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   })();
-  // }, [slug]);
 
   useEffect(() => {
     if (!slug) return;
@@ -108,7 +83,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
   }, []);
 
   useEffect(() => {
-
     const handleMouseMove = () => {
       setShowControls(true);
 
@@ -140,7 +114,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
     [slug]
   );
 
-
   useEffect(() => {
     if (renditionRef.current) {
       renditionRef.current.themes.select(theme || 'dark');
@@ -151,7 +124,6 @@ export default function ReaderPage({ slug }: { slug: string }) {
       }
     }
   }, [theme]);
-
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.min(160, Math.max(80, fontSize + delta));
@@ -197,19 +169,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
   const isMobile = useIsMobile();
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
-        <div className="flex items-center gap-3 mb-4">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <span className="text-lg font-medium">
-            Loading your book...
-          </span>
-        </div>
-        <p className="text-muted-foreground text-balance text-center">
-          Please wait while we prepare your reading experience
-        </p>
-      </div>
-    );
+    return <ReaderSkeleton />;
   }
 
   if (!bookData) {
@@ -418,7 +378,7 @@ export default function ReaderPage({ slug }: { slug: string }) {
             <div className="z-50 w-full bg-muted/50 rounded-full h-2">
               <div
                 className="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
-                style={{ width: typeof location === 'string' ? '0%' : `${location}%` }}
+                style={{width: typeof location === 'string' ? '0%' : `${location}%`}}
               />
             </div>
           </div>
@@ -444,49 +404,47 @@ export default function ReaderPage({ slug }: { slug: string }) {
 
             rendition.themes.default('light');
 
-            rendition.themes.register("light", {
+            rendition.themes.register('light', {
               body: {
-                background: "#fffacc",
-                color: "#1B1B1B",
-                height: "100%",
-                lineHeight: "1.8",
-                margin: "0",
-                padding: "2.5rem",
+                background: '#fffacc',
+                color: '#1B1B1B',
+                height: '100%',
+                lineHeight: '1.8',
+                margin: '0',
+                padding: '2.5rem',
                 fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
-                textRendering: "optimizeLegibility",
+                textRendering: 'optimizeLegibility',
               },
-              "p, div, span": {
-                lineHeight: "inherit",
+              'p, div, span': {
+                lineHeight: 'inherit',
                 color: 'inherit',
               },
               'a:hover, p:hover': {
                 color: 'inherit',
-                textDecoration: "none",
+                textDecoration: 'none',
               },
             });
 
-
-            rendition.themes.register("dark", {
+            rendition.themes.register('dark', {
               body: {
-                background: "#1b1d1e",
-                color: "#D8D3C3",
-                height: "100%",
-                lineHeight: "1.8",
-                margin: "0",
-                padding: "2.5rem",
+                background: '#1b1d1e',
+                color: '#D8D3C3',
+                height: '100%',
+                lineHeight: '1.8',
+                margin: '0',
+                padding: '2.5rem',
                 fontFamily: "'Georgia', 'Iowan Old Style', 'serif'",
-                textRendering: "optimizeLegibility",
+                textRendering: 'optimizeLegibility',
               },
-              "p, div, span": {
-                lineHeight: "inherit",
+              'p, div, span': {
+                lineHeight: 'inherit',
                 color: 'inherit',
               },
               'a:hover, p:hover': {
                 color: 'inherit',
-                textDecoration: "none",
+                textDecoration: 'none',
               },
             });
-
 
             rendition.themes.select(theme || 'dark');
             rendition.themes.fontSize(`${fontSize}%`);

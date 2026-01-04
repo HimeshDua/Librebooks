@@ -5,8 +5,6 @@ import './globals.css';
 import './tiptap.scss';
 import './readermode.css';
 import NextTopLoader from 'nextjs-toploader';
-import Header from '@/components/nav/header';
-import Footer from '@/components/nav/footer';
 import {Toaster} from 'sonner';
 
 const geistSans = Geist({
@@ -75,8 +73,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
         <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {/* <Header /> */}
-          <NextTopLoader />
+          <NextTopLoader showSpinner={false} />
           {children}
           <Toaster
             className="z-50"

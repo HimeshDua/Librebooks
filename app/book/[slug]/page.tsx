@@ -7,6 +7,8 @@ import BookError from '@/components/book/book-error';
 import {notFound} from 'next/navigation';
 import Header from '@/components/nav/header';
 import Footer from '@/components/nav/footer';
+import {Suspense} from 'react';
+import DetailedBookSkeleton from '@/components/book/detailed-book-skeleton';
 export async function generateStaticParams() {
   const {data: popularBooks} = await supabase
     .from('books')
@@ -26,7 +28,9 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
   return (
     <div className="container max-w-screen min-h-[94vh] mx-auto">
       <Header />
-      <DetailedBook book={book} />
+      <Suspense fallback={<DetailedBookSkeleton />}>
+        <DetailedBook book={book} />
+      </Suspense>
       <Footer />
     </div>
   );
