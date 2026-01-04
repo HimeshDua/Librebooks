@@ -17,7 +17,7 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
     },
   });
 

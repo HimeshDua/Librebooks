@@ -2,49 +2,14 @@
 import Hero from '@/components/library/hero';
 import Header from '@/components/nav/header';
 import Footer from '@/components/nav/footer';
-
-const homeContent = {
-  heading: 'Discover. Read. Share. — LibreBooks',
-  description:
-    'Your personal free books library. Read your favorite public books online, save them for later, and share what inspires you — beautifully built for both mobile and desktop readers.',
-  button: {
-    text: 'Explore Library',
-    url: '/library',
-  },
-  reviews: {
-    count: 200,
-    rating: 5.0,
-    avatars: [
-      {
-        src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp',
-        alt: 'Avatar 1',
-      },
-      {
-        src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp',
-        alt: 'Avatar 2',
-      },
-      {
-        src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp',
-        alt: 'Avatar 3',
-      },
-      {
-        src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp',
-        alt: 'Avatar 4',
-      },
-      {
-        src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp',
-        alt: 'Avatar 5',
-      },
-    ],
-  },
-};
+import {homeContent} from '@/components/library/hero.data';
 
 export default async function HomePage() {
   return (
-    <div className="container max-w-screen min-h-[94vh] mx-auto">
+    <div className="container min-h-[94vh] mx-auto">
       <Header />
-      <main className="min-h-screen py-10 px-4 mx-auto">
-        <Hero {...homeContent} />{' '}
+      <main className="min-h-screen px-2 mx-auto">
+        <Hero {...homeContent} />
       </main>
       <Footer />
     </div>
