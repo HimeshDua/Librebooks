@@ -7,6 +7,7 @@ import AuthDialog from '../auth-dialog';
 import {BookOpen} from 'lucide-react';
 import type {Book} from '@/types';
 import {getUserByInfo} from '@/lib/getUserByInfo';
+import {cn} from '@/lib/utils';
 
 export default async function UserBookActions({book}: {book: Book}) {
   const userId = (await getUserByInfo()).user?.id ?? null;
@@ -14,7 +15,7 @@ export default async function UserBookActions({book}: {book: Book}) {
   return (
     <div className="mt-4 flex flex-wrap gap-3">
       {book.epub && (
-        <Button asChild>
+        <Button asChild className="w-full md:w-auto py-4">
           <Link href={`/read/${book.gutenberg_id}`}>
             <BookOpen className="mr-2 h-4 w-4" /> Read Online
           </Link>
@@ -23,13 +24,21 @@ export default async function UserBookActions({book}: {book: Book}) {
 
       {book.epub &&
         (userId ? (
-          <Button className="w-full py-4 md:w-auto" variant="outline" asChild>
+          <Button className="w-full md:w-auto py-4 cursor-pointer" variant="outline" asChild>
             <Link href={book.epub} target="_blank">
               📚 Download ePub
             </Link>
           </Button>
         ) : (
-          <AuthDialog description="download books" dialogTrigger="Download EPUB" />
+          <AuthDialog
+            description="download books"
+            dialogTrigger="Download EPUB"
+            triggerClassName={cn(
+              'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+              'w-full md:w-auto py-4',
+              'cursor-pointer'
+            )}
+          />
         ))}
 
       <ToggleFavoriteBook id={userId} bookId={book.id} bookTitle={book.title} />

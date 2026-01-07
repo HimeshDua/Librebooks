@@ -23,7 +23,6 @@ export async function fetchBooksDirectly(
     builder = builder.or(`title.ilike.%${query}%,author.ilike.%${query}%`);
   }
 
-  console.log('I got hittt');
   const {data, count, error} = await builder;
 
   if (error) {

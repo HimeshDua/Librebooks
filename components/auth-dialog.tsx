@@ -13,17 +13,14 @@ import {Separator} from './ui/separator';
 import Link from 'next/link';
 import {cn} from '@/lib/utils';
 
-function AuthDialog({
-  dialogTrigger,
-  triggerClassName,
-  title,
-  description,
-}: {
+type AuthDialogProps = {
   dialogTrigger: React.ReactNode;
   triggerClassName?: string;
   title?: string;
   description: string;
-}) {
+};
+
+function AuthDialog({dialogTrigger, triggerClassName, title, description}: AuthDialogProps) {
   return (
     <Dialog>
       <DialogTrigger

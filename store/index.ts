@@ -1,4 +1,6 @@
+'use client';
 import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
 
 type FavoritesStore = {
   favorites: Set<number>;
@@ -16,3 +18,19 @@ export const useFavorite = create<FavoritesStore>(sets => ({
       return {favorites: next};
     }),
 }));
+
+export type ViewModes = 'GRID' | 'COMPACT';
+type ViewModeStore = {
+  mode: ViewModes;
+  setMode: (mode: ViewModes) => void;
+};
+
+export const useViewMode = create<ViewModeStore>()(
+  persist(
+    set => ({
+      mode: 'GRID',
+      setMode: mode => set({mode}),
+    }),
+    {name: 'view-mode'}
+  )
+);

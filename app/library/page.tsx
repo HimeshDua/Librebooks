@@ -112,7 +112,7 @@ export default async function Library({searchParams}: LibraryProps) {
   const page = Math.max(1, Number(resolvedParams.page) || 1);
   const query = (resolvedParams.q || '').trim();
   const category = resolvedParams.category || 'All';
-  const urlViewMode = (resolvedParams.view as 'grid' | 'compact') || 'grid';
+  // const urlViewMode = (resolvedParams.view as 'grid' | 'compact') || 'grid';
 
   const {PAGE_SIZE, MAX_CACHED_PAGE, CACHED_CATEGORIES} = LIBRARY_CONFIG;
 
@@ -198,7 +198,7 @@ export default async function Library({searchParams}: LibraryProps) {
           <Separator className="my-5" />
 
           <Suspense fallback={<BookDisplaySkeleton />}>
-            <BookDisplay books={books} query={query} urlViewMode={urlViewMode} />
+            <BookDisplay books={books} query={query} />
           </Suspense>
 
           {books && books.length > 0 && (
@@ -206,7 +206,6 @@ export default async function Library({searchParams}: LibraryProps) {
               <PaginationControls
                 page={page}
                 query={query}
-                view={urlViewMode}
                 category={category}
                 totalPages={totalPages}
               />

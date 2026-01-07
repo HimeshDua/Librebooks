@@ -10,7 +10,6 @@ export async function getUserFavorites(userId: string) {
     console.error('[getUserFavorites]', error.message);
     return [];
   }
-  console.log('I got my favorites ids', data);
 
   return data.map(f => f.book_id) as number[];
 }

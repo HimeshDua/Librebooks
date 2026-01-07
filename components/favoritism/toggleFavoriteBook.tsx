@@ -63,7 +63,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
     return (
       <AuthDialog
         description="save favorites"
-        triggerClassName="w-full py-4 md:w-auto bg-destructive text-destructive-foreground"
+        triggerClassName="py-4 w-auto bg-destructive text-destructive-foreground"
         dialogTrigger={
           <>
             Add to favorites <HeartIcon />
@@ -74,21 +74,25 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   }
 
   return (
-    <ConfettiButton className="w-full md:w-auto" turnConfettiOn={!isFavorite}>
-      <Button
-        disabled={loading}
+    <Button
+      disabled={loading}
+      variant="destructive"
+      className={cn(
+        'w-full md:w-auto py-4 flex items-center gap-2 cursor-pointer',
+        loading && 'animate-pulse transition',
+        isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
+      )}
+      asChild
+    >
+      <ConfettiButton
         onClick={handleToggleFavorite}
-        variant="destructive"
-        className={cn(
-          'w-full py-4 md:w-auto',
-          loading && 'animate-pulse transition',
-          isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
-        )}
+        className="w-full md:w-auto flex items-center gap-2"
+        turnConfettiOn={!isFavorite}
       >
         {isFavorite ? 'Unmark from Favorites' : 'Mark As Favorite'}
         {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
-      </Button>
-    </ConfettiButton>
+      </ConfettiButton>
+    </Button>
   );
 }
 
