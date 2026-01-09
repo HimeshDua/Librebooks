@@ -1,19 +1,23 @@
 import { MetadataRoute } from 'next';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabase/server';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://librebooks.vercel.app';
 
-  const books = await prisma.book.findMany({
-    select: {
-      slug: true,
-      updatedAt: true,
-    },
-  });
+  const { data: books, error } = await supabase
+    .from('book')
+    .select('slug, updated_at');
+
+  if (error) {
+    console.error('Sitemap Supabase error:', error);
+    return [];
+  }
 
   const bookUrls: MetadataRoute.Sitemap = books.map(book => ({
     url: `${base}/book/${book.slug}`,
-    lastModified: book.updatedAt,
+    lastModified: book.updated_at
+      ? new Date(book.updated_at)
+      : undefined,
     changeFrequency: 'weekly',
     priority: 0.7,
   }));
@@ -28,14 +32,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${base}/library`,
       lastModified: new Date(),
       priority: 0.9,
-    },
-    {
-      url: `${base}/auth/sign-up`,
-      priority: 0.3,
-    },
-    {
-      url: `${base}/auth/login`,
-      priority: 0.3,
     },
     ...bookUrls,
   ];
