@@ -31,6 +31,11 @@ export const metadata: Metadata = {
   applicationName: 'LibreBooks',
   authors: [{name: 'Himesh Dua', url: 'https://librebooks.vercel.app'}],
   creator: 'Himesh Dua',
+    robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
   appleWebApp: {
     capable: true,
     title: 'LibreBooks',
