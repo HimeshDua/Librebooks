@@ -31,6 +31,11 @@ export const metadata: Metadata = {
   applicationName: 'LibreBooks',
   authors: [{name: 'Himesh Dua', url: 'https://librebooks.vercel.app'}],
   creator: 'Himesh Dua',
+    robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
   appleWebApp: {
     capable: true,
     title: 'LibreBooks',
@@ -71,6 +76,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
+          <meta
+          name="google-site-verification"
+          content="ZqN_pVPqcbynnIC9mI9y7Zk3IDzxfkwuP9hapELyTuU"
+        />
         <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
