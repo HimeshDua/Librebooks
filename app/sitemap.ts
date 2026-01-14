@@ -27,11 +27,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: base,
       lastModified: new Date(),
       priority: 1,
+       changeFrequency: 'weekly',
     },
     {
       url: `${base}/library`,
       lastModified: new Date(),
       priority: 0.9,
+       changeFrequency: 'weekly',
     },
     ...bookUrls,
   ];
