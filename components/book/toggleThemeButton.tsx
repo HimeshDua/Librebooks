@@ -2,12 +2,13 @@
 import {Moon, Sun, Laptop} from 'lucide-react';
 import {Button} from '../ui/button';
 import {useTheme} from 'next-themes';
-import {toast} from 'sonner';
-import {usePathname} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
+import {} from 'next/navigation';
 
 export function ThemeToggleButton() {
   const {theme, setTheme, systemTheme} = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
@@ -16,12 +17,13 @@ export function ThemeToggleButton() {
     setTheme(nextTheme);
 
     if (pathname.startsWith('/read/')) {
-      setTimeout(() => {
-        toast.info('Theme changed successfully', {
-          description:
-            'We recommend refreshing the page to ensure the book displays correctly with the new theme.',
-        });
-      }, 300);
+      router.refresh();
+      // setTimeout(() => {
+      //   toast.info('Theme changed successfully', {
+      //     description:
+      //       'We recommend refreshing the page to ensure the book displays correctly with the new theme.',
+      //   });
+      // }, 300);
     }
   };
 
