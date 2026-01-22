@@ -1,6 +1,6 @@
 import {getBookFromSlug} from '@/lib/library/books/actions/getBookfromSlug';
 import {bookDescriptionMetaData} from '@/lib/library/books/utils';
-import type {Book} from '@/types';
+import type {Book} from '@/types/book';
 import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 
@@ -58,7 +58,7 @@ export function StructuredData({book}: {book: Book}) {
     },
     bookFormat: 'https://schema.org/EBook',
     description:
-      book.description ||
+      book.summaries[0] ||
       `Read "${book.title}" by ${book.author || 'Unknown Author'} online for free.`,
     inLanguage: book.languages?.[0] || 'English',
     isAccessibleForFree: true,
@@ -116,7 +116,7 @@ export async function generateMetadataComponent({
   const metaDescription = bookDescriptionMetaData({
     title: book.title,
     author: book.author,
-    description: book.description,
+    description: book.summaries[0],
   });
   const metaImage = book.cover_url || '/default-book-cover.jpg';
   const canonicalUrl = `https://librebooks.vercel.app/book/${slug}`;
