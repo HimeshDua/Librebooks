@@ -1,22 +1,15 @@
-import {getFavoriteBooks} from '@/lib/library/books/favorites/actions/getFavorites';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Heart, LibraryBig} from 'lucide-react';
 import {Button} from '@/components/ui/button';
-import type {User} from '@supabase/supabase-js';
+import {Card, CardContent} from '../ui/card';
+import type {Book} from '@/types/book';
+import FavoritesBlockLoading from './favorites-block-loading';
 
-export default async function FavoritesBlock({user}: {user: User | null}) {
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center h-[80vh]">
-        <p className="text-muted-foreground">Please sign in to view favorites.</p>
-      </div>
-    );
-  }
+export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; books: Book[]}) {
+  if (isLoading) return <FavoritesBlockLoading />;
 
-  const {books} = await getFavoriteBooks({userId: user.id});
-
-  if (books.length === 0) {
+  if (isLoading && books.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[80vh] text-center px-6">
         <Heart className="w-12 h-12 text-red-500 mb-3" />
@@ -40,7 +33,7 @@ export default async function FavoritesBlock({user}: {user: User | null}) {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {books.map(book => (
             <Link key={book.slug} href={`/book/${book.slug}`}>
-              <div className="rounded-2xl overflow-hidden border hover:shadow-md transition">
+              <Card className="overflow-hidden shadow-primary/30  transition">
                 <div className="relative aspect-[3/4]">
                   <Image
                     src={book.cover_url || '/default-book-cover.jpg'}
@@ -49,11 +42,11 @@ export default async function FavoritesBlock({user}: {user: User | null}) {
                     className="object-cover"
                   />
                 </div>
-                <div className="p-3">
+                <CardContent className="p-3">
                   <h3 className="font-semibold truncate">{book.title}</h3>
                   <p className="text-xs text-muted-foreground truncate">{book.author}</p>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </Link>
           ))}
         </div>

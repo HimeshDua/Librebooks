@@ -54,7 +54,7 @@ export function BookDisplay({books, query}: BookDisplayProps) {
             <div
               title={book.title}
               className={cn(
-                'group/card relative transition-all duration-200 rounded-lg',
+                'group/card relative duration-200 rounded-lg',
                 isCompact &&
                   'hover:bg-muted/50 border border-transparent hover:border-border px-2 py-1'
               )}

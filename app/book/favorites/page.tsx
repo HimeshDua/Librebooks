@@ -1,25 +1,29 @@
-'use server';
+'use client';
+import {getFavoriteBooks} from '@/lib/library/books/favorites/actions/getFavorites';
+import FavoritesBlockLoading from '@/components/favoritism/favorites-block-loading';
 import FavoritesBlock from '@/components/favoritism/favoritesBlock';
-import Footer from '@/components/nav/footer';
-import FooterLoading from '@/components/nav/footer-loading';
-import Header from '@/components/nav/header';
-import HeaderLoading from '@/components/nav/header-loading';
-import {getUserByInfo} from '@/lib/getUserByInfo';
-import {Suspense} from 'react';
+import {Suspense, useEffect, useState} from 'react';
+import type {Book} from '@/types/book';
+import {useFavorite} from '@/store';
 
-async function FavoritesPage() {
-  const {user} = await getUserByInfo();
+function FavoritesPage() {
+  const [books, setbooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const favorites = useFavorite(f => f.favoritesArray);
+  useEffect(() => {
+    const init = async () => {
+      const transformedSet = Array.from(favorites);
+      const {books: data} = await getFavoriteBooks({favorites: transformedSet});
+      setbooks(data);
+      setLoading(false);
+    };
+    init();
+  }, [favorites]);
 
   return (
-    <div className="container max-w-screen min-h-[94vh] mx-auto">
-      <Suspense fallback={<HeaderLoading />}>
-        <Header />
-      </Suspense>
-      <FavoritesBlock user={user} />
-      <Suspense fallback={<FooterLoading />}>
-        <Footer />
-      </Suspense>
-    </div>
+    <Suspense fallback={<FavoritesBlockLoading />}>
+      <FavoritesBlock isLoading={loading} books={books} />;
+    </Suspense>
   );
 }
 

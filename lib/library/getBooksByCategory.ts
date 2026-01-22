@@ -6,11 +6,8 @@ export const getBooksByCategory = cache(
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
-    // cacheLife('hours');
-    // cacheTag('books', 'categories', category);
-
     const {data, count, error} = await publicSupabase
-      .from('books')
+      .from('book')
       .select('id,slug,title,author,cover_url,download_count', {count: 'exact'})
       .contains('bookshelves', [category])
       .order('download_count', {ascending: false})

@@ -40,15 +40,15 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  if (pathname === '/book/favorites') {
-    const {
-      data: {session},
-    } = await supabase.auth.getSession();
+  // if (pathname === '/book/favorites') {
+  //   const {
+  //     data: {session},
+  //   } = await supabase.auth.getSession();
 
-    if (!session) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
-  }
+  //   if (!session) {
+  //     return NextResponse.redirect(new URL('/auth/login', request.url));
+  //   }
+  // }
 
   return response;
 }

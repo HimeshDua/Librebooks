@@ -6,7 +6,7 @@ export const getPopularBooks = cache(async (page: number, pageSize: number) => {
   const to = from + pageSize - 1;
 
   const {data, count, error} = await publicSupabase
-    .from('books')
+    .from('book')
     .select('id, slug, title, author, cover_url, download_count', {count: 'exact'})
     .order('download_count', {ascending: false})
     .range(from, to);

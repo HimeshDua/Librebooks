@@ -47,17 +47,13 @@ export default async function Header() {
             >
               Browse
             </Link>
-            {user && (
-              <Link
-                prefetch
-                href="/book/favorites"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Favorites
-              </Link>
-            )}
             <Link
-              prefetch
+              href="/book/favorites"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Favorites
+            </Link>
+            <Link
               href="/about"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >

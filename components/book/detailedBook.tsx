@@ -10,19 +10,19 @@ import {
 } from '../ui/breadcrumb';
 import BackButton from '../back-button';
 import {StructuredData} from './bookmetacomponents';
-import type {Book} from '@/types';
+import type {Book} from '@/types/book';
 import UserBookActions from './book-actions';
 import {notFound} from 'next/navigation';
 
 async function DetailedBook({book}: {book: Book}) {
   if (!book) return notFound();
   return (
-    <main className="min-h-screen py-10 px-4 mx-auto">
+    <main>
       <Suspense>
         <StructuredData book={book} />
       </Suspense>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-0 py-10 pt-4">
         <Breadcrumb className="mb-6 text-sm">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -67,30 +67,30 @@ async function DetailedBook({book}: {book: Book}) {
             </div>
           </div>
 
-          <div className="sm:col-span-1 md:col-span-1 lg:col-span-3 flex flex-col justify-center">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 leading-tight">
+          <div className="sm:col-span-1 md:col-span-1 lg:col-span-3 flex flex-col gap-y-2 justify-center">
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
               {book.title}
             </h1>
-            <p className="text-base text-muted-foreground mb-3">
-              by{' '}
-              <span className="font-semibold text-foreground">
-                {book.author || 'Unknown Author'}
-              </span>
-            </p>
 
-            {book.languages?.length > 0 && (
-              <p className="text-sm mb-6 text-muted-foreground">
-                Language:{' '}
-                <span className="font-medium text-foreground">{book.languages.join(', ')}</span>
+            <div className="flex flex-col gap-y-0 text-muted-foreground text-md mb-4">
+              <p>
+                by <span className="font-medium text-foreground">{book.author}</span>
               </p>
-            )}
-
-            {book.description && (
-              <div className="rounded-xl bg-muted/40 p-4 mb-6 backdrop-blur-sm border border-border/40">
-                <p className="text-sm leading-relaxed text-muted-foreground line-clamp-8 md:line-clamp-none">
-                  {book.description}
+              {book.languages?.length > 0 && (
+                <p>
+                  Language:{' '}
+                  <span className="font-medium text-foreground">[{book.languages.join(', ')}]</span>
                 </p>
-              </div>
+              )}
+            </div>
+
+            {book.summaries && (
+              <section className="max-w-3xl">
+                <h2 className="text-xl font-semibold mb-2">About this book</h2>
+                <p className="text-base leading-relaxed tracking-normal text-muted-foreground">
+                  {book.summaries?.join('\n\n')}
+                </p>
+              </section>
             )}
 
             <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center gap-3">
@@ -99,20 +99,14 @@ async function DetailedBook({book}: {book: Book}) {
               </Suspense>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-muted-foreground">
-              <div className="p-3 rounded-lg bg-muted/40 backdrop-blur-md border border-border/40">
-                <strong className="block text-foreground mb-1">Downloads</strong>
-                {book.download_count ? book.download_count.toLocaleString() : 'N/A'}
+            <section className="mt-14 border-y border-border py-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-sm">
+                <Meta label="Downloads" value={book.download_count?.toLocaleString()} />
+                <Meta label="Language" value={book.languages?.join(', ')} />
+                <Meta label="Source" value={book.source} />
+                <Meta label="Copyright" value={book.copyright ? 'Yes' : 'No'} />
               </div>
-              <div className="p-3 rounded-lg bg-muted/40 backdrop-blur-md border border-border/40">
-                <strong className="block text-foreground mb-1">Source</strong>
-                {book.source || 'Unknown'}
-              </div>
-              <div className="p-3 rounded-lg bg-muted/40 backdrop-blur-md border border-border/40">
-                <strong className="block text-foreground mb-1">Copyright</strong>
-                {book.copyright ? 'Yes' : 'No'}
-              </div>
-            </div>
+            </section>
           </div>
         </section>
       </div>
@@ -121,3 +115,12 @@ async function DetailedBook({book}: {book: Book}) {
 }
 
 export default DetailedBook;
+
+function Meta({label, value}: {label: string; value?: string}) {
+  return (
+    <div>
+      <div className="text-muted-foreground">{label}</div>
+      <div className="font-semibold text-foreground">{value || '—'}</div>
+    </div>
+  );
+}

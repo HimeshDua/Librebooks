@@ -10,7 +10,7 @@ export async function fetchBooksDirectly(
   const to = from + pageSize - 1;
 
   let builder = publicSupabase
-    .from('books')
+    .from('book')
     .select('id,slug,title,author,cover_url,download_count', {count: 'exact'})
     .order('download_count', {ascending: false})
     .range(from, to);

@@ -4,10 +4,8 @@ import {useEffect, useState} from 'react';
 import {Button} from '../ui/button';
 import {HeartIcon, HeartOffIcon} from 'lucide-react';
 import {toast} from 'sonner';
-import {ConfettiButton} from '../ui/confetti';
-import AuthDialog from '../auth-dialog';
 import {cn} from '@/lib/utils';
-import {useFavorite} from '@/store/index';
+import {useFavorite} from '@/store';
 import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook';
 import {getUserFavorites} from '@/lib/library/books/favorites/actions/getUserFavorites';
 
@@ -22,7 +20,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
 
   const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
-
+  console.log('is that true? ', isFavorite);
   useEffect(() => {
     if (!id) {
       setLoading(false);
@@ -38,19 +36,25 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   const handleToggleFavorite = async () => {
     if (!id) {
       setLoading(false);
-      return;
     }
 
     try {
-      const {error, message} = await toggleFavoriteBook({
-        isFavorite,
-        book_id: bookId,
-        bookTitle,
-        user_id: id,
-      });
-      if (error) throw error;
+      if (id) {
+        const {error, message} = await toggleFavoriteBook({
+          isFavorite,
+          book_id: bookId,
+          bookTitle,
+          user_id: id,
+        });
+
+        if (error) throw error;
+        toast.success(message);
+      }
+
       toggle(bookId);
-      toast.success(message);
+      if (!id) {
+        toast.info('Save your favorite books across devices via Login');
+      }
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong');
@@ -59,39 +63,22 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
     }
   };
 
-  if (!id) {
-    return (
-      <AuthDialog
-        description="save favorites"
-        triggerClassName="py-4 w-auto bg-destructive text-destructive-foreground"
-        dialogTrigger={
-          <>
-            Add to favorites <HeartIcon />
-          </>
-        }
-      />
-    );
-  }
-
   return (
     <Button
       disabled={loading}
       variant="destructive"
       className={cn(
-        'w-full md:w-auto py-4 flex items-center gap-2 cursor-pointer',
-        loading && 'animate-pulse transition',
+        'flex-1 md:w-auto py-4 flex items-center gap-2 cursor-pointer',
+        loading && 'animate-pulse! transition',
         isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
       )}
-      asChild
+      onClick={handleToggleFavorite}
     >
-      <ConfettiButton
-        onClick={handleToggleFavorite}
-        className="w-full md:w-auto flex items-center gap-2"
-        turnConfettiOn={!isFavorite}
-      >
-        {isFavorite ? 'Unmark from Favorites' : 'Mark As Favorite'}
-        {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
-      </ConfettiButton>
+      {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
+
+      <span className="hidden md:inline">
+        {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+      </span>
     </Button>
   );
 }

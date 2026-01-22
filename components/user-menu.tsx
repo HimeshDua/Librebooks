@@ -1,12 +1,11 @@
 'use client';
 
-import {useState, useEffect, Suspense} from 'react';
-import {useTheme} from 'next-themes';
+import {useState, useEffect} from 'react';
 import {Popover, PopoverTrigger, PopoverContent} from '@/components/ui/popover';
 import {Button} from '@/components/ui/button';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Separator} from '@/components/ui/separator';
-import {SunIcon, MoonIcon, LaptopIcon, CheckCircle2, Mail, Heart} from 'lucide-react';
+import {CheckCircle2, Mail, Heart} from 'lucide-react';
 import {LogoutButton} from './logout-button';
 import Link from 'next/link';
 import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
@@ -15,7 +14,6 @@ import {toast} from 'sonner';
 import {User} from '@supabase/supabase-js';
 
 export function UserMenu({user, favoriteCount = 0}: {user: User; favoriteCount?: number}) {
-  const {setTheme, theme} = useTheme();
   const [isMobile, setIsMobile] = useState(false);
   const isMob = useIsMobile();
 
@@ -121,43 +119,6 @@ export function UserMenu({user, favoriteCount = 0}: {user: User; favoriteCount?:
             </Link>
           )}
         </div>
-
-        <Separator className="my-3" />
-
-        <Suspense
-          fallback={
-            <Button size="icon" variant={'default'} aria-label="System theme">
-              <LaptopIcon className="w-4 h-4" />
-            </Button>
-          }
-        >
-          <div className="flex justify-around mb-3">
-            <Button
-              size="icon"
-              variant={theme === 'light' ? 'default' : 'outline'}
-              onClick={() => setTheme('light')}
-              aria-label="Light mode"
-            >
-              <SunIcon className="w-4 h-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant={theme === 'dark' ? 'default' : 'outline'}
-              onClick={() => setTheme('dark')}
-              aria-label="Dark mode"
-            >
-              <MoonIcon className="w-4 h-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant={theme === 'system' ? 'default' : 'outline'}
-              onClick={() => setTheme('system')}
-              aria-label="System theme"
-            >
-              <LaptopIcon className="w-4 h-4" />
-            </Button>
-          </div>
-        </Suspense>
 
         <Separator className="my-2" />
 

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {Button} from '../ui/button';
+import {cn} from '@/lib/utils';
 
 type PaginationControlsProps = {
   category: string;
@@ -22,9 +23,13 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
 
   return (
     <>
-      {/* Mobile Bottom Pagination */}
-      <div className="md:hidden fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm border-t border-border z-40 px-3 py-2">
-        <div className="flex items-center justify-between gap-2 w-full max-w-sm mx-auto">
+      <div
+        className={cn(
+          'md:hidden fixed inset-x-0 bottom-0 z-40 px-3 py-2',
+          'bg-background/95 backdrop-blur-sm border-t border-border'
+        )}
+      >
+        <div className="flex items-center justify-between gap-2 w-full text-[0.6rem]">
           <Link
             prefetch
             href={makeUrl(Math.max(1, page - 1))}
@@ -32,7 +37,7 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
             className="flex-1 min-w-0"
           >
             <Button
-              className="w-full rounded-lg text-center h-11 text-xs font-medium truncate"
+              className="w-full rounded-lg text-center font-medium truncate"
               variant="outline"
               size="sm"
               disabled={prevDisabled}
@@ -41,7 +46,7 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
             </Button>
           </Link>
 
-          <div className="px-3 py-2 text-nowrap rounded-full bg-muted text-xs font-semibold text-center flex-shrink-0 w-[64px]">
+          <div className="px-2 py-2 text-nowrap rounded-full bg-muted font-semibold flex items-center justify-center flex-shrink-0 min-w-28">
             {page} / {totalPages || 1}
           </div>
 
@@ -52,7 +57,7 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
             className="flex-1 min-w-0"
           >
             <Button
-              className="w-full rounded-lg text-center h-11 text-xs font-medium truncate"
+              className="w-full rounded-lg text-center font-medium truncate"
               variant="outline"
               size="sm"
               disabled={nextDisabled}

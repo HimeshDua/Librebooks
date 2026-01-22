@@ -1,4 +1,5 @@
 import {Skeleton} from '../ui/skeleton';
+import SuggestedBookSectionLoadingState from './suggested/loading-state';
 
 export default function DetailedBookSkeleton() {
   return (
@@ -11,7 +12,6 @@ export default function DetailedBookSkeleton() {
           <Skeleton className="w-4 h-3" />
           <Skeleton className="w-24 h-4" />
         </div>
-
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2 flex flex-col items-center">
             <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
@@ -89,21 +89,7 @@ export default function DetailedBookSkeleton() {
             </div>
           </div>
         </section>
-
-        {/* <section className="mt-16">
-          <Skeleton className="h-7 w-48 mb-6" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-            {Array.from({length: 5}).map((_, index) => (
-              <div key={index} className="rounded-2xl overflow-hidden border">
-                <Skeleton className="aspect-[3/4] w-full" />
-                <div className="p-3">
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-3 w-3/4" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section> */}
+        <SuggestedBookSectionLoadingState />
       </div>
     </main>
   );

@@ -6,6 +6,8 @@ import './tiptap.scss';
 import './readermode.css';
 import NextTopLoader from 'nextjs-toploader';
 import {Toaster} from 'sonner';
+import Header from '@/components/nav/header';
+import Footer from '@/components/nav/footer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
   applicationName: 'LibreBooks',
   authors: [{name: 'Himesh Dua', url: 'https://librebooks.vercel.app'}],
   creator: 'Himesh Dua',
-    robots: {
+  robots: {
     index: true,
     follow: true,
     nocache: false,
@@ -76,24 +78,28 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
-          <meta
+        <meta
           name="google-site-verification"
           content="ZqN_pVPqcbynnIC9mI9y7Zk3IDzxfkwuP9hapELyTuU"
         />
         <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
-          {children}
-          <Toaster
-            className="z-50"
-            mobileOffset={20}
-            expand
-            closeButton
-            containerAriaLabel="Message Box"
-            position="bottom-center"
-            richColors
-            // theme={toasterTheme}
-          />
+          <div className="container max-w-screen mx-auto">
+            <Header />
+            {children}
+            <Toaster
+              className="z-50"
+              mobileOffset={20}
+              expand
+              closeButton
+              containerAriaLabel="Message Box"
+              position="bottom-center"
+              richColors
+              // theme={toasterTheme}
+            />
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>

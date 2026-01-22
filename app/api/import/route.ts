@@ -1,12 +1,13 @@
 import {NextResponse} from 'next/server';
 import {createClient} from '@/lib/supabase/server';
 import {generateSlug} from '@/lib/getSlugfromTitle';
+import type {Book, GutenbergBatch} from '@/types/book';
 
 export async function POST() {
   const supabase = await createClient();
   const startPage = 1;
   const endPage = 999;
-  const batchSize = 20;
+  const batchSize = 60;
 
   const failedPages: {page: number; reason: string}[] = [];
   const failedBooks: {page: number; id: number; title: string; slug: string; reason: string}[] = [];
@@ -32,18 +33,18 @@ export async function POST() {
 
       let count = results.length;
       for (let i = 0; i < results.length; i += batchSize) {
-        const batch = results.slice(i, i + batchSize);
+        const batch = results.slice(i, i + batchSize) as GutenbergBatch[];
 
-        // Generate slug + data
-        const upserts = batch.map((book: any) => ({
+        const upserts: Book[] = batch.map(book => ({
           gutenberg_id: book.id,
           slug: generateSlug(book.title, count, book.id, {lowercase: true}),
           title: book.title,
           author: book.authors?.map((a: any) => a.name).join(', ') || 'Unknown',
-          cover_url: book.formats?.['image/jpeg'] || null,
-          description: book.summaries?.slice(0, 7).join(', ') || null,
+          cover_url: book.formats?.['image/jpeg'],
+          summaries: book.summaries || [],
           languages: book.languages || [],
-          epub: book.formats?.['application/epub+zip'] || null,
+          epub_url: book.formats?.['application/epub+zip'],
+          pdf_url: book.formats?.['text/html'],
           source: 'Gutenberg',
           bookshelves: book.bookshelves || [],
           copyright: !!book.copyright,
@@ -51,7 +52,7 @@ export async function POST() {
         }));
 
         try {
-          const {error} = await supabase.from('books').upsert(upserts);
+          const {error} = await supabase.from('book').upsert(upserts);
           if (error) {
             console.error(`⚠️ Supabase error on page ${page}:`, error.message);
 
@@ -87,7 +88,6 @@ export async function POST() {
       `🏁 Import completed with ${failedPages.length} failed pages and ${failedBooks.length} failed books.`
     );
 
-    // Return both summaries
     return NextResponse.json({
       success: true,
       failedPages,

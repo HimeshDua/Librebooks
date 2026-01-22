@@ -6,12 +6,8 @@ import Footer from '@/components/nav/footer';
 
 export default async function HomePage() {
   return (
-    <div className="container min-h-[94vh] mx-auto">
-      <Header />
-      <main className="min-h-[84vh] px-2 mx-auto">
-        <Hero {...homeContent} />
-      </main>
-      <Footer />
-    </div>
+    <main className="min-h-[84vh] px-2 mx-auto">
+      <Hero {...homeContent} />
+    </main>
   );
 }

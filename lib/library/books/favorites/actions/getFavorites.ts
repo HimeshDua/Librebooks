@@ -1,21 +1,21 @@
 'use server';
 
 import {createClient} from '@/lib/supabase/server';
-import type {Book} from '@/types';
+import type {Book as FavoriteResponse} from '@/types/book';
 
-type FavoriteResponse = {
-  books: Book[];
-};
-export const getFavoriteBooks = async ({userId}: {userId: string}) => {
+export const getFavoriteBooks = async ({favorites}: {favorites: number[]}) => {
   const supabase = await createClient();
+
   const {data, error} = await supabase
-    .from('favorites')
-    .select('book_id, books(slug,  title, author, cover_url)')
-    .eq('user_id', userId)
+    .from('book')
+    .select('slug,  title, author, cover_url')
+    .in('id', favorites)
     .order('created_at', {ascending: false})
     .returns<FavoriteResponse[]>();
 
   if (error) console.error(error);
-  const mapped = data ? data.flatMap(fav => fav.books || []).filter(Boolean) : [];
+
+  // console.log('fav books: ', data);
+  const mapped = data ? data.flatMap(fav => fav || []).filter(Boolean) : [];
   return {books: mapped};
 };

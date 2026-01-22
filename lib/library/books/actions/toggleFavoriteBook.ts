@@ -17,10 +17,18 @@ export const toggleFavoriteBook = async ({
 }: toggleFavoriteBookProps) => {
   const supabase = await createClient();
   if (isFavorite) {
-    const {error} = await supabase.from('favorites').delete().match({user_id, book_id});
-    return {error: error?.message || null, message: `Removed "${bookTitle}" from favorites`};
+    try {
+      const {error} = await supabase.from('favorite').delete().match({user_id, book_id});
+      return {error: error?.message || null, message: `Removed "${bookTitle}" from favorites`};
+    } catch (error) {
+      throw error;
+    }
   } else {
-    const {error} = await supabase.from('favorites').insert({user_id, book_id});
-    return {error: error?.message || null, message: `Added "${bookTitle}" to favorites`};
+    try {
+      const {error} = await supabase.from('favorite').insert({user_id, book_id});
+      return {error: error?.message || null, message: `Added "${bookTitle}" to favorites`};
+    } catch (error) {
+      throw error;
+    }
   }
 };
