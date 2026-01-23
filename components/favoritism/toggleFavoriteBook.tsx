@@ -22,17 +22,17 @@ function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) 
 
   const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
-  useEffect(() => {
-    if (!id) {
-      setLoading(false);
-      return;
-    }
+    useEffect(() => {
+      if (!id) {
+        setLoading(false);
+        return;
+      }
 
-    getUserFavorites(id)
-      .then(setAll)
-      .catch(() => toast.error('Failed to load favorites'))
-      .then(() => setLoading(false));
-  }, [id, setAll]);
+      getUserFavorites(id)
+        .then(setAll)
+        .catch(() => toast.error('Failed to load favorites'))
+        .then(() => setLoading(false));
+    }, [id, setAll]);
 
   const handleToggleFavorite = async () => {
     if (!id) {

@@ -15,6 +15,7 @@ import Link from 'next/link';
 
 function HeaderDrawer({isUser}: {isUser: boolean}) {
   const [open, setOpen] = useState(false);
+
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>

@@ -2,6 +2,7 @@
 
 import ToggleFavoriteBook from '@/components/favoritism/toggleFavoriteBook';
 import {blurDataUrl} from '@/data';
+import {getSuggestedBooks} from '@/lib/library/books/actions/getSuggestedBook';
 import {supabase} from '@/lib/supabase/client';
 import {useFavorite} from '@/store';
 import type {SuggestedBook} from '@/types/book';
@@ -23,27 +24,15 @@ export default function SuggestedBookSection({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!favorites.size || !languages.length) return;
-
-    const run = async () => {
-      setLoading(true);
-
-      const favoriteIds = Array.from(favorites);
-
-      const {data, error} = await supabase
-        .from('book')
-        .select('id, slug, title, cover_url, author, languages, download_count')
-        .neq('id', currentBookId)
-        .overlaps('languages', languages)
-        .not('id', 'in', `(${favoriteIds.join(',')})`)
-        .order('download_count', {ascending: false})
-        .limit(5);
-
-      if (!error && data) setBooks(data);
+    setLoading(true);
+    try {
+      getSuggestedBooks({currentBookId, favorites, languages}).then(n => {
+        if (n.error) console.error(n.error.message);
+        if (n.data) setBooks(n.data);
+      });
+    } finally {
       setLoading(false);
-    };
-
-    run();
+    }
   }, [favorites, currentBookId, languages]);
 
   if (!books.length && !loading) return null;
