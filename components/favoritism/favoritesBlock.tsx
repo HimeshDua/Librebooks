@@ -31,20 +31,25 @@ export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; 
           </h1>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-          {books.map(book => (
+          {books.map((book, idx) => (
             <Link key={book.slug} href={`/book/${book.slug}`}>
               <Card className="overflow-hidden shadow-primary/30  transition">
                 <div className="relative aspect-[3/4]">
                   <Image
+                    loading={idx < 4 ? 'eager' : 'lazy'}
                     src={book.cover_url || '/default-book-cover.jpg'}
+                    placeholder="blur"
+                    blurDataURL="/default-book-cover.jpg"
                     alt={book.title}
                     fill
                     className="object-cover"
                   />
                 </div>
                 <CardContent className="p-3">
-                  <h3 className="font-semibold truncate">{book.title}</h3>
-                  <p className="text-xs text-muted-foreground truncate">{book.author}</p>
+                  <h3 className="font-semibold truncate">{book.title || 'Something went wrong'}</h3>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {book.author || 'Unknown'}
+                  </p>
                 </CardContent>
               </Card>
             </Link>

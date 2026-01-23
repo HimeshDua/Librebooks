@@ -1,9 +1,9 @@
 export const homeContent = {
-  heading: 'Discover. Read. Share. — LibreBooks',
+  heading: 'A better way to discover and read free books',
   description:
-    'Your personal free books library. Read your favorite public books online, save them for later, and share what inspires you — beautifully built for both mobile and desktop readers.',
+    'Explore a growing collection of free public-domain books. Read anywhere, keep your favorites close, and share passages that stay with you.',
   button: {
-    text: 'Explore Library',
+    text: 'Explore the Library',
     url: '/library',
   },
   reviews: {
@@ -12,23 +12,23 @@ export const homeContent = {
     avatars: [
       {
         src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp',
-        alt: 'Avatar 1',
+        alt: 'Reader avatar',
       },
       {
         src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp',
-        alt: 'Avatar 2',
+        alt: 'Reader avatar',
       },
       {
         src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp',
-        alt: 'Avatar 3',
+        alt: 'Reader avatar',
       },
       {
         src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp',
-        alt: 'Avatar 4',
+        alt: 'Reader avatar',
       },
       {
         src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp',
-        alt: 'Avatar 5',
+        alt: 'Reader avatar',
       },
     ],
   },

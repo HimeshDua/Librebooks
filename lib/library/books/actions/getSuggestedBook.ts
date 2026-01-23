@@ -1,5 +1,5 @@
 'use server';
-import {getUserByInfo} from '@/lib/getUserByInfo';
+
 import {publicSupabase as supabase} from '@/lib/supabase/public';
 import type {SuggestedBook} from '@/types/book';
 import {getUserFavorites} from '../favorites/actions/getUserFavorites';
@@ -12,15 +12,15 @@ type getSuggestedBookResult = Promise<{
 type getSuggestedBooksProps = {
   currentBookId: number;
   languages: string[];
+  userId: string | null;
 };
 
 export const getSuggestedBooks = async ({
   currentBookId,
   languages,
+  userId,
 }: getSuggestedBooksProps): getSuggestedBookResult => {
-  const userId = (await getUserByInfo()).user?.id ?? null;
-
-  if (!userId) return {data: null, error: null};
+  if (!userId || !currentBookId) return {data: null, error: null};
 
   const favoriteIds = await getUserFavorites(userId);
 

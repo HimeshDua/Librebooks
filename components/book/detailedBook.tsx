@@ -14,7 +14,7 @@ import type {Book} from '@/types/book';
 import UserBookActions from './book-actions';
 import {notFound} from 'next/navigation';
 
-async function DetailedBook({book}: {book: Book}) {
+async function DetailedBook({userId, book}: {userId: string | null; book: Book}) {
   if (!book) return notFound();
   return (
     <main>
@@ -95,7 +95,7 @@ async function DetailedBook({book}: {book: Book}) {
 
             <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center gap-3">
               <Suspense fallback={<div className="h-12" />}>
-                <UserBookActions book={book} />
+                <UserBookActions userId={userId} book={book} />
               </Suspense>
             </div>
 

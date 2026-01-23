@@ -9,9 +9,7 @@ import type {Book} from '@/types/book';
 import {cn} from '@/lib/utils';
 import Link from 'next/link';
 
-export default async function UserBookActions({book}: {book: Book}) {
-  const userId = (await getUserByInfo()).user?.id ?? null;
-
+export default async function UserBookActions({userId, book}: {userId: string | null; book: Book}) {
   return (
     <div className="mt-4 flex flex-wrap gap-3 max-w-238 w-full">
       {book.epub_url && (

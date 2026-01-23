@@ -21,7 +21,7 @@ export function UserMenu({user, favoriteCount = 0}: {user: User; favoriteCount?:
     const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
     const isLogWarnGiven = localStorage.getItem('LogWarnGiven') !== '1' || false;
 
-    if (pathName === '/' && isLogWarnGiven) {
+    if (pathName === '/' && !user && isLogWarnGiven) {
       setTimeout(() => {
         toast.info('Log in for a better experience', {
           action: {

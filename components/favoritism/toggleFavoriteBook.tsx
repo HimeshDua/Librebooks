@@ -10,17 +10,18 @@ import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook
 import {getUserFavorites} from '@/lib/library/books/favorites/actions/getUserFavorites';
 
 type Props = {
-  id: string | null;
+  id?: string;
   bookId: number;
   bookTitle: string;
+  className?: string;
+  minimal?: boolean;
 };
 
-function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
+function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) {
   const {favorites, toggle, setAll} = useFavorite();
 
   const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
-  console.log('is that true? ', isFavorite);
   useEffect(() => {
     if (!id) {
       setLoading(false);
@@ -66,17 +67,19 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
   return (
     <Button
       disabled={loading}
-      variant="destructive"
       className={cn(
         'flex-1 md:w-auto py-4 flex items-center gap-2 cursor-pointer',
         loading && 'animate-pulse! transition',
-        isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90'
+        isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90',
+        className
       )}
+      variant="destructive"
+      size={minimal ? 'sm' : 'default'}
       onClick={handleToggleFavorite}
     >
       {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
 
-      <span className="hidden md:inline">
+      <span className={cn('hidden md:inline', minimal && 'hidden md:hidden')}>
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
       </span>
     </Button>
