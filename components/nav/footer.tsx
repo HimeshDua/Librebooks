@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 async function Footer() {
   return (
-    <footer className="border-t border-border/40 py-10 text-center">
+    <footer id="footer" className="border-t border-border/40 py-10 text-center">
       <div className="max-w-5xl mx-auto px-6 space-y-6 sm:space-y-4">
         <p>
           Sourced from{' '}

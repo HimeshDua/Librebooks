@@ -1,6 +1,7 @@
 'use client';
 
 import ToggleFavoriteBook from '@/components/favoritism/toggleFavoriteBook';
+import {blurDataUrl} from '@/data';
 import {supabase} from '@/lib/supabase/client';
 import {useFavorite} from '@/store';
 import type {SuggestedBook} from '@/types/book';
@@ -70,6 +71,8 @@ export default function SuggestedBookSection({
                 <Image
                   src={book.cover_url || '/default-book-cover.jpg'}
                   alt={book.title}
+                  placeholder="blur"
+                  blurDataURL={blurDataUrl}
                   fill
                   className="object-cover"
                 />

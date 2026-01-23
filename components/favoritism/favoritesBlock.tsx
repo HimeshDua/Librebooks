@@ -5,6 +5,7 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '../ui/card';
 import type {Book} from '@/types/book';
 import FavoritesBlockLoading from './favorites-block-loading';
+import {blurDataUrl} from '@/data';
 
 export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; books: Book[]}) {
   if (isLoading) return <FavoritesBlockLoading />;
@@ -39,7 +40,7 @@ export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; 
                     loading={idx < 4 ? 'eager' : 'lazy'}
                     src={book.cover_url || '/default-book-cover.jpg'}
                     placeholder="blur"
-                    blurDataURL="/default-book-cover.jpg"
+                    blurDataURL={blurDataUrl}
                     alt={book.title}
                     fill
                     className="object-cover"

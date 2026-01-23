@@ -1,5 +1,3 @@
-'use server';
-
 import Link from 'next/link';
 import {Button} from '../ui/button';
 import {Star} from 'lucide-react';
@@ -26,7 +24,7 @@ export interface HeroProps {
   };
 }
 
-async function Hero({heading, description, primaryAction, secondaryAction, reviews}: HeroProps) {
+function Hero({heading, description, primaryAction, secondaryAction, reviews}: HeroProps) {
   return (
     <section className="relative py-32">
       <div className="container mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center">

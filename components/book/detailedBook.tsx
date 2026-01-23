@@ -13,6 +13,7 @@ import {StructuredData} from './bookmetacomponents';
 import type {Book} from '@/types/book';
 import UserBookActions from './book-actions';
 import {notFound} from 'next/navigation';
+import {blurDataUrl} from '@/data';
 
 async function DetailedBook({userId, book}: {userId: string | null; book: Book}) {
   if (!book) return notFound();
@@ -57,7 +58,7 @@ async function DetailedBook({userId, book}: {userId: string | null; book: Book})
                   className="object-cover w-full aspect-[3/4]"
                   priority
                   placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k="
+                  blurDataURL={blurDataUrl}
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-sm text-muted-foreground">

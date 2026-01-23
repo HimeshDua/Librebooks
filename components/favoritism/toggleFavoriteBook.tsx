@@ -7,7 +7,7 @@ import {toast} from 'sonner';
 import {cn} from '@/lib/utils';
 import {useFavorite} from '@/store';
 import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook';
-import {getUserFavorites} from '@/lib/library/books/favorites/actions/getUserFavorites';
+import {getUserFavorites} from '@/lib/library/books/favorites/actions/getFavBookIds';
 
 type Props = {
   id?: string;

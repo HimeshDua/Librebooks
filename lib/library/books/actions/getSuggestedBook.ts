@@ -2,7 +2,7 @@
 
 import {publicSupabase as supabase} from '@/lib/supabase/public';
 import type {SuggestedBook} from '@/types/book';
-import {getUserFavorites} from '../favorites/actions/getUserFavorites';
+import {getUserFavorites} from '../favorites/actions/getFavBookIds';
 
 type getSuggestedBookResult = Promise<{
   data: SuggestedBook[] | null;

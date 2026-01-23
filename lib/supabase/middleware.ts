@@ -10,6 +10,7 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/api/auth') ||
     pathname.startsWith('/auth') ||
     pathname.startsWith('/manifest') ||
+    pathname.startsWith('/manifest.ts') ||
     pathname.endsWith('.webmanifest') ||
     pathname.endsWith('.png') ||
     pathname.endsWith('.ico')

@@ -16,7 +16,10 @@ export default async function Header() {
   const isUser = !!user;
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40 supports-[backdrop-filter]:bg-background/60">
+    <nav
+      id="header"
+      className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40 supports-[backdrop-filter]:bg-background/60"
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3">
         <div className="flex items-center gap-6">
           <Link prefetch href="/" className="hidden sm:flex items-center gap-2 group">

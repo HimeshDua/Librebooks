@@ -1,7 +1,6 @@
 'use server';
 
 import ToggleFavoriteBook from '../favoritism/toggleFavoriteBook';
-import {getUserByInfo} from '@/lib/getUserByInfo';
 import {Button} from '@/components/ui/button';
 import AuthDialog from '../auth-dialog';
 import {BookOpen} from 'lucide-react';
@@ -45,7 +44,7 @@ export default async function UserBookActions({userId, book}: {userId: string | 
         </>
       )}
 
-      <ToggleFavoriteBook id={userId} bookId={book.id!} bookTitle={book.title} />
+      <ToggleFavoriteBook id={userId ?? undefined} bookId={book.id!} bookTitle={book.title} />
     </div>
   );
 }

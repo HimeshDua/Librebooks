@@ -29,7 +29,7 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
   if (error || !book) return notFound();
 
   return (
-    <div className="max-w-6xl flex flex-col gap-y-8 px-4 mx-auto">
+    <div className="max-w-6xl min-h-[85vh] flex flex-col gap-y-8 px-4 mx-auto">
       <DetailedBook book={book} userId={userId} />
       <Suspense fallback={<SuggestedBookSectionLoadingState />}>
         <SuggestedBooksLoader currentBookId={book?.id!} languages={book.languages} />
