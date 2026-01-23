@@ -1,15 +1,11 @@
 export function generateSlug(
   title: string,
-  id: number,
-  gutenberg_id: number,
-  opts: {lowercase?: boolean; maxLen?: number} = {}
+  opts: {lowercase?: boolean; maxLen?: number; randNum?: boolean} = {}
 ): string {
-  const {lowercase = true, maxLen = 80} = opts;
+  const {lowercase = true, maxLen = 80, randNum = false} = opts;
 
   let s = title.normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
-
   s = s.replace(/['’`"“”]/g, '');
-
   s = s
     .replace(/[^A-Za-z0-9\s-]+/g, ' ')
     .replace(/[\s_-]+/g, '-')
@@ -24,7 +20,9 @@ export function generateSlug(
 
   if (lowercase) s = s.toLowerCase();
 
-  if (!s) s = `untitled-${gutenberg_id}`;
-
-  return id ? `${s}-${id}${Math.floor(Math.random() * 100)}` : s;
+  return randNum
+    ? `${s}-${Math.floor(Math.random() * 100)
+        .toString()
+        .padStart(3, '0')}`
+    : s;
 }

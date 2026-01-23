@@ -18,7 +18,7 @@ function ImportBooks() {
   }
 
   return (
-    <div className="min-h-[69vh] gap-y-2 w-screen flex flex-col text-lg text-center justify-center">
+    <div className="min-h-[69vh] gap-y-2 flex flex-col text-lg text-center justify-center">
       <h1 className="text-xl font-semibold">Import Books</h1>
       <Button
         disabled={loading}
