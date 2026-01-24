@@ -1,5 +1,5 @@
+import SuggestedBookSectionLoadingState from './suggested-books';
 import {Skeleton} from '../ui/skeleton';
-import SuggestedBookSectionLoadingState from './suggested/loading-state';
 
 export default function DetailedBookSkeleton() {
   return (
@@ -14,7 +14,7 @@ export default function DetailedBookSkeleton() {
         </div>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2 flex flex-col items-center">
-            <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative w-full aspect-3/4 rounded-2xl overflow-hidden shadow-xl">
               <Skeleton className="w-full h-full" />
             </div>
           </div>

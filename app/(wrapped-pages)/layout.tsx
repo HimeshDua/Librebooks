@@ -1,17 +1,26 @@
 import type {Metadata, Viewport} from 'next';
-import {Geist} from 'next/font/google';
-import {ThemeProvider} from 'next-themes';
+import {Geist, Geist_Mono, Inter} from 'next/font/google';
+
 import './globals.css';
 import './tiptap.scss';
 import './readermode.css';
-import NextTopLoader from 'nextjs-toploader';
-import {Toaster} from 'sonner';
+
 import Header from '@/components/nav/header';
 import Footer from '@/components/nav/footer';
+import {ThemeProvider} from 'next-themes';
+import NextTopLoader from 'nextjs-toploader';
+import {Toaster} from 'sonner';
+import {cn} from '@/lib/utils';
+
+const inter = Inter({subsets: ['latin'], variable: '--font-sans'});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  display: 'swap',
+  subsets: ['latin'],
+});
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
   subsets: ['latin'],
 });
 
@@ -76,10 +85,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh] container mx-auto`}
-      >
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <meta
           name="google-site-verification"
           content="ZqN_pVPqcbynnIC9mI9y7Zk3IDzxfkwuP9hapELyTuU"
@@ -88,7 +95,14 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
           <Header />
-          <main className="relative flex flex-col gap-y-3 px-4 md:px-0">{children}</main>
+          <main
+            className={cn(
+              'relative flex flex-col gap-y-3 px-4 md:px-0',
+              'reader max-w-screen min-h-[94vh] container mx-auto'
+            )}
+          >
+            {children}
+          </main>
           <Toaster
             className="z-50"
             mobileOffset={20}

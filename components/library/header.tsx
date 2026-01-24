@@ -5,7 +5,7 @@ export default function Header() {
         Libre Books
       </h1>
       <p className="text-base sm:text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
-        Discover 800+ free public-domain books. Curated, searchable, and ready to read.
+        Discover 12000+ free public-domain books. Curated, searchable, and ready to read.
       </p>
     </header>
   );

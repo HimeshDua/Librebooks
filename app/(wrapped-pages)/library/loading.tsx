@@ -1,10 +1,10 @@
 import {Separator} from '@/components/ui/separator';
-import BookDisplaySkeleton from '@/components/library/bookDisplaySkeleton';
+import BookDisplaySkeleton from '@/components/skeletons/book-display';
 
 export default async function LibraryLoading() {
   return (
-    <main className="min-h-screen py-10 px-4 mx-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main className="min-h-screen py-10 px-4 mx-auto w-full">
+      <div className="max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <header className="text-center mb-8 animate-pulse">
           <div className="h-10 w-64 mx-auto rounded bg-muted" />
           <div className="mt-4 h-4 w-96 max-w-full mx-auto rounded bg-muted/70" />

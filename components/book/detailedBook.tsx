@@ -15,7 +15,12 @@ import UserBookActions from './book-actions';
 import {notFound} from 'next/navigation';
 import {blurDataUrl} from '@/data';
 
-async function DetailedBook({userId, book}: {userId: string | null; book: Book}) {
+type DetailedBookSectionProps = {
+  userId: string | null;
+  book: Book;
+};
+
+export default async function DetailedBookSection({userId, book}: DetailedBookSectionProps) {
   if (!book) return notFound();
   return (
     <main>
@@ -33,9 +38,7 @@ async function DetailedBook({userId, book}: {userId: string | null; book: Book})
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/library">Library</Link>
-              </BreadcrumbLink>
+              <BreadcrumbLink render={<Link href="/library">Library</Link>} />
             </BreadcrumbItem>
             <Suspense>
               <BreadcrumbSeparator />
@@ -48,14 +51,14 @@ async function DetailedBook({userId, book}: {userId: string | null; book: Book})
 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2 flex flex-col items-center">
-            <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl bg-muted">
+            <div className="relative w-full aspect-3/4 rounded-2xl overflow-hidden shadow-xl bg-muted">
               {book.cover_url ? (
                 <Image
                   src={book.cover_url || '/default-book-cover.jpg'}
                   alt={`Cover of ${book.title}`}
                   width={400}
                   height={600}
-                  className="object-cover w-full aspect-[3/4]"
+                  className="object-cover w-full aspect-3/4"
                   priority
                   placeholder="blur"
                   blurDataURL={blurDataUrl}
@@ -114,8 +117,6 @@ async function DetailedBook({userId, book}: {userId: string | null; book: Book})
     </main>
   );
 }
-
-export default DetailedBook;
 
 function Meta({label, value}: {label: string; value?: string}) {
   return (

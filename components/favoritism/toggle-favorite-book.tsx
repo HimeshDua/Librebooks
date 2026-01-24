@@ -2,12 +2,13 @@
 
 import {useEffect, useState} from 'react';
 import {Button} from '../ui/button';
-import {HeartIcon, HeartOffIcon} from 'lucide-react';
 import {toast} from 'sonner';
 import {cn} from '@/lib/utils';
 import {useFavorite} from '@/store';
 import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook';
 import {getUserFavorites} from '@/lib/library/books/favorites/actions/getFavBookIds';
+import {HugeiconsIcon} from '@hugeicons/react';
+import {Heart, HeartOff} from '@hugeicons/core-free-icons';
 
 type Props = {
   id?: string;
@@ -22,17 +23,17 @@ function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) 
 
   const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
-    useEffect(() => {
-      if (!id) {
-        setLoading(false);
-        return;
-      }
+  useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
 
-      getUserFavorites(id)
-        .then(setAll)
-        .catch(() => toast.error('Failed to load favorites'))
-        .then(() => setLoading(false));
-    }, [id, setAll]);
+    getUserFavorites(id)
+      .then(setAll)
+      .catch(() => toast.error('Failed to load favorites'))
+      .then(() => setLoading(false));
+  }, [id, setAll]);
 
   const handleToggleFavorite = async () => {
     if (!id) {
@@ -70,15 +71,13 @@ function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) 
       className={cn(
         'flex-1 md:w-auto py-4 flex items-center gap-2 cursor-pointer',
         loading && 'animate-pulse! transition',
-        isFavorite ? 'bg-red-800 hover:bg-red-800/90' : 'bg-red-600 hover:bg-red-600/90',
         className
       )}
       variant="destructive"
       size={minimal ? 'sm' : 'default'}
       onClick={handleToggleFavorite}
     >
-      {isFavorite ? <HeartOffIcon /> : <HeartIcon />}
-
+      {isFavorite ? <HugeiconsIcon icon={HeartOff} /> : <HugeiconsIcon icon={Heart} />}
       <span className={cn('hidden md:inline', minimal && 'hidden md:hidden')}>
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
       </span>

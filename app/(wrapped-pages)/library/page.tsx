@@ -5,7 +5,7 @@ import {BookDisplay} from '@/components/library/bookDisplay';
 import SelectBookCategory from '@/components/book/bookCategory';
 import {SearchForm} from '@/components/library/searchForm';
 import {PaginationControls} from '@/components/library/paginationControl';
-import BookDisplaySkeleton from '@/components/library/bookDisplaySkeleton';
+import BookDisplaySkeleton from '@/components/skeletons/book-display';
 import {getBooksByCategory} from '@/lib/library/getBooksByCategory';
 import {fetchBooksDirectly} from '@/lib/library/fetchBooksDirectly';
 import {LIBRARY_CONFIG} from '@/lib/library/config';
@@ -17,7 +17,7 @@ import LibHeader from '@/components/library/header';
 export const metadata: Metadata = {
   title: 'Free Public Domain Books | LibreBooks Library',
   description:
-    'Explore 800+ free public domain books. Read, download, and discover classic literature, fiction, non-fiction, and academic works. No registration required.',
+    'Explore 12000+ free public domain books. Read, download, and discover classic literature, fiction, non-fiction, and academic works. No registration required.',
   keywords: [
     'free books',
     'public domain books',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     url: `https://${process.env.VERCEL_URL || 'librebooks.vercel.app'}/library`,
     title: 'LibreBooks - Free Public Domain Library',
     description:
-      'Discover 800+ free public domain books. Read online or download instantly. No costs, no registration.',
+      'Discover 12000+ free public domain books. Read online or download instantly. No costs, no registration.',
     siteName: 'LibreBooks',
     images: [
       {
@@ -49,11 +49,10 @@ export const metadata: Metadata = {
     locale: 'en_US',
   },
 
-  // Twitter Card
   twitter: {
     card: 'summary_large_image',
     title: 'LibreBooks - Free Public Domain Library',
-    description: 'Explore 800+ free public domain books. Read instantly in your browser.',
+    description: 'Explore 12000+ free public domain books. Read instantly in your browser.',
     creator: '@HimeshDua',
     images: ['/og-library.jpg'],
   },
@@ -180,7 +179,7 @@ export default async function Library({searchParams}: LibraryProps) {
 
           <div className="flex items-center gap-3">
             <ViewModeToggle className="order-2 sm:order-1" />
-            <SelectBookCategory className="w-full sm:w-auto min-w-[160px]" />
+            <SelectBookCategory className="w-full sm:w-auto min-w-40" />
           </div>
         </div>
 

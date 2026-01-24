@@ -2,8 +2,9 @@
 
 import {cn} from '@/lib/utils';
 import {useViewMode} from '@/store';
-import {Grid3X3, List} from 'lucide-react';
 import {Button} from '../ui/button';
+import {HugeiconsIcon} from '@hugeicons/react';
+import {Grid3x3, List} from '@hugeicons/core-free-icons';
 
 export function ViewModeToggle({className}: {className?: string}) {
   const mode = useViewMode(m => m.mode);
@@ -23,7 +24,7 @@ export function ViewModeToggle({className}: {className?: string}) {
         className={cn('p-2 rounded-md transition-colors', 'rounded-r-none duration-150')}
         title="Grid view"
       >
-        <Grid3X3 className="w-4 h-4" />
+        <HugeiconsIcon icon={Grid3x3} className="size-4" />
       </Button>
       <Button
         onClick={() => setViewMode('COMPACT')}
@@ -32,7 +33,7 @@ export function ViewModeToggle({className}: {className?: string}) {
         className={cn('p-2 rounded-md transition-colors', 'rounded-l-none duration-150')}
         title="Compact view"
       >
-        <List className="w-4 h-4" />
+        <HugeiconsIcon icon={List} className="size-4" />
       </Button>
     </div>
   );

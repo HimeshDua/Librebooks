@@ -1,10 +1,11 @@
 import {Skeleton} from '@/components/ui/skeleton';
-import {BookOpen, BookText, BookMarked} from 'lucide-react';
+import {BookMarked, BookOpen, BookText} from '@hugeicons/core-free-icons';
+import {HugeiconsIcon} from '@hugeicons/react';
 
 export default function ReaderSkeleton() {
   return (
     <div className="relative flex flex-col h-screen bg-background overflow-hidden">
-      <header className="relative z-50 border-b border-border/50 bg-gradient-to-r from-background via-background/95 to-background/90 backdrop-blur-xl">
+      <header className="relative z-50 border-b border-border/50 bg-linear-to-r from-background via-background/95 to-background/90 backdrop-blur-xl">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -12,13 +13,13 @@ export default function ReaderSkeleton() {
                 <div className="relative">
                   <Skeleton className="h-8 w-8 rounded-lg" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <BookOpen className="h-4 w-4 text-muted-foreground/50" />
+                    <HugeiconsIcon icon={BookOpen} className="size-4 text-muted-foreground/50" />
                   </div>
                 </div>
                 <Skeleton className="h-4 w-24 rounded-full" />
               </div>
 
-              <div className="h-4 w-px bg-gradient-to-b from-transparent via-border/50 to-transparent" />
+              <div className="h-4 w-px bg-linear-to-b from-transparent via-border/50 to-transparent" />
 
               <div className="hidden sm:block">
                 <Skeleton className="h-4 w-32 mb-1" />
@@ -49,26 +50,26 @@ export default function ReaderSkeleton() {
           </div>
         </div>
 
-        <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-border/30 to-transparent">
+        <div className="h-0.5 w-full bg-linear-to-r from-transparent via-border/30 to-transparent">
           <Skeleton className="h-full w-1/4 rounded-full" />
         </div>
       </header>
 
-      <div className="flex-1 relative overflow-hidden bg-gradient-to-br from-[#FFFACC]/20 to-[#FEF3C7]/20 dark:from-[#1C1D21]/20 dark:to-[#0F172A]/20">
+      <div className="flex-1 relative overflow-hidden bg-linear-to-br from-[#FFFACC]/20 to-[#FEF3C7]/20 dark:from-[#1C1D21]/20 dark:to-[#0F172A]/20">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="absolute left-0 top-0 bottom-0 w-16 border-r border-border/20 bg-gradient-to-r from-transparent via-background/5 to-transparent hidden lg:block" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 border-l border-border/20 bg-gradient-to-l from-transparent via-background/5 to-transparent hidden lg:block" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 border-r border-border/20 bg-linear-to-r from-transparent via-background/5 to-transparent hidden lg:block" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 border-l border-border/20 bg-linear-to-l from-transparent via-background/5 to-transparent hidden lg:block" />
         </div>
 
         <div className="h-full px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 py-8 md:py-12">
           <div className="max-w-5xl mx-auto mb-8">
             <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/30 to-border/30" />
+              <div className="h-px flex-1 bg-linear-to-r from-transparent via-border/30 to-border/30" />
               <div className="flex items-center gap-2">
                 <Skeleton className="h-6 w-6 rounded-full" />
                 <Skeleton className="h-4 w-16" />
               </div>
-              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-border/30 to-border/30" />
+              <div className="h-px flex-1 bg-linear-to-l from-transparent via-border/30 to-border/30" />
             </div>
 
             <div className="text-center mb-8">
@@ -122,12 +123,12 @@ export default function ReaderSkeleton() {
           <div className="max-w-5xl mx-auto mt-8">
             <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
-                <BookText className="h-3.5 w-3.5" />
+                <HugeiconsIcon icon={BookText} className="size-3.5" />
                 <Skeleton className="h-3 w-16" />
               </div>
               <div className="h-3 w-px bg-border/50" />
               <div className="flex items-center gap-2">
-                <BookMarked className="h-3.5 w-3.5" />
+                <HugeiconsIcon icon={BookMarked} className="size-3.5" />
                 <Skeleton className="h-3 w-12" />
               </div>
             </div>
@@ -140,7 +141,7 @@ export default function ReaderSkeleton() {
         </div>
       </div>
 
-      <div className="border-t border-border/50 bg-gradient-to-t from-background via-background/95 to-background/90 backdrop-blur-xl">
+      <div className="border-t border-border/50 bg-linear-to-t from-background via-background/95 to-background/90 backdrop-blur-xl">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 sm:hidden">
@@ -185,7 +186,7 @@ export default function ReaderSkeleton() {
       </div>
 
       {/* Subtle Overlay */}
-      <div className="fixed inset-0 z-40 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
+      <div className="fixed inset-0 z-40 bg-linear-to-br from-primary/5 via-transparent to-primary/5" />
     </div>
   );
 }

@@ -10,9 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import {Filter} from 'lucide-react';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
+import {HugeiconsIcon} from '@hugeicons/react';
+import {Filter} from '@hugeicons/core-free-icons';
 
 function SelectBookCategory({className}: {className?: string}) {
   const router = useRouter();
@@ -41,7 +42,8 @@ function SelectBookCategory({className}: {className?: string}) {
     }
   }, []);
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: string | null) => {
+    if (!value) return;
     const params = new URLSearchParams(window.location.search);
 
     if (value === 'All') params.delete('category');
@@ -55,12 +57,15 @@ function SelectBookCategory({className}: {className?: string}) {
 
   return (
     <div className={className}>
-      <Select onValueChange={handleSelect}>
+      <Select
+        onValueChange={handleSelect}
+        //onValueChange={handleSelect}
+      >
         <SelectTrigger className="w-full sm:w-[280px] backdrop-blur-md bg-white/10 ">
           <SelectValue
             placeholder={
               <span className="flex shadow-sm gap-2 items-center">
-                <Filter className="w-4 h-4" />
+                <HugeiconsIcon icon={Filter} className="size-4" />
                 <p>Filter by category</p>
               </span>
             }

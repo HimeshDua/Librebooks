@@ -1,4 +1,4 @@
-export default function FavoritesBlockLoading() {
+export default function FavoritesBlockSkeleton() {
   return (
     <main className="min-h-screen py-10 px-4 mx-auto">
       <div className="max-w-6xl mx-auto">
@@ -12,7 +12,7 @@ export default function FavoritesBlockLoading() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {Array.from({length: 8}).map((_, index) => (
             <div key={index} className="rounded-2xl overflow-hidden border">
-              <div className="relative aspect-[3/4] bg-muted animate-pulse" />
+              <div className="relative aspect-3/4 bg-muted animate-pulse" />
 
               <div className="p-3">
                 <div className="h-4 bg-muted rounded animate-pulse mb-2" />

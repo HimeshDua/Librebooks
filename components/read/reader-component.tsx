@@ -1,6 +1,5 @@
 'use client';
 
-import {Type, Maximize2, Minimize2, ChevronLeft, ChevronRight, Home, Menu} from 'lucide-react';
 import {useEffect, useState, useRef, useCallback} from 'react';
 import {ThemeToggleButton} from '../book/toggleThemeButton';
 import {useIsMobile} from '@/hooks/useIsMobile';
@@ -11,6 +10,16 @@ import {Button} from '../ui/button';
 import {get, set} from 'idb-keyval';
 import {cn} from '@/lib/utils';
 import ReaderSkeleton from './reader-loading';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  Maximize2,
+  Menu,
+  Minimize2,
+  Type,
+} from '@hugeicons/core-free-icons';
+import {HugeiconsIcon} from '@hugeicons/react';
 
 type RenditionLike = {
   themes: {
@@ -180,7 +189,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
           <h1 className="text-2xl font-bold text-red-500">Failed to load book</h1>
           <p className="text-muted-foreground">The book could not be loaded. Please try again.</p>
           <Button onClick={handleBack} className="mt-4">
-            <Home className="w-4 h-4 mr-2" />
+            <HugeiconsIcon icon={Home} className="size-4 mr-2" />
             Go Back
           </Button>
         </div>
@@ -204,7 +213,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               onClick={handleBack}
               className="flex items-center gap-2 hover:bg-primary/10"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <HugeiconsIcon icon={ChevronLeft} className="size-4" />
               <span className="hidden sm:inline">Library</span>
             </Button>
 
@@ -215,7 +224,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               className="flex items-center gap-2 hover:bg-primary/10"
               title="Table of Contents"
             >
-              <Menu className="w-4 h-4" />
+              <HugeiconsIcon icon={Menu} className="size-4" />
               <span className="hidden sm:inline">Chapters</span>
             </Button>
           </div>
@@ -234,7 +243,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
                 title="Decrease font size"
                 className="h-9 w-9"
               >
-                <Type className="w-4 h-4" />
+                <HugeiconsIcon icon={Type} className="size-4" />
                 <span className="sr-only">Decrease font size</span>
               </Button>
 
@@ -255,7 +264,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
                 title="Increase font size"
                 className="h-9 w-9"
               >
-                <Type className="w-4 h-4" />
+                <HugeiconsIcon icon={Type} className="size-4" />
                 <span className="sr-only">Increase font size</span>
               </Button>
             </div>
@@ -270,7 +279,11 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
               className="h-9 w-9"
             >
-              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+              {isFullscreen ? (
+                <HugeiconsIcon icon={Minimize2} className="size-4" />
+              ) : (
+                <HugeiconsIcon icon={Maximize2} className="size-4" />
+              )}
               <span className="sr-only">Toggle fullscreen</span>
             </Button>
           </div>
@@ -289,7 +302,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Table of Contents</h2>
             <Button variant="ghost" size="sm" onClick={toggleToc}>
-              <ChevronLeft className="w-4 h-4" />
+              <HugeiconsIcon icon={ChevronLeft} className="size-4" />
             </Button>
           </div>
         </div>
@@ -343,7 +356,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
             )}
             size="icon"
           >
-            <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
+            <HugeiconsIcon icon={ChevronLeft} className="size-6 sm:size-7" />
             <span className="sr-only">Previous page</span>
           </Button>
 
@@ -358,7 +371,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
             )}
             size="icon"
           >
-            <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+            <HugeiconsIcon icon={ChevronRight} className="size-6 sm:7" />
             <span className="sr-only">Next page</span>
           </Button>
         </div>
@@ -466,18 +479,18 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
           <div className="flex justify-between items-center">
             <Button variant="ghost" size="sm" onClick={handlePrev} className="flex-1">
-              <ChevronLeft className="w-4 h-4 mr-2" />
+              <HugeiconsIcon icon={ChevronLeft} className="size-4 mr-2" />
               Prev
             </Button>
 
             <Button variant="ghost" size="sm" onClick={toggleToc} className="flex-1">
-              <Menu className="w-4 h-4 mr-2" />
+              <HugeiconsIcon icon={Menu} className="size-4 mr-2" />
               Chapters
             </Button>
 
             <Button variant="ghost" size="sm" onClick={handleNext} className="flex-1">
               Next
-              <ChevronRight className="w-4 h-4 ml-2" />
+              <HugeiconsIcon icon={ChevronRight} className="size-4 ml-2" />
             </Button>
           </div>
         </div>

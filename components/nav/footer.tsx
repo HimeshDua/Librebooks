@@ -40,11 +40,11 @@ async function Footer() {
           >
             Gutendex API
           </a>{' '}
-          — delivering <span className="font-semibold text-foreground">800+</span> public-domain
+          — delivering <span className="font-semibold text-foreground">12000+</span> public-domain
           books.
         </p>
 
-        <div className="h-px bg-gradient-to-r from-transparent via-border/60 to-transparent mt-6" />
+        <div className="h-px bg-linear-to-r from-transparent via-border/60 to-transparent mt-6" />
       </div>
     </footer>
   );

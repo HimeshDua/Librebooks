@@ -10,8 +10,9 @@ import {
   DrawerTrigger,
 } from '../ui/drawer';
 import {Button} from '../ui/button';
-import {Library, X} from 'lucide-react';
 import Link from 'next/link';
+import {HugeiconsIcon} from '@hugeicons/react';
+import {Library, X} from '@hugeicons/core-free-icons';
 
 function HeaderDrawer({isUser}: {isUser: boolean}) {
   const [open, setOpen] = useState(false);
@@ -20,7 +21,8 @@ function HeaderDrawer({isUser}: {isUser: boolean}) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="ghost" size="icon" aria-label="Open menu">
-          <Library className="w-5 h-5" />
+          {/* <Library className="w-5 h-5" /> */}
+          <HugeiconsIcon icon={Library} className="size-5" />
         </Button>
       </DrawerTrigger>
 
@@ -29,7 +31,8 @@ function HeaderDrawer({isUser}: {isUser: boolean}) {
           <DrawerTitle className="font-semibold text-lg">Menu</DrawerTitle>
           <DrawerClose asChild>
             <Button variant="ghost" size="icon">
-              <X className="w-5 h-5" />
+              {/* <X className="w-5 h-5" /> */}
+              <HugeiconsIcon icon={X} className="size-5" />
             </Button>
           </DrawerClose>
         </DrawerHeader>

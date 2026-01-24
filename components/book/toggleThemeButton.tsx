@@ -1,10 +1,10 @@
 'use client';
-import {Moon, Sun, Laptop} from 'lucide-react';
+
+import {HugeiconsIcon} from '@hugeicons/react';
 import {Button} from '../ui/button';
 import {useTheme} from 'next-themes';
 import {usePathname, useRouter} from 'next/navigation';
-import {} from 'next/navigation';
-
+import {Laptop, Moon, Sun} from '@hugeicons/core-free-icons';
 export function ThemeToggleButton() {
   const {theme, setTheme, systemTheme} = useTheme();
   const pathname = usePathname();
@@ -36,11 +36,11 @@ export function ThemeToggleButton() {
       className="h-9 w-9 rounded-full hover:bg-muted transition"
     >
       {currentTheme === 'light' ? (
-        <Moon className="w-4 h-4" />
+        <HugeiconsIcon icon={Moon} className="w-4 h-4" />
       ) : currentTheme === 'dark' ? (
-        <Sun className="w-4 h-4" />
+        <HugeiconsIcon icon={Sun} className="w-4 h-4" />
       ) : (
-        <Laptop className="w-4 h-4" />
+        <HugeiconsIcon icon={Laptop} className="w-4 h-4" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>

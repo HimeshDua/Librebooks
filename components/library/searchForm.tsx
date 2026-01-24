@@ -1,10 +1,11 @@
 'use client';
 
 import {useRouter, useSearchParams} from 'next/navigation';
-import {Search, X} from 'lucide-react';
 import {Input} from '../ui/input';
 import {Button} from '../ui/button';
 import {useState, useEffect} from 'react';
+import {HugeiconsIcon} from '@hugeicons/react';
+import {Search, X} from '@hugeicons/core-free-icons';
 
 export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
   const router = useRouter();
@@ -33,7 +34,10 @@ export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
   return (
     <form onSubmit={onSubmit} className="flex items-center gap-2 w-full max-w-2xl mx-auto">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <HugeiconsIcon
+          icon={Search}
+          className="size-4 absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+        />
         <Input
           placeholder="Search books by title or author..."
           className="pl-10 pr-10 rounded-full"
@@ -46,7 +50,7 @@ export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
             onClick={() => setValue('')}
             className="absolute right-3 top-1/2 -translate-y-1/2"
           >
-            <X className="w-4 h-4 text-muted-foreground" />
+            <HugeiconsIcon icon={X} className="size-4 w-4 h-4 text-muted-foreground" />
           </button>
         )}
       </div>

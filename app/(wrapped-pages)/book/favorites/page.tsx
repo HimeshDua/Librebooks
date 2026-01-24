@@ -1,7 +1,7 @@
 'use client';
 import {getFavoriteBooks} from '@/lib/library/books/favorites/actions/getFavBooks';
-import FavoritesBlockLoading from '@/components/favoritism/favorites-block-loading';
-import FavoritesBlock from '@/components/favoritism/favoritesBlock';
+import FavoritesBlockSkeleton from '@/components/skeletons/favorites-block';
+import FavoritesBlock from '@/components/favoritism/favorites-block';
 import {Suspense, useEffect, useState} from 'react';
 import type {Book} from '@/types/book';
 import {useFavorite} from '@/store';
@@ -23,7 +23,7 @@ function FavoritesPage() {
   }, [favorites]);
 
   return (
-    <Suspense fallback={<FavoritesBlockLoading />}>
+    <Suspense fallback={<FavoritesBlockSkeleton />}>
       <FavoritesBlock isLoading={loading} books={books} />;
     </Suspense>
   );

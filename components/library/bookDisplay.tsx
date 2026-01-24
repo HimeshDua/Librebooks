@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {HoverCard, HoverCardContent, HoverCardTrigger} from '@/components/ui/hover-card';
-import {Search} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {LocalBook} from '@/types';
 import {useViewMode} from '@/store';
 import {cn} from '@/lib/utils';
+import {Search} from '@hugeicons/core-free-icons';
+import {HugeiconsIcon} from '@hugeicons/react';
 
 interface BookDisplayProps {
   books: LocalBook[];
@@ -27,7 +28,10 @@ export function BookDisplay({books, query}: BookDisplayProps) {
     return (
       <div className="py-20 text-center">
         <div className="max-w-md mx-auto">
-          <Search className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
+          <HugeiconsIcon
+            icon={Search}
+            className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4"
+          />
           <h3 className="text-lg font-semibold mb-2">No books found</h3>
           <p className="text-sm text-muted-foreground">
             {query
@@ -35,11 +39,15 @@ export function BookDisplay({books, query}: BookDisplayProps) {
               : 'No books available at the moment. Please check back later.'}
           </p>
           {query && (
-            <Button asChild variant="outline" className="mt-4">
-              <Link prefetch={true} href="/library">
-                Browse All Books
-              </Link>
-            </Button>
+            <Button
+              render={
+                <Link prefetch href="/library">
+                  Browse All Books
+                </Link>
+              }
+              variant="outline"
+              className="mt-4"
+            ></Button>
           )}
         </div>
       </div>
@@ -49,8 +57,15 @@ export function BookDisplay({books, query}: BookDisplayProps) {
   return (
     <ul role="listbox" className={cn('transition-all duration-200', layoutClasses[mode])}>
       {books.map((book: LocalBook, index) => (
-        <HoverCard key={book.slug} openDelay={150} closeDelay={100}>
-          <HoverCardTrigger asChild>
+        <HoverCard
+          key={book.slug}
+          //openDelay={150}
+          // closeDelay={100}
+        >
+          <HoverCardTrigger
+
+          //asChild
+          >
             <div
               title={book.title}
               className={cn(

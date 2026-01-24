@@ -1,9 +1,8 @@
 'use client';
 
-import ToggleFavoriteBook from '@/components/favoritism/toggleFavoriteBook';
+import ToggleFavoriteBook from '@/components/favoritism/toggle-favorite-book';
 import {blurDataUrl} from '@/data';
 import {getSuggestedBooks} from '@/lib/library/books/actions/getSuggestedBook';
-import {supabase} from '@/lib/supabase/client';
 import {useFavorite} from '@/store';
 import type {SuggestedBook} from '@/types/book';
 import Image from 'next/image';
@@ -56,7 +55,7 @@ export default function SuggestedBookSection({
             />
 
             <Link href={`/book/${book.slug}`}>
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border">
+              <div className="relative aspect-3/4 rounded-2xl overflow-hidden border">
                 <Image
                   src={book.cover_url || '/default-book-cover.jpg'}
                   alt={book.title}

@@ -1,4 +1,4 @@
-import DetailedBookSkeleton from '@/components/book/detailed-book-skeleton';
+import DetailedBookSkeleton from '@/components/skeletons/detailed-book';
 function BookPageSkeleton() {
   return <DetailedBookSkeleton />;
 }
