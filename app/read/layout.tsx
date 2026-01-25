@@ -86,15 +86,20 @@ export default async function ReadLayout({children}: {children: React.ReactNode}
           <div className="container max-w-screen mx-auto">
             {children}
             <Toaster
+              theme="system"
+              mobileOffset={60}
+              // position="bottom-center"
+              // theme={toasterTheme}
+            />
+            {/* <Toaster
               className="z-50"
-              mobileOffset={20}
               expand
               closeButton
               containerAriaLabel="Message Box"
               position="bottom-center"
               richColors
               // theme={toasterTheme}
-            />
+            /> */}
           </div>
         </ThemeProvider>
       </body>

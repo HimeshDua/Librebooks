@@ -103,6 +103,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           >
             {children}
           </main>
+
           <Toaster
             className="z-50"
             mobileOffset={20}

@@ -203,106 +203,113 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
   return (
     <div className="relative flex flex-col h-screen pb-8 bg-background text-foreground transition-all overflow-hidden">
       {/* Top Controls */}
-      <div
+      {/* <div
         className={`
         absolute top-0 left-0 right-0 z-50 transition-all duration-300
-        ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
-      `}
+        translate-y-0 opacity-100
+        `}
+        > */}
+      <header
+        className={cn(
+          'flex items-center justify-between px-4 py-3 z-50',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        )}
+        // ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+
+        //  <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
       >
-        <header className="flex items-center justify-between px-4 py-3 z-50">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              onClick={handleBack}
-              className="flex items-center gap-2 hover:bg-primary/10"
-            >
-              <HugeiconsIcon icon={ChevronLeft} className="size-4" />
-              <span className="hidden sm:inline">Library</span>
-            </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            onClick={handleBack}
+            className="flex items-center gap-2 hover:bg-primary/10"
+          >
+            <HugeiconsIcon icon={ChevronLeft} className="size-4" />
+            <span className="hidden sm:inline">Library</span>
+          </Button>
 
-            {/* Menu/Chapters Button */}
-            <Button
-              variant="ghost"
-              onClick={toggleToc}
-              className="flex items-center gap-2 hover:bg-primary/10"
-              title="Table of Contents"
-            >
-              <HugeiconsIcon icon={Menu} className="size-4" />
-              <span className="hidden sm:inline">Chapters</span>
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            onClick={toggleToc}
+            className="flex items-center gap-2 hover:bg-primary/10"
+            title="Table of Contents"
+          >
+            <HugeiconsIcon icon={Menu} className="size-4" />
 
-          <div className="flex items-center gap-1">
-            <div className="text-sm font-medium hidden sm:block">LibreBooks Reader</div>
-          </div>
+            <span className="hidden sm:inline">Chapters</span>
+          </Button>
+        </div>
 
-          <div className="flex items-center gap-1">
-            <div className="flex items-center gap-1 mr-2 border-r border-border/50 pr-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setRenderKey(prev => prev + 1)}
-                title="Reload Page"
-                className="h-9 w-9"
-              >
-                <HugeiconsIcon icon={Reload} className="size-4" />
-                <span className="sr-only">Reload the page</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => adjustFontSize(-10)}
-                title="Decrease font size"
-                className="h-9 w-9"
-              >
-                <HugeiconsIcon icon={Type} className="size-4" />
-                <span className="sr-only">Decrease font size</span>
-              </Button>
+        <div className="flex items-center gap-1">
+          <div className="text-sm font-medium hidden sm:block">LibreBooks Reader</div>
+        </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={resetFontSize}
-                title="Reset font size"
-                className="h-9 px-2 text-xs font-normal "
-              >
-                {fontSize}%
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => adjustFontSize(10)}
-                title="Increase font size"
-                className="h-9 w-9"
-              >
-                <HugeiconsIcon icon={Type} className="size-4" />
-                <span className="sr-only">Increase font size</span>
-              </Button>
-            </div>
-
-            <ThemeToggleButton updateRenderKey={() => setRenderKey(prev => prev + 1)} />
-
-            {/* Fullscreen Toggle */}
+        <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mr-2 border-r border-border/50 pr-2">
             <Button
               variant="ghost"
               size="sm"
-              onClick={toggleFullScreen}
-              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+              onClick={() => setRenderKey(prev => prev + 1)}
+              title="Reload Page"
               className="h-9 w-9"
             >
-              {isFullscreen ? (
-                <HugeiconsIcon icon={Minimize2} className="size-4" />
-              ) : (
-                <HugeiconsIcon icon={Maximize2} className="size-4" />
-              )}
-              <span className="sr-only">Toggle fullscreen</span>
+              <HugeiconsIcon icon={Reload} className="size-4" />
+              <span className="sr-only">Reload the page</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => adjustFontSize(-10)}
+              title="Decrease font size"
+              className="h-9 w-9"
+            >
+              <HugeiconsIcon icon={Type} className="size-4" />
+              <span className="sr-only">Decrease font size</span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={resetFontSize}
+              title="Reset font size"
+              className="h-9 px-2 text-xs font-normal "
+            >
+              {fontSize}%
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => adjustFontSize(10)}
+              title="Increase font size"
+              className="h-9 w-9"
+            >
+              <HugeiconsIcon icon={Type} className="size-4" />
+              <span className="sr-only">Increase font size</span>
             </Button>
           </div>
-        </header>
-      </div>
 
-      {/* Table of Contents Sidebar */}
+          <ThemeToggleButton updateRenderKey={() => setRenderKey(prev => prev + 1)} />
+
+          {/* Fullscreen Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleFullScreen}
+            title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+            className="h-9 w-9"
+          >
+            {isFullscreen ? (
+              <HugeiconsIcon icon={Minimize2} className="size-4" />
+            ) : (
+              <HugeiconsIcon icon={Maximize2} className="size-4" />
+            )}
+            <span className="sr-only">Toggle fullscreen</span>
+          </Button>
+        </div>
+      </header>
+
       <div
         className={`
         fixed left-0 top-0 bottom-0 z-50 w-80 bg-background/95 backdrop-blur-lg border-r border-border/50
@@ -390,16 +397,6 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
           </div>
         )}
 
-        {/* Progress Bar */}
-        <div
-          className={`
-          absolute -bottom-4 left-0 right-0 z-50 transition-all duration-300
-          ${showControls ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
-        `}
-        >
-          {/* //mobile controll */}
-        </div>
-
         {/* React Reader */}
         <ReactReader
           url={bookData}
@@ -483,7 +480,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
 
       {/* Mobile Bottom Controls */}
       {isMobile && (
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
           <div className="flex justify-between items-center">
             <Button variant="ghost" size="sm" onClick={handlePrev} className="flex-1 py-3">
               <HugeiconsIcon icon={ChevronLeft} className="size-4 mr-2" />

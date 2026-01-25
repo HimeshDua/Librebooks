@@ -3,9 +3,14 @@
   color: #1b1b1b !important;
 }
 
+@media (max-width: 760px) {
+  #reader-container > div > div > div > div {
+    inset: 50px 0px 20px !important;
+  }
+}
+
 #reader-container > div > div > div > div {
-  position: absolute;
-  inset: 50px 20px 20px !important;
+  inset: 50px 25px 20px !important;
 }
 
 .dark #reader-container > div > div > div {

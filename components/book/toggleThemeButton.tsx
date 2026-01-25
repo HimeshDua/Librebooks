@@ -26,11 +26,10 @@ export function ThemeToggleButton({updateRenderKey}: Props) {
     if (pathname.startsWith('/read/')) {
       router.refresh();
       setTimeout(() => {
-        toast.info('Theme changed successfully', {
-          description:
-            'We recommend refreshing the page to ensure the book displays correctly with the new theme.',
+        toast('Theme updated', {
+          description: 'Refresh the page to ensure the book renders correctly with the new theme.',
         });
-      }, 300);
+      }, 100);
     }
   };
 
