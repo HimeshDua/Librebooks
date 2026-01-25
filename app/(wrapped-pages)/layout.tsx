@@ -104,7 +104,8 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             {children}
           </main>
 
-          <Toaster
+          <Toaster theme="system" mobileOffset={60} />
+          {/* <Toaster
             className="z-50"
             mobileOffset={20}
             expand
@@ -113,7 +114,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             position="bottom-center"
             richColors
             // theme={toasterTheme}
-          />
+          /> */}
           <Footer />
         </ThemeProvider>
       </body>
