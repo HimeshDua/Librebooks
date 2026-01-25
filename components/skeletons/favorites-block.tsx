@@ -1,6 +1,6 @@
 export default function FavoritesBlockSkeleton() {
   return (
-    <main className="min-h-screen py-10 px-4 mx-auto">
+    <main className="min-h-screen w-full py-10 px-4 mx-auto">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between mb-8">
           <div className="flex items-center gap-2">

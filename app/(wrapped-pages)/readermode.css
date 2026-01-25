@@ -3,6 +3,11 @@
   color: #1b1b1b !important;
 }
 
+#reader-container > div > div > div > div {
+  position: absolute;
+  inset: 50px 20px 20px !important;
+}
+
 .dark #reader-container > div > div > div {
   background-color: #1b1d1e !important;
   color: #d8d3c3 !important;

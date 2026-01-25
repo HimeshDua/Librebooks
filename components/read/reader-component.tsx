@@ -17,6 +17,7 @@ import {
   Maximize2,
   Menu,
   Minimize2,
+  Reload,
   Type,
 } from '@hugeicons/core-free-icons';
 import {HugeiconsIcon} from '@hugeicons/react';
@@ -45,6 +46,8 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
   const [location, setLocation] = useState<string | number>(
     typeof window !== 'undefined' ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
   );
+
+  const [renderKey, setRenderKey] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(100);
   const [loading, setLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -206,7 +209,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
         ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
       `}
       >
-        <header className="flex items-center justify-between px-4 py-3">
+        <header className="flex items-center justify-between px-4 py-3 z-50">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -234,8 +237,17 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
           </div>
 
           <div className="flex items-center gap-1">
-            {/* Font Size Controls */}
             <div className="flex items-center gap-1 mr-2 border-r border-border/50 pr-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setRenderKey(prev => prev + 1)}
+                title="Reload Page"
+                className="h-9 w-9"
+              >
+                <HugeiconsIcon icon={Reload} className="size-4" />
+                <span className="sr-only">Reload the page</span>
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"
@@ -269,7 +281,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               </Button>
             </div>
 
-            <ThemeToggleButton />
+            <ThemeToggleButton updateRenderKey={() => setRenderKey(prev => prev + 1)} />
 
             {/* Fullscreen Toggle */}
             <Button
@@ -338,43 +350,45 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
         className="relative flex-1 overflow-hidden bg-[#FFFACC] dark:bg-[#1C1D21] transition-colors duration-300"
       >
         {/* Navigation Buttons */}
-        <div
-          className={`
-          absolute inset-0 z-40 pointer-events-none
-          ${showControls ? 'opacity-100' : 'opacity-40 md:opacity-0'}
-          transition-opacity duration-300
-        `}
-        >
-          <Button
-            onClick={handlePrev}
+        {!isMobile && (
+          <div
             className={cn(
-              `absolute left-2 top-1/2 -translate-y-1/2 pointer-events-auto
+              'absolute inset-0 z-40 pointer-events-none',
+              showControls ? 'opacity-100' : 'opacity-40 md:opacity-0',
+              'transition-opacity duration-300'
+            )}
+          >
+            <Button
+              onClick={handlePrev}
+              className={cn(
+                `absolute left-2 top-1/2 -translate-y-1/2 pointer-events-auto
                h-12 w-12 rounded-full bg-primary/80 hover:bg-primary
                backdrop-blur-sm transition-all duration-200
                sm:left-4 sm:h-14 sm:w-14`,
-              isMobile && 'opacity-70'
-            )}
-            size="icon"
-          >
-            <HugeiconsIcon icon={ChevronLeft} className="size-6 sm:size-7" />
-            <span className="sr-only">Previous page</span>
-          </Button>
+                isMobile && 'opacity-70'
+              )}
+              size="icon"
+            >
+              <HugeiconsIcon icon={ChevronLeft} className="size-6 sm:size-7" />
+              <span className="sr-only">Previous page</span>
+            </Button>
 
-          <Button
-            onClick={handleNext}
-            className={cn(
-              `absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto
+            <Button
+              onClick={handleNext}
+              className={cn(
+                `absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto
                h-12 w-12 rounded-full bg-primary/80 hover:bg-primary
                backdrop-blur-sm transition-all duration-200
                sm:right-4 sm:h-14 sm:w-14`,
-              isMobile && 'opacity-70'
-            )}
-            size="icon"
-          >
-            <HugeiconsIcon icon={ChevronRight} className="size-6 sm:7" />
-            <span className="sr-only">Next page</span>
-          </Button>
-        </div>
+                isMobile && 'opacity-70'
+              )}
+              size="icon"
+            >
+              <HugeiconsIcon icon={ChevronRight} className="size-6 sm:7" />
+              <span className="sr-only">Next page</span>
+            </Button>
+          </div>
+        )}
 
         {/* Progress Bar */}
         <div
@@ -383,25 +397,18 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
           ${showControls ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
         `}
         >
-          <div className="px-4 py-3 bg-background/95! backdrop-blur-lg border-t border-border/50">
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-              <span>Reading Progress</span>
-              <span>Font: {fontSize}%</span>
-            </div>
-            <div className="z-50 w-full bg-muted/50 rounded-full h-2">
-              <div
-                className="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
-                style={{width: typeof location === 'string' ? '0%' : `${location}%`}}
-              />
-            </div>
-          </div>
+          {/* //mobile controll */}
         </div>
 
         {/* React Reader */}
         <ReactReader
           url={bookData}
+          key={renderKey}
           location={location}
           locationChanged={handleLocationChange}
+          epubOptions={{
+            allowScriptedContent: true,
+          }}
           getRendition={rendition => {
             renditionRef.current = rendition;
 
@@ -478,17 +485,17 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
       {isMobile && (
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
           <div className="flex justify-between items-center">
-            <Button variant="ghost" size="sm" onClick={handlePrev} className="flex-1">
+            <Button variant="ghost" size="sm" onClick={handlePrev} className="flex-1 py-3">
               <HugeiconsIcon icon={ChevronLeft} className="size-4 mr-2" />
               Prev
             </Button>
 
-            <Button variant="ghost" size="sm" onClick={toggleToc} className="flex-1">
+            <Button variant="ghost" size="sm" onClick={toggleToc} className="flex-1 py-3">
               <HugeiconsIcon icon={Menu} className="size-4 mr-2" />
               Chapters
             </Button>
 
-            <Button variant="ghost" size="sm" onClick={handleNext} className="flex-1">
+            <Button variant="ghost" size="sm" onClick={handleNext} className="flex-1 py-3">
               Next
               <HugeiconsIcon icon={ChevronRight} className="size-4 ml-2" />
             </Button>

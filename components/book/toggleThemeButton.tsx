@@ -5,7 +5,13 @@ import {Button} from '../ui/button';
 import {useTheme} from 'next-themes';
 import {usePathname, useRouter} from 'next/navigation';
 import {Laptop, Moon, Sun} from '@hugeicons/core-free-icons';
-export function ThemeToggleButton() {
+import {toast} from 'sonner';
+
+type Props = {
+  updateRenderKey: () => void;
+};
+
+export function ThemeToggleButton({updateRenderKey}: Props) {
   const {theme, setTheme, systemTheme} = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -13,17 +19,18 @@ export function ThemeToggleButton() {
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const toggleTheme = () => {
+    updateRenderKey();
     const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
 
     if (pathname.startsWith('/read/')) {
       router.refresh();
-      // setTimeout(() => {
-      //   toast.info('Theme changed successfully', {
-      //     description:
-      //       'We recommend refreshing the page to ensure the book displays correctly with the new theme.',
-      //   });
-      // }, 300);
+      setTimeout(() => {
+        toast.info('Theme changed successfully', {
+          description:
+            'We recommend refreshing the page to ensure the book displays correctly with the new theme.',
+        });
+      }, 300);
     }
   };
 

@@ -13,7 +13,7 @@ export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; 
 
   if (isLoading && books.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[80vh] text-center px-6">
+      <div className="flex flex-col items-center justify-center h-[80vh] w-full text-center px-6">
         <HugeiconsIcon icon={Heart} className="size-12 text-red-500 mb-3" />
 
         <h2 className="text-2xl font-bold">No Favorite Books Yet</h2>
@@ -26,7 +26,7 @@ export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; 
   }
 
   return (
-    <main className="min-h-screen py-10 px-4 mx-auto">
+    <main className="min-h-screen w-full py-10 px-4 mx-auto">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between mb-8">
           <h1 className="text-3xl font-bold flex gap-2">
