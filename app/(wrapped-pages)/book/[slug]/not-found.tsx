@@ -5,7 +5,7 @@ import {HugeiconsIcon} from '@hugeicons/react';
 
 export default function MinimalBookNotFound() {
   return (
-    <div className="flex flex-col min-h-[85vh] max-w-xl mx-auto mt-18">
+    <div className="flex flex-col min-h-[85vh] max-w-xl w-full mx-auto mt-18">
       <div className="flex justify-center mb-6">
         <div className="relative">
           <div className="absolute inset-0 bg-linear-to-r from-primary/20 to-accent/20 rounded-full blur-lg" />

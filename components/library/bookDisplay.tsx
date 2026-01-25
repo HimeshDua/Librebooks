@@ -40,6 +40,7 @@ export function BookDisplay({books, query}: BookDisplayProps) {
           </p>
           {query && (
             <Button
+              nativeButton={false}
               render={
                 <Link prefetch href="/library">
                   Browse All Books
@@ -47,7 +48,7 @@ export function BookDisplay({books, query}: BookDisplayProps) {
               }
               variant="outline"
               className="mt-4"
-            ></Button>
+            />
           )}
         </div>
       </div>
@@ -57,84 +58,79 @@ export function BookDisplay({books, query}: BookDisplayProps) {
   return (
     <ul role="listbox" className={cn('transition-all duration-200', layoutClasses[mode])}>
       {books.map((book: LocalBook, index) => (
-        <HoverCard
-          key={book.slug}
-          //openDelay={150}
-          // closeDelay={100}
-        >
+        <HoverCard key={book.slug}>
           <HoverCardTrigger
-
-          //asChild
-          >
-            <div
-              title={book.title}
-              className={cn(
-                'group/card relative duration-200 rounded-lg',
-                isCompact &&
-                  'hover:bg-muted/50 border border-transparent hover:border-border px-2 py-1'
-              )}
-            >
-              <Link
-                href={`/book/${book.slug}`}
-                aria-label={`Open ${book.title}`}
-                role="listitem"
-                className={cn('flex w-full', isCompact ? 'items-center gap-4' : 'flex-col')}
+            render={
+              <div
+                title={book.title}
+                className={cn(
+                  'group/card relative duration-200 rounded-lg',
+                  isCompact &&
+                    'hover:bg-muted/50 border border-transparent hover:border-border px-2 py-1'
+                )}
               >
-                <div
-                  className={cn(
-                    'relative bg-muted overflow-hidden flex-shrink-0 shadow-sm border border-border/50 rounded-lg',
-                    isCompact ? 'w-12 h-16 rounded-md' : 'w-full aspect-[3/4]'
-                  )}
+                <Link
+                  href={`/book/${book.slug}`}
+                  aria-label={`Open ${book.title}`}
+                  role="listitem"
+                  className={cn('flex w-full', isCompact ? 'items-center gap-4' : 'flex-col')}
                 >
-                  {book.cover_url ? (
-                    <Image
-                      priority={index < 6}
-                      loading={index < 6 ? 'eager' : 'lazy'}
-                      src={book.cover_url}
-                      alt={book.title}
-                      fill
-                      sizes={
-                        isCompact
-                          ? '48px'
-                          : '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw'
-                      }
-                      quality={75}
-                      className={cn(
-                        'object-cover transition-transform duration-200 ease-out ',
-                        isCompact
-                          ? ''
-                          : 'group-hover/card:scale-[1.01] md:group-hover/card:scale-[1.02]'
-                      )}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
-                      No cover
-                    </div>
-                  )}
-                </div>
-                <div className={cn('flex flex-col min-w-0', isCompact ? 'flex-1' : 'p-3')}>
-                  <h3
+                  <div
                     className={cn(
-                      'font-semibold leading-snug',
-                      isCompact ? 'text-sm truncate' : 'text-sm line-clamp-2'
+                      'relative bg-muted overflow-hidden shrink-0 shadow-sm border border-border/50 rounded-lg',
+                      isCompact ? 'w-12 h-16 rounded-md' : 'w-full aspect-3/4'
                     )}
                   >
-                    {book.title}
-                  </h3>
+                    {book.cover_url ? (
+                      <Image
+                        priority={index < 6}
+                        loading={index < 6 ? 'eager' : 'lazy'}
+                        src={book.cover_url}
+                        alt={book.title}
+                        fill
+                        sizes={
+                          isCompact
+                            ? '48px'
+                            : '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw'
+                        }
+                        quality={75}
+                        className={cn(
+                          'object-cover transition-transform duration-200 ease-out ',
+                          isCompact
+                            ? ''
+                            : 'group-hover/card:scale-[1.01] md:group-hover/card:scale-[1.02]'
+                        )}
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                        No cover
+                      </div>
+                    )}
+                  </div>
+                  <div className={cn('flex flex-col min-w-0', isCompact ? 'flex-1' : 'p-3')}>
+                    <h3
+                      className={cn(
+                        'font-semibold leading-snug',
+                        isCompact ? 'text-sm truncate' : 'text-sm line-clamp-2'
+                      )}
+                    >
+                      {book.title}
+                    </h3>
 
-                  <p className="mt-1 text-xs text-muted-foreground truncate">
-                    {book.author || 'Unknown'}
-                  </p>
+                    <p className="mt-1 text-xs text-muted-foreground truncate">
+                      {book.author || 'Unknown'}
+                    </p>
 
-                  {isCompact && book.download_count && (
-                    <span className="mt-1 text-xs text-muted-foreground">
-                      {book.download_count.toLocaleString()} downloads
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </div>
-          </HoverCardTrigger>
+                    {isCompact && book.download_count && (
+                      <span className="mt-1 text-xs text-muted-foreground">
+                        {book.download_count.toLocaleString()} downloads
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              </div>
+            }
+          />
 
           <HoverCardContent
             className="hidden md:block w-72 p-4 bg-background/90 backdrop-blur-xl rounded-xl shadow-lg border border-border/50"

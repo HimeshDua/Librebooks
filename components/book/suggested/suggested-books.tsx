@@ -9,15 +9,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 
-type SuggestedBookSectionProps = {
+type Props = {
   currentBookId: number;
   languages: string[];
 };
 
-export default function SuggestedBookSection({
-  currentBookId,
-  languages,
-}: SuggestedBookSectionProps) {
+export default function SuggestedBookSection({currentBookId, languages}: Props) {
   const favorites = useFavorite(s => s.favorites);
   const [books, setBooks] = useState<SuggestedBook[]>([]);
   const [loading, setLoading] = useState(false);
@@ -48,8 +45,10 @@ export default function SuggestedBookSection({
             style={{'--i': index} as React.CSSProperties}
           >
             <ToggleFavoriteBook
-              className="absolute top-2 right-2 z-10"
+              title="Add To Favorite"
+              className="absolute top-2 right-2 z-30 bg-secondary/40 hover:bg-secondary/50 border border-accent/50"
               minimal
+              variant="secondary"
               bookId={book.id!}
               bookTitle={book.title}
             />

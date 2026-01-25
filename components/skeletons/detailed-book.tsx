@@ -3,7 +3,7 @@ import {Skeleton} from '../ui/skeleton';
 
 export default function DetailedBookSkeleton() {
   return (
-    <main className="min-h-screen py-10 px-4 mx-auto">
+    <main className="min-h-screen w-full py-10 px-4 mx-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-6 flex items-center gap-2">
           <Skeleton className="w-6 h-6 rounded-full" />

@@ -14,11 +14,13 @@ type Props = {
   id?: string;
   bookId: number;
   bookTitle: string;
-  className?: string;
+  title?: string;
   minimal?: boolean;
+  variant?: 'link' | 'destructive' | 'default' | 'outline' | 'secondary' | 'ghost';
+  className?: string;
 };
 
-function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) {
+function ToggleFavoriteBook({id, bookId, bookTitle, title, minimal, variant, className}: Props) {
   const {favorites, toggle, setAll} = useFavorite();
 
   const [loading, setLoading] = useState(true);
@@ -67,13 +69,14 @@ function ToggleFavoriteBook({id, bookId, bookTitle, minimal, className}: Props) 
 
   return (
     <Button
+      title={title || 'Add To Favorite'}
       disabled={loading}
       className={cn(
         'flex-1 md:w-auto py-4 flex items-center gap-2 cursor-pointer',
         loading && 'animate-pulse! transition',
         className
       )}
-      variant="destructive"
+      variant={variant || 'destructive'}
       size={minimal ? 'sm' : 'default'}
       onClick={handleToggleFavorite}
     >

@@ -84,7 +84,6 @@ function Hero({heading, description, primaryAction, secondaryAction, reviews}: H
 
             {secondaryAction && (
               <Button
-                // asChild
                 size="lg"
                 variant="outline"
                 className="w-full sm:w-auto border-pink-200 text-pink-600 hover:bg-pink-50 hover:text-pink-700"

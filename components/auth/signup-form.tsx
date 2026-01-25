@@ -5,15 +5,16 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/compo
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {signup, signupWithGoogle} from '@/lib/auth/actions/signup';
-import {Loader2} from 'lucide-react';
 import Link from 'next/link';
+import {Loader} from '@hugeicons/core-free-icons';
+import {HugeiconsIcon} from '@hugeicons/react';
 
 function SubmitButton() {
   const {pending} = useFormStatus();
 
   return (
     <Button type="submit" disabled={pending}>
-      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {pending && <HugeiconsIcon icon={Loader} className="size-4 mr-2 animate-spin" />}
       Create account
     </Button>
   );

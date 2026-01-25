@@ -8,11 +8,14 @@ function BookError({error, slug}: {error: string | null; slug: string}) {
       <p className="text-sm text-muted-foreground">
         {error ?? `No book found related to ID: ${slug}`}
       </p>
-      <Button asChild className="mt-6">
-        <Link prefetch={true} href="/">
-          ← Back to Library
-        </Link>
-      </Button>
+      <Button
+        className="mt-6"
+        render={
+          <Link prefetch={true} href="/">
+            ← Back to Library
+          </Link>
+        }
+      />
     </div>
   );
 }

@@ -16,6 +16,7 @@ export default async function UserBookActions({userId, book}: {userId: string | 
         <>
           <Button
             className="flex-1 md:w-auto py-4"
+            nativeButton={false}
             render={
               <Link href={`/read/${book.gutenberg_id}`}>
                 <HugeiconsIcon icon={BookOpen} className="mr-2 size-4" />
@@ -28,6 +29,7 @@ export default async function UserBookActions({userId, book}: {userId: string | 
             <Button
               className="flex-1 md:w-auto py-4 cursor-pointer bg-secondary"
               variant="outline"
+              nativeButton={false}
               render={
                 <Link href={book.epub_url} target="_blank" className="gap-x-1">
                   📚 Download
