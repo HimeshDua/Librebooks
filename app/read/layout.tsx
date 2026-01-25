@@ -75,7 +75,9 @@ export const metadata: Metadata = {
 export default async function ReadLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh]`}>
+      <body
+        className={`${geistSans.className} antialiased reader max-w-screen min-h-[94vh] w-full`}
+      >
         <meta
           name="google-site-verification"
           content="ZqN_pVPqcbynnIC9mI9y7Zk3IDzxfkwuP9hapELyTuU"
@@ -83,23 +85,9 @@ export default async function ReadLayout({children}: {children: React.ReactNode}
         <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
-          <div className="container max-w-screen mx-auto">
+          <div className="container max-w-screen mx-auto w-full">
             {children}
-            <Toaster
-              theme="system"
-              mobileOffset={60}
-              // position="bottom-center"
-              // theme={toasterTheme}
-            />
-            {/* <Toaster
-              className="z-50"
-              expand
-              closeButton
-              containerAriaLabel="Message Box"
-              position="bottom-center"
-              richColors
-              // theme={toasterTheme}
-            /> */}
+            <Toaster theme="system" mobileOffset={60} />
           </div>
         </ThemeProvider>
       </body>

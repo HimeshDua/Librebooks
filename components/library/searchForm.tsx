@@ -6,6 +6,7 @@ import {Button} from '../ui/button';
 import {useState, useEffect} from 'react';
 import {HugeiconsIcon} from '@hugeicons/react';
 import {Search, X} from '@hugeicons/core-free-icons';
+import {useSearchQuery} from '@/hooks/search-query';
 
 export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
   const router = useRouter();
@@ -16,23 +17,13 @@ export function SearchForm({initialQuery = ''}: {initialQuery?: string}) {
     setValue(initialQuery);
   }, [initialQuery]);
 
-  function onSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value.trim()) {
-      params.set('q', value.trim());
-      params.set('page', '1');
-    } else {
-      params.delete('q');
-    }
-
-    router.push(`/library?${params.toString()}`);
-  }
+    useSearchQuery({router, searchParams, searchQuery: value});
+  };
 
   return (
-    <form onSubmit={onSubmit} className="flex items-center gap-2 w-full max-w-2xl mx-auto">
+    <form onSubmit={handleSubmit} className="flex items-center gap-2 w-full max-w-2xl mx-auto">
       <div className="relative flex-1">
         <HugeiconsIcon
           icon={Search}

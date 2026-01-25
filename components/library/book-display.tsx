@@ -16,7 +16,7 @@ interface BookDisplayProps {
 }
 
 const layoutClasses = {
-  COMPACT: 'space-y-2',
+  COMPACT: 'space-y-2 w-full',
   GRID: 'grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6',
 };
 

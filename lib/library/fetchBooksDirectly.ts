@@ -11,7 +11,7 @@ export async function fetchBooksDirectly(
 
   let builder = publicSupabase
     .from('book')
-    .select('id,slug,title,author,cover_url,download_count', {count: 'exact'})
+    .select('id, slug, title, author, cover_url, download_count', {count: 'exact'})
     .order('download_count', {ascending: false})
     .range(from, to);
 

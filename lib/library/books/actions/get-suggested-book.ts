@@ -24,7 +24,7 @@ export const getSuggestedBooks = async ({
 
   let query = supabase
     .from('book')
-    .select('id, slug, title, cover_url, author, languages, download_count')
+    .select('id, slug, title, cover_url')
     .neq('id', currentBookId)
     .order('download_count', {ascending: false})
     .limit(5);

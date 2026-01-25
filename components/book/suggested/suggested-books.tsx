@@ -2,7 +2,7 @@
 
 import ToggleFavoriteBook from '@/components/favoritism/toggle-favorite-book';
 import {blurDataUrl} from '@/data';
-import {getSuggestedBooks} from '@/lib/library/books/actions/getSuggestedBook';
+import {getSuggestedBooks} from '@/lib/library/books/actions/get-suggested-book';
 import {useFavorite} from '@/store';
 import type {SuggestedBook} from '@/types/book';
 import Image from 'next/image';
@@ -10,11 +10,12 @@ import Link from 'next/link';
 import {useEffect, useState} from 'react';
 
 type Props = {
+  userId: string | null;
   currentBookId: number;
   languages: string[];
 };
 
-export default function SuggestedBookSection({currentBookId, languages}: Props) {
+export default function SuggestedBookSection({currentBookId, languages, userId}: Props) {
   const favorites = useFavorite(s => s.favorites);
   const [books, setBooks] = useState<SuggestedBook[]>([]);
   const [loading, setLoading] = useState(false);
@@ -45,12 +46,13 @@ export default function SuggestedBookSection({currentBookId, languages}: Props) 
             style={{'--i': index} as React.CSSProperties}
           >
             <ToggleFavoriteBook
-              title="Add To Favorite"
-              className="absolute top-2 right-2 z-30 bg-secondary/40 hover:bg-secondary/50 border border-accent/50"
               minimal
+              title="Add To Favorite"
               variant="secondary"
+              userId={userId}
               bookId={book.id!}
               bookTitle={book.title}
+              className="absolute top-2 right-2 z-30 bg-secondary/40 hover:bg-secondary/50 border border-accent/50"
             />
 
             <Link href={`/book/${book.slug}`}>

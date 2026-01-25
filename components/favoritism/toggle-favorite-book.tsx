@@ -11,7 +11,7 @@ import {HugeiconsIcon} from '@hugeicons/react';
 import {Heart, HeartOff} from '@hugeicons/core-free-icons';
 
 type Props = {
-  id?: string;
+  userId: string | null;
   bookId: number;
   bookTitle: string;
   title?: string;
@@ -20,35 +20,43 @@ type Props = {
   className?: string;
 };
 
-function ToggleFavoriteBook({id, bookId, bookTitle, title, minimal, variant, className}: Props) {
+function ToggleFavoriteBook({
+  userId,
+  bookId,
+  bookTitle,
+  title,
+  minimal,
+  variant,
+  className,
+}: Props) {
   const {favorites, toggle, setAll} = useFavorite();
 
   const [loading, setLoading] = useState(true);
   const isFavorite = favorites.has(bookId);
   useEffect(() => {
-    if (!id) {
+    if (!userId) {
       setLoading(false);
       return;
     }
 
-    getUserFavorites(id)
+    getUserFavorites(userId)
       .then(setAll)
       .catch(() => toast.error('Failed to load favorites'))
       .then(() => setLoading(false));
-  }, [id, setAll]);
+  }, [userId, setAll]);
 
   const handleToggleFavorite = async () => {
-    if (!id) {
+    if (!userId) {
       setLoading(false);
     }
 
     try {
-      if (id) {
+      if (userId) {
         const {error, message} = await toggleFavoriteBook({
           isFavorite,
           book_id: bookId,
           bookTitle,
-          user_id: id,
+          user_id: userId,
         });
 
         if (error) throw error;
@@ -56,7 +64,7 @@ function ToggleFavoriteBook({id, bookId, bookTitle, title, minimal, variant, cla
       }
 
       toggle(bookId);
-      if (!id) {
+      if (!userId) {
         toast.info('Save your favorite books across devices via Login');
       }
     } catch (err) {

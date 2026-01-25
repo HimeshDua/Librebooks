@@ -30,14 +30,11 @@ export interface HeroProps {
 
 const words = ['immersive', 'effortless', 'limitless', 'secure', 'lightning-fast', 'curated'];
 
-function Hero({heading, description, primaryAction, secondaryAction, reviews}: HeroProps) {
+async function Hero({heading: _, description, primaryAction, secondaryAction, reviews}: HeroProps) {
   return (
-    <section className="relative py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
+    <section className="relative min-h-[50vh] py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
       {/* Improved Spotlight for dark mode */}
-      <Spotlight
-        className="-top-40 left-0 md:-top-20 md:left-60"
-        fill="oklch(0.82 0.11 346)" // Using your chart-1 color
-      />
+      <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="oklch(0.82 0.11 346)" />
 
       <div className="container mx-auto grid max-w-6xl gap-10 lg:gap-12 lg:grid-cols-2 lg:items-center">
         <div className="flex flex-col gap-6 text-center lg:text-left order-2 lg:order-1">
@@ -75,6 +72,7 @@ function Hero({heading, description, primaryAction, secondaryAction, reviews}: H
             <Button
               size="lg"
               variant="default"
+              nativeButton={false}
               className="
                 w-full sm:w-auto
                 bg-linear-to-r from-pink-500 to-rose-500

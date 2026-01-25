@@ -1,10 +1,10 @@
 import {Separator} from '@/components/ui/separator';
 import type {LocalBook} from '@/types';
 import {ViewModeToggle} from '@/components/library/viewMode';
-import {BookDisplay} from '@/components/library/bookDisplay';
+import {BookDisplay} from '@/components/library/book-display';
 import SelectBookCategory from '@/components/book/bookCategory';
 import {SearchForm} from '@/components/library/searchForm';
-import {PaginationControls} from '@/components/library/paginationControl';
+import {PaginationControls} from '@/components/library/pagination-control';
 import BookDisplaySkeleton from '@/components/skeletons/book-display';
 import {getBooksByCategory} from '@/lib/library/getBooksByCategory';
 import {fetchBooksDirectly} from '@/lib/library/fetchBooksDirectly';
@@ -158,7 +158,7 @@ export default async function Library({searchParams}: LibraryProps) {
   const totalPages = Math.max(1, Math.ceil((count || 0) / PAGE_SIZE));
 
   return (
-    <main className="min-h-screen py-6 sm:py-4 px-4 mx-auto">
+    <main className="min-h-screen w-full py-6 sm:py-4 px-4 mx-auto">
       <div className="max-w-7xl mx-auto p-0">
         <LibHeader />
         <section className="mb-8">

@@ -51,7 +51,7 @@ export default async function UserBookActions({userId, book}: {userId: string | 
         </>
       )}
 
-      <ToggleFavoriteBook id={userId ?? undefined} bookId={book.id!} bookTitle={book.title} />
+      <ToggleFavoriteBook userId={userId} bookId={book.id!} bookTitle={book.title} />
     </div>
   );
 }

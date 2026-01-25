@@ -11,6 +11,7 @@ import {getUserByInfo} from '@/lib/getUserByInfo';
 import HeaderDrawer from './header-drawer';
 import {HugeiconsIcon} from '@hugeicons/react';
 import {Library, Search} from '@hugeicons/core-free-icons';
+import SearchBar from './search-bar';
 
 export default async function Header() {
   const {user} = await getUserByInfo();
@@ -69,11 +70,8 @@ export default async function Header() {
         <Suspense>
           <div className="flex items-center gap-3">
             <ThemeToggleButton />
-            <Button variant="ghost" size="icon" className="sm:hidden" aria-label="Search books">
-              <Link prefetch href="/library">
-                <HugeiconsIcon icon={Search} className="size-4" />
-              </Link>
-            </Button>
+            <SearchBar />
+
             {isUser ? (
               <Suspense fallback={<AuthButtonsSkeleton />}>
                 <UserMenu user={user} />

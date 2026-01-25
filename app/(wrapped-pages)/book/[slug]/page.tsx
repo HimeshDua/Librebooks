@@ -38,7 +38,7 @@ export default async function BookPage({params}: Props) {
     <div className="max-w-6xl min-h-[85vh] flex flex-col w-full gap-y-8 px-4 mx-auto">
       <DetailedBookSection book={book} userId={userId} />
       <Suspense fallback={<SuggestedBooksSkeleton />}>
-        <SuggestedBookSection currentBookId={book?.id!} languages={book.languages} />
+        <SuggestedBookSection currentBookId={book?.id!} languages={book.languages} userId={userId} />
       </Suspense>
     </div>
   );

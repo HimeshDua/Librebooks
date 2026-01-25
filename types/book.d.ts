@@ -19,9 +19,6 @@ export type SuggestedBook = {
   id?: number;
   slug: string;
   title: string;
-  author: string;
-  languages: string[];
-  download_count: number;
   cover_url?: string;
 };
 

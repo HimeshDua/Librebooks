@@ -46,7 +46,7 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
             </Button>
           </Link>
 
-          <div className="px-2 py-2 text-nowrap rounded-full bg-muted font-semibold flex items-center justify-center flex-shrink-0 min-w-28">
+          <div className="px-2 py-2 text-nowrap rounded-full bg-muted font-semibold flex items-center justify-center shrink-0 min-w-28">
             {page} / {totalPages || 1}
           </div>
 
@@ -84,7 +84,7 @@ export function PaginationControls({category, query, page, totalPages}: Paginati
           </Button>
         </Link>
 
-        <div className="px-3 py-2 rounded-full bg-muted text-sm font-semibold min-w-[80px] text-center">
+        <div className="px-3 py-2 rounded-full bg-muted text-sm font-semibold min-w-20 text-center">
           Page {page} / {totalPages || 1}
         </div>
 
