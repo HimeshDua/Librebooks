@@ -1,10 +1,12 @@
+'use server';
 import Image from 'next/image';
 import Link from 'next/link';
 import {Button} from '@/components/ui/button';
 import {ArrowRight} from '@hugeicons/core-free-icons';
 import {HugeiconsIcon} from '@hugeicons/react';
+import {blurDataUrl} from '@/data';
 
-export default function page() {
+export default async function page() {
   return (
     <main className="flex flex-col items-center justify-center px-6 py-20 mx-auto">
       <div className="max-w-4xl w-full text-center space-y-8">
@@ -22,6 +24,8 @@ export default function page() {
           <Image
             fill
             preload
+            placeholder="blur"
+            blurDataURL={blurDataUrl}
             loading="eager"
             src="/lib-image.png"
             alt="Modern digital library"
