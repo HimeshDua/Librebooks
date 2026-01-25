@@ -8,7 +8,7 @@ import {Laptop, Moon, Sun} from '@hugeicons/core-free-icons';
 import {toast} from 'sonner';
 
 type Props = {
-  updateRenderKey: () => void;
+  updateRenderKey?: () => void;
 };
 
 export function ThemeToggleButton({updateRenderKey}: Props) {
@@ -19,7 +19,7 @@ export function ThemeToggleButton({updateRenderKey}: Props) {
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const toggleTheme = () => {
-    updateRenderKey();
+    if (updateRenderKey) updateRenderKey();
     const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
 

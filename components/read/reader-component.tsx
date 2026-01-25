@@ -9,7 +9,6 @@ import {useTheme} from 'next-themes';
 import {Button} from '../ui/button';
 import {get, set} from 'idb-keyval';
 import {cn} from '@/lib/utils';
-import ReaderSkeleton from './reader-loading';
 import {
   ChevronLeft,
   ChevronRight,
@@ -21,6 +20,7 @@ import {
   Type,
 } from '@hugeicons/core-free-icons';
 import {HugeiconsIcon} from '@hugeicons/react';
+import ReaderSkeleton from '../skeletons/reader';
 
 type RenditionLike = {
   themes: {

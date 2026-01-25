@@ -1,4 +1,4 @@
-import ReaderSkeleton from '@/components/read/reader-loading';
+import ReaderSkeleton from '@/components/skeletons/reader';
 
 export default function ReaderLoadingPage() {
   return <ReaderSkeleton />;
