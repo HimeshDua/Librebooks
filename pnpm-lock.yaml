@@ -53,6 +53,9 @@ importers:
       react-reader:
         specifier: ^2.0.15
         version: 2.0.15(react@19.2.3)
+      react-swipeable:
+        specifier: ^7.0.2
+        version: 7.0.2(react@19.2.3)
       sass:
         specifier: ^1.97.3
         version: 1.97.3

@@ -30,12 +30,10 @@ export const getSuggestedBooks = async ({
     .limit(5);
 
   if (favoriteIds.length > 0 || favorites.size) {
-    console.log('favoriteIds: ', favoriteIds);
     query.not('id', 'in', `(${favoriteIds.join(',')})`);
   }
   if (languages.length > 0) {
-    console.log('languages: ', languages);
-    query.overlaps('languages', languages);
+   query.overlaps('languages', languages);
   }
   const {data, error} = await query;
 

@@ -4,23 +4,30 @@ import {useEffect, useState, useRef, useCallback} from 'react';
 import {ThemeToggleButton} from '../book/toggleThemeButton';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import {useRouter} from 'next/navigation';
-import {ReactReader} from 'react-reader';
+import {ReactReader, type RenditionOptionsFix} from 'react-reader';
 import {useTheme} from 'next-themes';
 import {Button} from '../ui/button';
 import {get, set} from 'idb-keyval';
 import {cn} from '@/lib/utils';
 import {
+  ArrowRight,
+  Bookmark,
   ChevronLeft,
   ChevronRight,
+  Copy,
   Home,
   Maximize2,
   Menu,
   Minimize2,
+  MousePointer,
   Reload,
+  Trash,
   Type,
 } from '@hugeicons/core-free-icons';
 import {HugeiconsIcon} from '@hugeicons/react';
 import ReaderSkeleton from '../skeletons/reader';
+import {Popover, PopoverContent, PopoverTrigger} from '../ui/popover';
+import {Card} from '../ui/card';
 
 type RenditionLike = {
   themes: {
@@ -46,6 +53,10 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
   const [location, setLocation] = useState<string | number>(
     typeof window !== 'undefined' ? localStorage.getItem(`book-${slug}-loc`) || 0 : 0
   );
+
+  const [selections, setSelections] = useState<any[]>([]);
+  const [rendition, setRendition] = useState<any | undefined>(undefined);
+  const [color, setColor] = useState('oklch(0.59 0.22 1)');
 
   const [renderKey, setRenderKey] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(100);
@@ -89,6 +100,35 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
   }, [slug]);
 
   useEffect(() => {
+    if (rendition) {
+      function setRenderSelection(cfiRange: string, contents: any) {
+        if (rendition) {
+          setSelections(list =>
+            list.concat({
+              text: rendition.getRange(cfiRange).toString(),
+              cfiRange,
+            })
+          );
+          rendition.annotations.add(
+            'highlight',
+            cfiRange,
+            {},
+            (e: MouseEvent) => console.log('click on selection', cfiRange, e),
+            'my-class',
+            {fill: color}
+          );
+          const selection = contents.window.getSelection();
+          selection?.removeAllRanges();
+        }
+      }
+      rendition.on('selected', setRenderSelection);
+      return () => {
+        rendition?.off('selected', setRenderSelection);
+      };
+    }
+  }, [setSelections, rendition]);
+
+  useEffect(() => {
     const onChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener('fullscreenchange', onChange);
     return () => document.removeEventListener('fullscreenchange', onChange);
@@ -129,6 +169,8 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
   useEffect(() => {
     if (renditionRef.current) {
       renditionRef.current.themes.select(theme || 'dark');
+
+      setColor(theme == 'dark' ? 'oklch(0.66 0.21 354)' : 'oklch(0.59 0.22 1)');
 
       const container = document.querySelector('#reader-container') as HTMLElement;
       if (container) {
@@ -202,22 +244,155 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
 
   return (
     <div className="relative flex flex-col h-screen pb-8 bg-background text-foreground transition-all overflow-hidden">
+      {!isMobile && (
+        <div className="fixed bottom-20 right-4 z-50">
+          <Popover>
+            <PopoverTrigger
+              render={
+                <Button
+                  size="icon"
+                  className="h-12 w-12 rounded-full shadow-lg relative hover:scale-105 transition-transform duration-200"
+                  title={
+                    selections.length > 0
+                      ? `View ${selections.length} highlight${selections.length !== 1 ? 's' : ''}`
+                      : 'No highlights yet'
+                  }
+                >
+                  <HugeiconsIcon icon={Bookmark} className="size-5" />
+                  {selections.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full h-6 w-6 flex items-center justify-center">
+                      {selections.length}
+                    </span>
+                  )}
+                </Button>
+              }
+            />
+            <PopoverContent className="w-80" align="end" side="top" dir="tl">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium leading-none">Highlights</h4>
+                  {selections.length > 0 && (
+                    <span className="text-xs text-muted-foreground">
+                      {selections.length} item{selections.length !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
+                <div className="max-h-80 overflow-y-auto">
+                  {selections.length > 0 ? (
+                    <ul className="space-y-4">
+                      {selections.map(({text, cfiRange}, i) => (
+                        <li
+                          key={i}
+                          className="p-3 bg-muted/50 rounded-lg group hover:bg-muted/70 transition-colors"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="text-xs text-muted-foreground">Highlight {i + 1}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                rendition?.display(cfiRange);
+                              }}
+                              className="h-6 px-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <HugeiconsIcon icon={ArrowRight} className="size-3 mr-1" />
+                              Go to
+                            </Button>
+                          </div>
+                          <p className="text-sm line-clamp-3 italic mb-3">{text}</p>
+                          <div className="flex gap-2 mt-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                navigator.clipboard.writeText(text);
+                                // You could add a toast notification here
+                              }}
+                              className="h-6 px-2 text-xs flex-1"
+                            >
+                              <HugeiconsIcon icon={Copy} className="size-3 mr-1" />
+                              Copy
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => {
+                                rendition?.annotations.remove(cfiRange, 'highlight');
+                                setSelections(selections.filter((item, j) => j !== i));
+                              }}
+                              className="h-6 px-2 text-xs flex-1"
+                            >
+                              <HugeiconsIcon icon={Trash} className="size-3 mr-1" />
+                              Remove
+                            </Button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="py-8 text-center space-y-4">
+                      <div className="mx-auto w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center">
+                        <HugeiconsIcon
+                          icon={Bookmark}
+                          className="size-8 text-muted-foreground/60"
+                        />
+                      </div>
+                      <div>
+                        <h5 className="font-medium mb-1">No highlights yet</h5>
+                        <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                          Select any text while reading to save it here for later reference
+                        </p>
+                      </div>
+                      <div className="pt-2">
+                        <div className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/30 px-3 py-1.5 rounded-full">
+                          <HugeiconsIcon icon={MousePointer} className="size-3" />
+                          <span>Click & drag to select text</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {selections.length > 0 && (
+                  <div className="pt-2 border-t">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>Highlights are saved locally</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const confirm = window.confirm(
+                            `Are you sure you want to remove all ${selections.length} highlight${selections.length !== 1 ? 's' : ''}?`
+                          );
+                          if (confirm) {
+                            selections.forEach(({cfiRange}) => {
+                              rendition?.annotations.remove(cfiRange, 'highlight');
+                            });
+                            setSelections([]);
+                          }
+                        }}
+                        className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+                        disabled={selections.length === 0}
+                      >
+                        Clear all
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
       {/* Top Controls */}
-      {/* <div
-        className={`
-        absolute top-0 left-0 right-0 z-50 transition-all duration-300
-        translate-y-0 opacity-100
-        `}
-        > */}
+
       <header
         className={cn(
           'flex items-center justify-between px-4 py-3 z-50',
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+          showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0',
+          isMobile && 'translate-y-0 opacity-100'
         )}
-        // ${showControls ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
-
-        //  <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border/50 p-3">
       >
         <div className="flex items-center gap-2">
           <Button
@@ -399,17 +574,37 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
 
         {/* React Reader */}
         <ReactReader
+          swipeable={isMobile ? true : false}
           url={bookData}
           key={renderKey}
           location={location}
           locationChanged={handleLocationChange}
           epubOptions={{
+            allowPopups: true,
             allowScriptedContent: true,
           }}
-          getRendition={rendition => {
-            renditionRef.current = rendition;
+          getRendition={renditionProp => {
+            setRendition(renditionProp);
 
-            rendition.book.loaded.navigation.then(tocData => {
+            renditionProp.hooks.content.register((contents: any) => {
+              const document = contents.window.document;
+              console.log('document', document);
+              if (document) {
+                const css = `
+                        .epubjs-hl {
+                          border: 1px solid black;
+                        }
+                        `;
+                const style = document.createElement('style');
+                style.appendChild(document.createTextNode(css));
+                document.head.appendChild(style);
+              }
+            });
+
+            // rendition.hooks.render((r)=?)
+            renditionRef.current = renditionProp;
+
+            renditionProp.book.loaded.navigation.then(tocData => {
               if (tocData?.toc) {
                 const tocItems: TocItem[] = tocData.toc.map(item => ({
                   label: item.label,
@@ -419,9 +614,9 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               }
             });
 
-            rendition.themes.default('light');
+            renditionProp.themes.default('light');
 
-            rendition.themes.register('light', {
+            renditionProp.themes.register('light', {
               body: {
                 background: '#fffacc',
                 color: '#1B1B1B',
@@ -442,7 +637,7 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               },
             });
 
-            rendition.themes.register('dark', {
+            renditionProp.themes.register('dark', {
               body: {
                 background: '#1b1d1e',
                 color: '#D8D3C3',
@@ -463,8 +658,8 @@ export default function ReaderComponent({slug}: ReaderPageProps) {
               },
             });
 
-            rendition.themes.select(theme || 'dark');
-            rendition.themes.fontSize(`${fontSize}%`);
+            renditionProp.themes.select(theme || 'dark');
+            renditionProp.themes.fontSize(`${fontSize}%`);
 
             const reactReaderContainer = document.querySelector(
               '#reader-container > div'
