@@ -54,11 +54,9 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <form action={loginWithGoogle}>
-            <Button variant="outline" className="w-full">
-              Continue with Google
-            </Button>
-          </form>
+          <Button onClick={loginWithGoogle} variant="outline" className="w-full">
+            Continue with Google
+          </Button>
         </CardContent>
       </Card>
     </main>

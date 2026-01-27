@@ -61,11 +61,9 @@ function SignUpForm() {
             </div>
           </div>
 
-          <form action={signupWithGoogle}>
-            <Button variant="outline" className="w-full">
-              Continue with Google
-            </Button>
-          </form>
+          <Button onClick={signupWithGoogle} variant="outline" className="w-full">
+            Continue with Google
+          </Button>
         </CardContent>
       </Card>
     </main>
