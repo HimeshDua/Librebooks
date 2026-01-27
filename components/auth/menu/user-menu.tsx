@@ -109,6 +109,7 @@ export function UserMenu({user, favoriteCount = 0, isMobile}: Props) {
           </div>
 
           <Button
+            nativeButton={false}
             variant="ghost"
             className="w-full justify-between p-3 h-auto hover:bg-accent/50 transition-all group relative"
             onClick={handleNavigateToFavorites}
