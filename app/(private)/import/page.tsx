@@ -8,8 +8,6 @@ function ImportBooks() {
     setLoading(true);
     try {
       const res = await fetch('api/import', {method: 'POST'});
-      const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.error('Error import book (frontend)', error);
     } finally {

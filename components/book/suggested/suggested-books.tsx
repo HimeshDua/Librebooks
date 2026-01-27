@@ -30,10 +30,12 @@ const getResponsiveCols = () => {
 };
 
 export default function SuggestedBookSection({currentBookId, languages, userId}: Props) {
-  const favorites = useFavorite(s => s.favorites);
   const [books, setBooks] = useState<SuggestedBook[]>([]);
   const [loading, setLoading] = useState(false);
   const [gridCols, setGridCols] = useState('grid-cols-6');
+  const favoriteIds = useFavorite(s => s.favorites);
+
+  const favoriteKey = Array.from(favoriteIds).join(',');
 
   useEffect(() => {
     setGridCols(getResponsiveCols());
@@ -47,18 +49,29 @@ export default function SuggestedBookSection({currentBookId, languages, userId}:
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+
     setLoading(true);
-    try {
-      getSuggestedBooks({currentBookId, favorites, languages}).then(n => {
-        if (n.error) console.error(n.error.message);
-        if (n.data) {
-          setBooks(n.data.slice(0, BOOKS_TO_FETCH));
-        }
+
+    getSuggestedBooks({
+      currentBookId,
+      favoriteIds: Array.from(favoriteIds),
+      languages,
+    })
+      .then(({data, error}) => {
+        if (cancelled) return;
+        if (error) console.error(error.message);
+
+        if (data) setBooks(data);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
-    } finally {
-      setLoading(false);
-    }
-  }, [favorites, currentBookId, languages]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currentBookId, favoriteKey, languages.join(',')]);
 
   if (loading || !books.length)
     return <SuggestedBooksSkeleton gridCols={gridCols} BOOKS_TO_FETCH={BOOKS_TO_FETCH} />;

@@ -31,7 +31,7 @@ export function UserMenu({user, favoriteCount = 0, isMobile}: Props) {
     getUserFavorites(user.id).then(data => {
       setFavorites(data);
     });
-  }, [user, favoriteCount, setFavorites]);
+  }, [user.id]);
 
   const handleNavigateToFavorites = () => {
     setIsNavigating(true);
@@ -148,7 +148,7 @@ export function UserMenu({user, favoriteCount = 0, isMobile}: Props) {
                     <TooltipTrigger>
                       <div className="absolute inset-0 cursor-pointer" />
                     </TooltipTrigger>
-                    <TooltipContent side="left">
+                    <TooltipContent side="right">
                       <p>View your saved favorites</p>
                     </TooltipContent>
                   </Tooltip>

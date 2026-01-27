@@ -1,12 +1,11 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Button} from '../ui/button';
 import {toast} from 'sonner';
 import {cn} from '@/lib/utils';
 import {useFavorite} from '@/store';
 import {toggleFavoriteBook} from '@/lib/library/books/actions/toggleFavoriteBook';
-import {getUserFavorites} from '@/lib/library/books/favorites/actions/get-fav-book-Ids';
 import {HugeiconsIcon} from '@hugeicons/react';
 import {Heart, HeartOff} from '@hugeicons/core-free-icons';
 
@@ -35,30 +34,20 @@ function ToggleFavoriteBook({
   className,
   containerClassName,
 }: Props) {
-  const {favorites, toggle, setAll} = useFavorite();
-  const [isLoading, setIsLoading] = useState(true);
+  const {favorites, toggle} = useFavorite();
   const [isToggling, setIsToggling] = useState(false);
+
+  const [action, setAction] = useState<'add' | 'remove' | null>(null);
 
   const isFavorite = favorites.has(bookId);
 
-  useEffect(() => {
-    if (!userId) {
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    getUserFavorites(userId)
-      .then(setAll)
-      .catch(() => toast.error('Failed to load favorites'))
-      .finally(() => setIsLoading(false));
-  }, [userId, setAll]);
-
   const handleToggleFavorite = async () => {
-    if (disabled || isToggling || isLoading) return;
+    if (disabled || isToggling) return;
 
-    setIsToggling(true);
     const wasFavorite = isFavorite;
+
+    setAction(wasFavorite ? 'remove' : 'add');
+    setIsToggling(true);
 
     try {
       toggle(bookId);
@@ -94,6 +83,7 @@ function ToggleFavoriteBook({
       console.error(err);
       toast.error('Failed to update favorites');
     } finally {
+      setAction(null);
       setIsToggling(false);
     }
   };
@@ -101,22 +91,21 @@ function ToggleFavoriteBook({
   if (minimal) {
     return (
       <Button
-        title={title || (isFavorite ? 'Remove from favorites' : 'Add to favorites')}
-        disabled={disabled || isToggling || isLoading}
+        title={title || (action == 'remove' ? 'Remove from favorites' : 'Add to favorites')}
+        disabled={disabled || isToggling}
         className={cn(
           'transition-all duration-200',
           'absolute top-2 right-2 z-30',
-          (disabled || isToggling || isLoading) && 'opacity-70 cursor-not-allowed',
-          isLoading && 'animate-pulse',
+          (disabled || isToggling) && 'opacity-70 cursor-not-allowed',
           containerClassName,
           className
         )}
         variant={variant}
         size="icon"
         onClick={handleToggleFavorite}
-        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+        aria-label={action == 'remove' ? 'Remove from favorites' : 'Add to favorites'}
       >
-        {isLoading || isToggling ? (
+        {isToggling ? (
           <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
         ) : isFavorite ? (
           <HugeiconsIcon icon={Heart} className="size-4 fill-red-500" />
@@ -129,12 +118,11 @@ function ToggleFavoriteBook({
 
   return (
     <Button
-      title={title || (isFavorite ? 'Remove from favorites' : 'Add to favorites')}
-      disabled={disabled || isToggling || isLoading}
+      title={title || (action == 'remove' ? 'Remove from favorites' : 'Add to favorites')}
+      disabled={disabled || isToggling}
       className={cn(
         'flex-1 md:w-auto py-4 flex items-center justify-center gap-2 transition-all duration-200',
-        (disabled || isToggling || isLoading) && 'opacity-70 cursor-not-allowed',
-        isLoading && 'animate-pulse',
+        (disabled || isToggling) && 'opacity-70 cursor-not-allowed',
         isToggling && 'relative overflow-hidden',
         className
       )}
@@ -142,15 +130,12 @@ function ToggleFavoriteBook({
       size={iconSize}
       onClick={handleToggleFavorite}
     >
-      {isLoading ? (
-        <>
-          <div className="size-4 rounded-full bg-muted-foreground/30 animate-pulse" />
-          <span className="hidden md:inline">Loading...</span>
-        </>
-      ) : isToggling ? (
+      {isToggling ? (
         <>
           <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          <span className="hidden md:inline">{isFavorite ? 'Removing...' : 'Adding...'}</span>
+          <span className="hidden md:inline">
+            {action == 'remove' ? 'Removing...' : 'Adding...'}
+          </span>
         </>
       ) : (
         <>

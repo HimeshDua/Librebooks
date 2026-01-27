@@ -29,6 +29,7 @@ export default async function BookPage({params}: Props) {
   const userId = (await getUserByInfo()).user?.id ?? null;
 
   const {data: book, error} = await getBookFromSlug(slug);
+
   if (error || !book) return notFound();
 
   return (

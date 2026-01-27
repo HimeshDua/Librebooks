@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Libre Books',
     short_name: 'Books',
-    description: 'FreeBooks Library – Read, expl  ore, and manage your favorite books online.',
+    description: 'FreeBooks Library – Read, explore, and manage your favorite books online.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
