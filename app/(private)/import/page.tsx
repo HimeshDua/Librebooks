@@ -7,7 +7,7 @@ function ImportBooks() {
   async function importBooks() {
     setLoading(true);
     try {
-      const res = await fetch('api/import', {method: 'POST'});
+      await fetch('api/import', {method: 'POST'});
     } catch (error) {
       console.error('Error import book (frontend)', error);
     } finally {

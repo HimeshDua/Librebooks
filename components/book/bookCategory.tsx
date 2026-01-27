@@ -57,10 +57,7 @@ function SelectBookCategory({className}: {className?: string}) {
 
   return (
     <div className={className}>
-      <Select
-        onValueChange={handleSelect}
-        //onValueChange={handleSelect}
-      >
+      <Select onValueChange={handleSelect}>
         <SelectTrigger className="w-full sm:w-70 backdrop-blur-md bg-white/10 ">
           <SelectValue
             placeholder={
