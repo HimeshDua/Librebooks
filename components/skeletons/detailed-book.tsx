@@ -1,5 +1,5 @@
-import SuggestedBookSectionLoadingState from './suggested-books';
 import {Skeleton} from '../ui/skeleton';
+import {SuggestedBooksSkeleton} from './suggested-books';
 
 export function DetailedBookSkeleton() {
   return (
@@ -89,7 +89,7 @@ export function DetailedBookSkeleton() {
             </div>
           </div>
         </section>
-        <SuggestedBookSectionLoadingState />
+        <SuggestedBooksSkeleton BOOKS_TO_FETCH={6} />
       </div>
     </main>
   );

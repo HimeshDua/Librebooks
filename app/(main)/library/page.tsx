@@ -12,7 +12,7 @@ import {LIBRARY_CONFIG} from '@/lib/library/config';
 import {getPopularBooks} from '@/lib/library/getPopularBooks';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
-import LibHeader from '@/components/library/header';
+import {LibHeader} from '@/components/library/header';
 
 export const metadata: Metadata = {
   title: 'Free Public Domain Books | LibreBooks Library',
@@ -160,7 +160,9 @@ export default async function Library({searchParams}: LibraryProps) {
   return (
     <main className="min-h-screen w-full py-6 sm:py-4 px-4 mx-auto">
       <div className="max-w-7xl mx-auto p-0">
-        <LibHeader />
+        <Suspense>
+          <LibHeader />
+        </Suspense>
         <section className="mb-8">
           <SearchForm initialQuery={query} />
         </section>

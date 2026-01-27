@@ -1,4 +1,4 @@
-export default function Header() {
+export function LibHeader() {
   return (
     <header className="text-center mb-8">
       <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-linear-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">

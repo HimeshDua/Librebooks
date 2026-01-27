@@ -1,10 +1,10 @@
 import SelectBookCategory from '../book/bookCategory';
-import LibHeader from '../library/header';
+import {LibHeader} from '../library/header';
 import {PaginationControls} from '../library/pagination-control';
-import {SearchForm} from '../library/searchForm';
 import {ViewModeToggle} from '../library/viewMode';
 import {Separator} from '../ui/separator';
 import {BookDisplaySkeleton} from './book-display';
+import {SearchFormSkeleton} from './search-form';
 
 export function LibrarySkeleton() {
   return (
@@ -13,7 +13,7 @@ export function LibrarySkeleton() {
         <LibHeader />
 
         <section className="mb-8">
-          <SearchForm />
+          <SearchFormSkeleton />
         </section>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
