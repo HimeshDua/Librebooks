@@ -1,21 +1,20 @@
 'use server';
 import {Suspense} from 'react';
 import Link from 'next/link';
-import {Button} from '../ui/button';
-import {UserMenu} from '../user-menu';
 import {hasEnvVars} from '@/lib/utils';
-import {EnvVarWarning} from '../env-var-warning';
-import {ThemeToggleButton} from '../book/toggleThemeButton';
-import {AuthButtonsSkeleton} from '../skeletons/auth-buttons';
+import {EnvVarWarning} from '../auth/env-var-warning';
+import {ThemeToggleButton} from '../essentials/toggle-theme-button';
 import {getUserByInfo} from '@/lib/getUserByInfo';
 import HeaderDrawer from './header-drawer';
 import {HugeiconsIcon} from '@hugeicons/react';
-import {Library, Search} from '@hugeicons/core-free-icons';
+import {Library} from '@hugeicons/core-free-icons';
 import SearchBar from './search-bar';
+import {UserBar} from '../auth/menu/user-bar';
 
 export default async function Header() {
   const {user} = await getUserByInfo();
   const isUser = !!user;
+  if (!hasEnvVars) return <EnvVarWarning />;
 
   return (
     <nav
@@ -67,40 +66,11 @@ export default async function Header() {
           </div>
         </div>
 
-        <Suspense>
-          <div className="flex items-center gap-3">
-            <ThemeToggleButton />
-            <SearchBar />
-
-            {isUser ? (
-              <Suspense fallback={<AuthButtonsSkeleton />}>
-                <UserMenu user={user} />
-              </Suspense>
-            ) : !hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <div className="flex items-center gap-2">
-                <Button
-                  render={
-                    <Link prefetch href="/auth/login">
-                      Log In
-                    </Link>
-                  }
-                  variant="ghost"
-                  className="hidden sm:flex"
-                />
-                <Button
-                  render={
-                    <Link prefetch href="/auth/sign-up">
-                      Sign Up
-                    </Link>
-                  }
-                  className="rounded-full font-semibold"
-                />
-              </div>
-            )}
-          </div>
-        </Suspense>
+        <div className="flex items-center gap-3">
+          <ThemeToggleButton />
+          <SearchBar />
+          <UserBar user={user} />
+        </div>
       </div>
     </nav>
   );

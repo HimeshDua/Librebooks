@@ -51,16 +51,14 @@ function HeaderDrawer({isUser}: {isUser: boolean}) {
           >
             Browse Books
           </Link>
-          {isUser && (
-            <Link
-              prefetch
-              href="/book/favorites"
-              onClick={() => setOpen(false)}
-              className="text-sm font-medium py-2 hover:text-primary transition-colors"
-            >
-              Your Favorites
-            </Link>
-          )}
+          <Link
+            prefetch
+            href="/book/favorites"
+            onClick={() => setOpen(false)}
+            className="text-sm font-medium py-2 hover:text-primary transition-colors"
+          >
+            Your Favorites
+          </Link>
           <Link
             prefetch
             href="/about"

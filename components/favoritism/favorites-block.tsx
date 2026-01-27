@@ -11,7 +11,7 @@ import {Heart, LibraryBig} from '@hugeicons/core-free-icons';
 export default function FavoritesBlock({books, isLoading}: {isLoading: boolean; books: Book[]}) {
   if (isLoading) return <FavoritesBlockSkeleton />;
 
-  if (isLoading && books.length === 0) {
+  if (books.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[80vh] w-full text-center px-6">
         <HugeiconsIcon icon={Heart} className="size-12 text-red-500 mb-3" />

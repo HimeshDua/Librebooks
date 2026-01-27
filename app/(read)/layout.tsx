@@ -1,16 +1,11 @@
 import type {Metadata, Viewport} from 'next';
 import {Geist, Geist_Mono, Inter} from 'next/font/google';
-
-import './globals.css';
-import './tiptap.scss';
-import './readermode.css';
-
-import Header from '@/components/nav/header';
-import Footer from '@/components/nav/footer';
 import {ThemeProvider} from 'next-themes';
+import '../globals.css';
+import '../tiptap.scss';
+import '../readermode.css';
 import NextTopLoader from 'nextjs-toploader';
 import {Toaster} from 'sonner';
-import {cn} from '@/lib/utils';
 
 const inter = Inter({subsets: ['latin'], variable: '--font-sans'});
 
@@ -80,10 +75,9 @@ export const metadata: Metadata = {
       {url: '/ios/1024.png', media: '(max-resolution: 1024x1024)'},
     ],
   },
-  manifest: '/manifest.ts',
 };
 
-export default async function RootLayout({children}: {children: React.ReactNode}) {
+export default async function ReadLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -94,28 +88,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <script src="https://accounts.google.com/gsi/client" async></script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <NextTopLoader showSpinner={false} />
-          <Header />
-          <main
-            className={cn(
-              'relative flex flex-col gap-y-3 px-4 md:px-0',
-              'reader max-w-screen min-h-[94vh] container mx-auto'
-            )}
-          >
+          <div className="container max-w-screen mx-auto w-full">
             {children}
-          </main>
-
-          <Toaster theme="system" mobileOffset={60} />
-          {/* <Toaster
-            className="z-50"
-            mobileOffset={20}
-            expand
-            closeButton
-            containerAriaLabel="Message Box"
-            position="bottom-center"
-            richColors
-            // theme={toasterTheme}
-          /> */}
-          <Footer />
+            <Toaster theme="system" mobileOffset={60} />
+          </div>
         </ThemeProvider>
       </body>
     </html>

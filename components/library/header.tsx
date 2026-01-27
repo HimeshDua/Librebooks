@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <header className="text-center mb-8">
-      <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+      <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-linear-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
         Libre Books
       </h1>
       <p className="text-base sm:text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">

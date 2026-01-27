@@ -9,11 +9,12 @@ import {
   BreadcrumbSeparator,
 } from '../ui/breadcrumb';
 import BackButton from '../back-button';
-import {StructuredData} from './bookmetacomponents';
+import {StructuredData} from './metadata';
 import type {Book} from '@/types/book';
-import UserBookActions from './book-actions';
+import {UserBookActions} from './book-actions';
 import {notFound} from 'next/navigation';
 import {blurDataUrl} from '@/data';
+import {UserBookActionsSkeleton} from '../skeletons/book-actions';
 
 type DetailedBookSectionProps = {
   userId: string | null;
@@ -24,9 +25,7 @@ export default async function DetailedBookSection({userId, book}: DetailedBookSe
   if (!book) return notFound();
   return (
     <main>
-      <Suspense>
-        <StructuredData book={book} />
-      </Suspense>
+      <StructuredData book={book} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-0 py-10 pt-4">
         <Breadcrumb className="mb-6 text-sm">
@@ -40,12 +39,10 @@ export default async function DetailedBookSection({userId, book}: DetailedBookSe
             <BreadcrumbItem>
               <BreadcrumbLink render={<Link href="/library">Library</Link>} />
             </BreadcrumbItem>
-            <Suspense>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink>{book.author || 'Unknown Author'}</BreadcrumbLink>
-              </BreadcrumbItem>
-            </Suspense>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink>{book.author || 'Unknown Author'}</BreadcrumbLink>
+            </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
@@ -98,7 +95,7 @@ export default async function DetailedBookSection({userId, book}: DetailedBookSe
             )}
 
             <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center gap-3">
-              <Suspense fallback={<div className="h-12" />}>
+              <Suspense fallback={<UserBookActionsSkeleton />}>
                 <UserBookActions userId={userId} book={book} />
               </Suspense>
             </div>

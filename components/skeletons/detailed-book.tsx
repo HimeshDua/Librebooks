@@ -1,7 +1,7 @@
 import SuggestedBookSectionLoadingState from './suggested-books';
 import {Skeleton} from '../ui/skeleton';
 
-export default function DetailedBookSkeleton() {
+export function DetailedBookSkeleton() {
   return (
     <main className="min-h-screen w-full py-10 px-4 mx-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

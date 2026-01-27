@@ -1,6 +1,6 @@
 'use client';
 
-import {useFormState, useFormStatus} from 'react-dom';
+import {useFormStatus} from 'react-dom';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
@@ -8,6 +8,7 @@ import {signup, signupWithGoogle} from '@/lib/auth/actions/signup';
 import Link from 'next/link';
 import {Loader} from '@hugeicons/core-free-icons';
 import {HugeiconsIcon} from '@hugeicons/react';
+import {useActionState} from 'react';
 
 function SubmitButton() {
   const {pending} = useFormStatus();
@@ -21,7 +22,7 @@ function SubmitButton() {
 }
 
 function SignUpForm() {
-  const [state, action] = useFormState(signup, {});
+  const [state, action] = useActionState(signup, {});
 
   return (
     <main className="flex min-h-[90svh] items-center justify-center p-6">

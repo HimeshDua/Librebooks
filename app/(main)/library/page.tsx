@@ -5,7 +5,7 @@ import {BookDisplay} from '@/components/library/book-display';
 import SelectBookCategory from '@/components/book/bookCategory';
 import {SearchForm} from '@/components/library/searchForm';
 import {PaginationControls} from '@/components/library/pagination-control';
-import BookDisplaySkeleton from '@/components/skeletons/book-display';
+import {BookDisplaySkeleton} from '@/components/skeletons/book-display';
 import {getBooksByCategory} from '@/lib/library/getBooksByCategory';
 import {fetchBooksDirectly} from '@/lib/library/fetchBooksDirectly';
 import {LIBRARY_CONFIG} from '@/lib/library/config';

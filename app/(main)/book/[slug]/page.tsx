@@ -1,14 +1,12 @@
 'use server';
 
-import {generateMetadataComponent} from '@/components/book/bookmetacomponents';
+import {generateMetadataComponent} from '@/components/book/metadata';
 import {getBookFromSlug} from '@/lib/library/books/actions/getBookfromSlug';
 import {publicSupabase as supabase} from '@/lib/supabase/public';
 import {notFound} from 'next/navigation';
-import {Suspense} from 'react';
 import {getUserByInfo} from '@/lib/getUserByInfo';
-import SuggestedBooksSkeleton from '@/components/skeletons/suggested-books';
 import SuggestedBookSection from '@/components/book/suggested/suggested-books';
-import DetailedBookSection from '@/components/book/detailedBook';
+import DetailedBookSection from '@/components/book/detailed-book';
 export async function generateStaticParams() {
   const {data: popularBooks} = await supabase
     .from('book')
@@ -20,10 +18,9 @@ export async function generateStaticParams() {
 }
 
 export const generateMetadata = generateMetadataComponent;
+
 type Props = {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: Promise<{slug: string}>;
 };
 
 export default async function BookPage({params}: Props) {
@@ -37,9 +34,7 @@ export default async function BookPage({params}: Props) {
   return (
     <div className="max-w-6xl min-h-[85vh] flex flex-col w-full gap-y-8 px-4 mx-auto">
       <DetailedBookSection book={book} userId={userId} />
-      <Suspense fallback={<SuggestedBooksSkeleton />}>
-        <SuggestedBookSection currentBookId={book?.id!} languages={book.languages} userId={userId} />
-      </Suspense>
+      <SuggestedBookSection currentBookId={book?.id!} languages={book.languages} userId={userId} />
     </div>
   );
 }

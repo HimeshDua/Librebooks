@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState, useRef, useCallback} from 'react';
-import {ThemeToggleButton} from '../book/toggleThemeButton';
+import {ThemeToggleButton} from '../essentials/toggle-theme-button';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import {useRouter} from 'next/navigation';
 import {ReactReader, type RenditionOptionsFix} from 'react-reader';

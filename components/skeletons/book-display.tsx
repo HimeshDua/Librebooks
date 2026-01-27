@@ -1,24 +1,28 @@
-export default function BookDisplaySkeleton() {
+export function BookDisplaySkeleton() {
   return (
-    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-6">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
       {Array.from({length: 12}).map((_, i) => (
         <li
           key={i}
-          className="group relative overflow-hidden rounded-md backdrop-blur-md bg-white/5 dark:bg-slate-800/30 shadow-sm border border-white/10 animate-pulse"
+          className="group relative overflow-hidden rounded-lg bg-background border border-border animate-pulse"
         >
-          <div className="relative w-full aspect-3/4 overflow-hidden rounded-t-md">
-            <div className="absolute inset-0 bg-linear-to-br from-slate-200/60 via-slate-300/40 to-slate-100/60 dark:from-slate-700/40 dark:via-slate-800/50 dark:to-slate-900/40 shimmer" />
+          <div className="relative w-full aspect-3/4 overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-br from-muted via-muted/80 to-muted/60" />
           </div>
 
-          <div className="p-3 space-y-2">
-            <div className="h-4 w-3/4 rounded bg-slate-300/60 dark:bg-slate-700/60 shimmer" />
-            <div className="h-3 w-1/2 rounded bg-slate-300/40 dark:bg-slate-700/40 shimmer" />
+          <div className="p-3 space-y-3">
+            <div className="space-y-2">
+              <div className="h-4 w-full rounded bg-muted" />
+              <div className="h-4 w-3/4 rounded bg-muted/70" />
+            </div>
 
-            <div className="mt-4 flex justify-between items-center">
-              <div className="h-3 w-1/3 rounded bg-slate-300/40 dark:bg-slate-700/40 shimmer" />
-              <div className="h-5 w-10 rounded-full bg-slate-200/50 dark:bg-slate-700/50 shimmer" />
+            <div className="flex justify-between items-center pt-2">
+              <div className="h-3 w-16 rounded-full bg-muted/50" />
+              <div className="h-5 w-14 rounded-full bg-muted/60" />
             </div>
           </div>
+
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/5 to-transparent" />
         </li>
       ))}
     </ul>
